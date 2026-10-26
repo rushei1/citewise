@@ -7,9 +7,13 @@ Branch: `upgrade-v2` (renamed from `v1.1-infra`; no history was rewritten). Tag 
 - Phase 0: also v1.0 limitations section in README.
 - Phase 1 (1.1-1.13): package split, schemas, config, clustering fix, errors/health, SQLite cache, server-side PDF, frontend fixes, pinned requirements, tests (35 pass, 99% coverage of `app/`), Docker/compose/Makefile, CI, README v1.1. Tagged `v1.1` locally.
 
+## Docker verification (2026-10-26)
+- `docker compose build` and `up` OK; backend healthy, `/docs` 200, UI 200, frontend reaches `http://backend:8000`.
+- Container runs as uid 1000; data and HF cache volumes writable.
+- Real `/review` (2 papers, real arXiv + BART + SBERT, cold start ~2.5 min incl. model download) succeeded; identical repeat was `cached: true`; PDF endpoint returned a valid `%PDF`; the review survived a backend restart.
+
 ## Not verified
-- `docker compose up --build`: Docker daemon was not running here; only `docker compose config` was validated.
-- `slow` test (real models) and the real arXiv call were not run.
+- `slow` pytest (real models) was not run via pytest, but the same models ran for real inside Docker (see below).
 - Pinned `requirements.txt` (torch etc.) was resolved with `pip install --dry-run` in a fresh 3.11 venv, not fully installed.
 - GitHub Actions workflow has not run yet (nothing pushed).
 

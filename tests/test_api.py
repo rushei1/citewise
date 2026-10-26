@@ -23,7 +23,7 @@ def test_review_happy_path(client):
     assert n_papers(body) == 6
     assert len(body["clusters"]) == 3  # default_num_clusters
     paper = next(iter(body["clusters"].values()))[0]
-    assert set(paper) == {"title", "summary", "link"}  # v1-compatible shape
+    assert {"title", "summary", "link"} <= set(paper)  # v1 fields kept; new ones are additive
 
 
 def test_review_params(client):

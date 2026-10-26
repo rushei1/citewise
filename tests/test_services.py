@@ -7,35 +7,43 @@ import pytest
 
 from app import main
 from app.config import Settings, get_settings
-from app.schemas import Paper, ReviewResponse
+from app.schemas import Paper, ReviewResponse, SearchFilters
 from app.services import fetch
 from app.services.cluster import Embedder
 from app.services.export import build_pdf
 from app.services.summarize import Summarizer
 
 
-def test_fetch_papers_success(monkeypatch):
-    monkeypatch.setattr(fetch, "_search", lambda topic, n: ["ok", topic, n])
-    assert fetch.fetch_papers("t", 3) == ["ok", "t", 3]
+def test_arxiv_source_success(monkeypatch):
+    monkeypatch.setattr(fetch, "_arxiv_search", lambda q, n: ["ok", q, n])
+    assert fetch.ArxivSource().search("t", 3, SearchFilters()) == ["ok", "t", 3]
 
 
-def test_fetch_papers_wraps_errors(monkeypatch):
-    def fail(topic, n):
+def test_arxiv_source_wraps_errors(monkeypatch):
+    def fail(q, n):
         raise RuntimeError("network down")
 
-    monkeypatch.setattr(fetch, "_search", fail)
+    monkeypatch.setattr(fetch, "_arxiv_search", fail)
     with pytest.raises(fetch.FetchError, match="network down"):
-        fetch.fetch_papers("t", 3)
+        fetch.ArxivSource().search("t", 3, SearchFilters())
 
 
-def test_fetch_papers_timeout(monkeypatch):
-    monkeypatch.setattr(fetch, "_search", lambda topic, n: time.sleep(1))
+def test_arxiv_source_timeout(monkeypatch):
+    monkeypatch.setattr(fetch, "_arxiv_search", lambda q, n: time.sleep(1))
     with pytest.raises(fetch.FetchError, match="did not respond"):
-        fetch.fetch_papers("t", 3, timeout=0.05)
+        fetch.ArxivSource(timeout=0.05).search("t", 3, SearchFilters())
 
 
-def test_search_maps_arxiv_results(monkeypatch):
-    result = types.SimpleNamespace(title=" T ", summary=" S ", entry_id="http://arxiv.org/abs/1")
+def test_arxiv_search_maps_results(monkeypatch):
+    result = types.SimpleNamespace(
+        title=" T ",
+        summary=" S ",
+        entry_id="http://arxiv.org/abs/2303.15105v2",
+        authors=[types.SimpleNamespace(name="Ann Lee")],
+        published=datetime(2023, 3, 27, tzinfo=UTC),
+        journal_ref="CVPR 2023",
+        doi="10.1/x",
+    )
 
     class FakeClient:
         def __init__(self, **kw):
@@ -45,8 +53,16 @@ def test_search_maps_arxiv_results(monkeypatch):
             return [result]
 
     monkeypatch.setattr(fetch.arxiv, "Client", FakeClient)
-    [paper] = fetch._search("topic", 1)
-    assert (paper.title, paper.abstract, paper.link) == ("T", "S", "http://arxiv.org/abs/1")
+    [paper] = fetch._arxiv_search("topic", 1)
+    assert (paper.title, paper.abstract, paper.link) == ("T", "S", result.entry_id)
+    assert paper.arxiv_id == "2303.15105"
+    assert (paper.authors, paper.year, paper.venue, paper.doi) == (
+        ["Ann Lee"],
+        2023,
+        "CVPR 2023",
+        "10.1/x",
+    )
+    assert paper.source == "arxiv"
 
 
 def test_summarizer_loads_lazily_once(monkeypatch):
@@ -89,7 +105,7 @@ def test_default_factories_use_settings():
     main.get_clusterer.cache_clear()
     assert main.get_summarizer().model_name == get_settings().summarizer_model
     assert main.get_clusterer().embedder.model_name == get_settings().embedding_model
-    assert main.get_fetcher() is fetch.fetch_papers
+    assert set(main.get_sources()) == {"arxiv"}
 
 
 def test_settings_env_override(monkeypatch):

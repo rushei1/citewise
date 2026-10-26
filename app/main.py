@@ -6,10 +6,11 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Response
 
 from app.config import Settings, get_settings
 from app.db import ReviewDB, cache_params
-from app.schemas import ErrorResponse, Paper, PaperIn, ReviewListItem, ReviewResponse
+from app.schemas import ErrorResponse, Paper, ReviewListItem, ReviewResponse, SearchFilters
 from app.services.cluster import Clusterer, Embedder
 from app.services.export import build_pdf
-from app.services.fetch import FetchError, fetch_papers
+from app.services.fetch import ArxivSource, FetchError, PaperSource
+from app.services.retrieve import retrieve
 from app.services.summarize import Summarizer, SummarizerLike
 
 log = logging.getLogger(__name__)
@@ -30,8 +31,9 @@ def get_db() -> ReviewDB:
     return ReviewDB(get_settings().db_path)
 
 
-def get_fetcher():
-    return fetch_papers
+@lru_cache
+def get_sources() -> dict[str, PaperSource]:
+    return {"arxiv": ArxivSource(get_settings().arxiv_timeout_seconds)}
 
 
 def _get_or_404(db: ReviewDB, review_id: int) -> ReviewResponse:
@@ -62,7 +64,7 @@ def create_app() -> FastAPI:
         max_results: int | None = Query(None, ge=1, le=30, description="Defaults to config"),
         summarizer: SummarizerLike = Depends(get_summarizer),
         clusterer: Clusterer = Depends(get_clusterer),
-        fetcher=Depends(get_fetcher),
+        sources: dict[str, PaperSource] = Depends(get_sources),
         db: ReviewDB = Depends(get_db),
         settings: Settings = Depends(get_settings),
     ):
@@ -80,14 +82,18 @@ def create_app() -> FastAPI:
             return cached
 
         try:
-            papers: list[PaperIn] = fetcher(topic, max_results, settings.arxiv_timeout_seconds)
+            retrieval = retrieve(topic, sources, ["arxiv"], max_results, SearchFilters())
         except FetchError as e:
             log.error("arXiv fetch failed for %r: %s", topic, e)
             raise HTTPException(status_code=502, detail=f"Could not fetch papers: {e}") from e
 
+        papers = retrieval.papers
         log.info("fetched %d papers for %r", len(papers), topic)
         entries = [
-            Paper(title=p.title, summary=summarizer.summarize(p.title, p.abstract), link=p.link)
+            Paper(
+                **p.model_dump(exclude={"abstract"}),
+                summary=summarizer.summarize(p.title, p.abstract),
+            )
             for p in papers
         ]
         texts = [f"{e.title}\n{e.summary}" for e in entries]

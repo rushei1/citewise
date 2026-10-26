@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.db import ReviewDB
-from app.main import app, get_clusterer, get_db, get_fetcher, get_summarizer
+from app.main import app, get_clusterer, get_db, get_sources, get_summarizer
 from app.schemas import PaperIn
 from app.services.cluster import Clusterer
 
@@ -49,14 +49,15 @@ def make_papers(n: int, title: str = "Paper") -> list[PaperIn]:
 
 
 class FakeFetcher:
-    """Stands in for fetch_papers; set .papers or .error to script behaviour."""
+    """Stands in for a PaperSource; set .papers or .error to script behaviour."""
 
-    def __init__(self):
+    def __init__(self, name: str = "arxiv"):
+        self.name = name
         self.papers = make_papers(6)
         self.error: Exception | None = None
         self.calls = 0
 
-    def __call__(self, topic, max_results, timeout):
+    def search(self, query, max_results, filters):
         self.calls += 1
         if self.error:
             raise self.error
@@ -82,7 +83,7 @@ def db(tmp_path):
 def client(summarizer, fetcher, db):
     app.dependency_overrides[get_summarizer] = lambda: summarizer
     app.dependency_overrides[get_clusterer] = lambda: Clusterer(FakeEmbedder())
-    app.dependency_overrides[get_fetcher] = lambda: fetcher
+    app.dependency_overrides[get_sources] = lambda: {fetcher.name: fetcher}
     app.dependency_overrides[get_db] = lambda: db
     yield TestClient(app)
     app.dependency_overrides.clear()

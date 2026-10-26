@@ -7,7 +7,7 @@ from typing import Literal, Protocol
 from pydantic import BaseModel, ValidationError, field_validator
 
 from app.schemas import CLAIM_FIELDS, Claim, PaperIn, PaperSummary
-from app.services.llm import LLMClient, LLMError, Message
+from app.services.llm import LLMCache, LLMClient, LLMError, Message
 
 log = logging.getLogger(__name__)
 
@@ -130,8 +130,9 @@ class LLMSummarizer:
 
     Grounding is against the abstract only; the full text is never read."""
 
-    def __init__(self, client: LLMClient, workers: int = 4):
+    def __init__(self, client: LLMClient, cache: LLMCache | None = None, workers: int = 4):
         self.client = client
+        self.cache = cache
         self.workers = workers
         self.id = f"llm:{client.model}:{PROMPT_VERSION}"
 
@@ -158,9 +159,24 @@ class LLMSummarizer:
                 ]
         raise AssertionError("unreachable")
 
+    def _raw(self, abstract: str) -> RawSummary:
+        """The model's validated reply, from the cache when we have asked before. Verification
+        always re-runs against the abstract, so it is never trusted from the cache."""
+        if not self.cache:
+            return self._ask(abstract)
+        key = self.cache.key(self.client.model, PROMPT_VERSION, abstract)
+        if (hit := self.cache.get(key)) is not None:
+            try:
+                return RawSummary.model_validate_json(hit)
+            except ValidationError:
+                log.warning("ignoring unreadable LLM cache entry")
+        raw = self._ask(abstract)
+        self.cache.put(key, raw.model_dump_json())
+        return raw
+
     def summarize(self, paper: PaperIn) -> PaperSummary:
         try:
-            raw = self._ask(paper.abstract)
+            raw = self._raw(paper.abstract)
         except LLMError as e:
             raise SummarizeError(str(e)) from e
         return verify_summary(raw, paper.abstract)

@@ -1,5 +1,11 @@
+import hashlib
+import json
 import logging
+import sqlite3
 import threading
+from contextlib import closing
+from datetime import UTC, datetime
+from pathlib import Path
 from typing import Protocol
 
 from app.config import Settings
@@ -21,6 +27,40 @@ class LLMClient(Protocol):
     model: str
 
     def complete(self, messages: list[Message]) -> str: ...
+
+
+class LLMCache:
+    """Validated LLM outputs on disk, keyed by hash(model, prompt version, input text), so
+    reruns and evals cost nothing and give identical results. Never evicts: entries are small
+    and a changed model or prompt version simply produces new keys."""
+
+    def __init__(self, path: Path | str):
+        self.path = str(path)
+        Path(self.path).parent.mkdir(parents=True, exist_ok=True)
+        with self._connect() as conn:
+            conn.execute(
+                "CREATE TABLE IF NOT EXISTS llm_cache "
+                "(key TEXT PRIMARY KEY, response TEXT NOT NULL, created_at TEXT NOT NULL)"
+            )
+
+    def _connect(self):
+        return closing(sqlite3.connect(self.path))
+
+    @staticmethod
+    def key(model: str, version: str, text: str) -> str:
+        return hashlib.sha256(json.dumps([model, version, text]).encode()).hexdigest()
+
+    def get(self, key: str) -> str | None:
+        with self._connect() as conn:
+            row = conn.execute("SELECT response FROM llm_cache WHERE key = ?", (key,)).fetchone()
+        return row[0] if row else None
+
+    def put(self, key: str, response: str) -> None:
+        with self._connect() as conn, conn:
+            conn.execute(
+                "INSERT OR REPLACE INTO llm_cache (key, response, created_at) VALUES (?, ?, ?)",
+                (key, response, datetime.now(UTC).isoformat()),
+            )
 
 
 class _Usage:

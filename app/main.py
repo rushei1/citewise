@@ -10,7 +10,7 @@ from app.schemas import ErrorResponse, Paper, ReviewListItem, ReviewResponse, Se
 from app.services.cluster import Clusterer, Embedder
 from app.services.export import build_pdf
 from app.services.fetch import ArxivSource, FetchError, PaperSource, SemanticScholarSource
-from app.services.llm import LLMClient, make_llm_client
+from app.services.llm import LLMCache, LLMClient, make_llm_client
 from app.services.retrieve import retrieve
 from app.services.summarize import (
     BACKENDS,
@@ -29,11 +29,16 @@ def get_llm_client() -> LLMClient | None:
 
 
 @lru_cache
+def get_llm_cache() -> LLMCache:
+    return LLMCache(get_settings().llm_cache_path)
+
+
+@lru_cache
 def get_summarizers() -> dict[str, Summarizer]:
     """The summarizer backends that are usable right now, by name."""
     backends: dict[str, Summarizer] = {"hf": HFSummarizer(get_settings().summarizer_model)}
     if client := get_llm_client():
-        backends["llm"] = LLMSummarizer(client)
+        backends["llm"] = LLMSummarizer(client, get_llm_cache())
     return backends
 
 

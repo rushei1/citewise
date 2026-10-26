@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     llm_model: str | None = None
     anthropic_api_key: str | None = None
     llm_timeout_seconds: float = 60.0
+    llm_cache_path: Path = Path("data/llm_cache.db")
     embedding_model: str = "all-MiniLM-L6-v2"
     db_path: Path = Path("data/reviews.db")
     api_url: str = "http://127.0.0.1:8000"

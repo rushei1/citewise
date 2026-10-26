@@ -31,7 +31,7 @@ class Clusterer:
     def __init__(self, embedder: EmbedderLike):
         self.embedder = embedder
 
-    def cluster(self, texts: list[str], num_clusters: int = 3) -> list[int]:
+    def cluster(self, texts: list[str], num_clusters: int) -> list[int]:
         """Return one cluster label per text, in order."""
         from sklearn.cluster import KMeans
 

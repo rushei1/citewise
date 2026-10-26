@@ -4,6 +4,7 @@ from functools import lru_cache
 
 from fastapi import Depends, FastAPI, Query
 
+from app.config import Settings, get_settings
 from app.schemas import Paper, PaperIn, ReviewResponse
 from app.services.cluster import Clusterer, Embedder
 from app.services.fetch import fetch_papers
@@ -14,12 +15,12 @@ log = logging.getLogger(__name__)
 
 @lru_cache
 def get_summarizer() -> SummarizerLike:
-    return Summarizer()
+    return Summarizer(get_settings().summarizer_model)
 
 
 @lru_cache
 def get_clusterer() -> Clusterer:
-    return Clusterer(Embedder())
+    return Clusterer(Embedder(get_settings().embedding_model))
 
 
 def get_fetcher():
@@ -35,13 +36,17 @@ def create_app() -> FastAPI:
         summarizer: SummarizerLike = Depends(get_summarizer),
         clusterer: Clusterer = Depends(get_clusterer),
         fetcher=Depends(get_fetcher),
+        settings: Settings = Depends(get_settings),
     ):
-        papers: list[PaperIn] = fetcher(topic, 10)
+        papers: list[PaperIn] = fetcher(
+            topic, settings.arxiv_max_results, settings.arxiv_timeout_seconds
+        )
         entries = [
             Paper(title=p.title, summary=summarizer.summarize(p.title, p.abstract), link=p.link)
             for p in papers
         ]
-        labels = clusterer.cluster([f"{e.title}\n{e.summary}" for e in entries])
+        texts = [f"{e.title}\n{e.summary}" for e in entries]
+        labels = clusterer.cluster(texts, settings.default_num_clusters)
 
         clusters: dict[str, list[Paper]] = {}
         for entry, label in zip(entries, labels, strict=True):

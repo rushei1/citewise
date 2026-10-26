@@ -16,7 +16,7 @@ from app.schemas import (
     sorted_cluster_ids,
 )
 from app.services.cluster import CLUSTERERS, Embedder, EmbedderLike, keyword_labels
-from app.services.export import build_bibtex, build_pdf
+from app.services.export import build_bibtex, build_markdown, build_pdf
 from app.services.fetch import ArxivSource, FetchError, PaperSource, SemanticScholarSource
 from app.services.llm import LLMCache, LLMClient, LLMError, make_llm_client
 from app.services.retrieve import retrieve
@@ -298,6 +298,15 @@ def create_app() -> FastAPI:
     def review_bibtex(review_id: int, db: ReviewDB = Depends(get_db)):
         review = _get_or_404(db, review_id)
         return _download(build_bibtex(review), "application/x-bibtex", review_id, "bib")
+
+    @app.get(
+        "/reviews/{review_id}/markdown",
+        response_class=Response,
+        responses={200: {"content": {"text/markdown": {}}}, 404: {"model": ErrorResponse}},
+    )
+    def review_markdown(review_id: int, db: ReviewDB = Depends(get_db)):
+        review = _get_or_404(db, review_id)
+        return _download(build_markdown(review), "text/markdown; charset=utf-8", review_id, "md")
 
     @app.delete("/reviews/{review_id}", status_code=204, responses={404: {"model": ErrorResponse}})
     def delete_review(review_id: int, db: ReviewDB = Depends(get_db)):

@@ -8,7 +8,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer
 
-from app.schemas import Paper, ReviewResponse, sorted_cluster_ids
+from app.schemas import CLAIM_FIELDS, Paper, ReviewResponse, sorted_cluster_ids
 
 TEX_SPECIAL = {
     "\\": r"\textbackslash{}",
@@ -94,6 +94,76 @@ def build_bibtex(review: ReviewResponse) -> str:
     papers = ordered_papers(review)
     entries = [_bib_entry(k, p) for k, p in zip(citation_keys(papers), papers, strict=True)]
     return "\n\n".join(entries) + "\n" if entries else ""
+
+
+def cluster_heading(review: ReviewResponse, cid: str) -> str:
+    if cid == "-1":
+        return "Misc / unclustered"
+    info = review.cluster_info.get(cid)
+    return (
+        f"Cluster {int(cid) + 1}: {info.label}"
+        if info and info.label
+        else f"Cluster {int(cid) + 1}"
+    )
+
+
+def _authors_short(p: Paper) -> str:
+    names = ", ".join(p.authors[:3]) + (" et al." if len(p.authors) > 3 else "")
+    return f"{names}, {p.year}" if names and p.year else names or (str(p.year) if p.year else "")
+
+
+def _md(s: str, brackets: bool = True) -> str:
+    """Escape Markdown syntax in text taken from papers and models."""
+    return re.sub(r"([\\`*_<>" + (r"\[\]" if brackets else "") + r"])", r"\\\1", _one_line(s))
+
+
+def _md_url(url: str) -> str:
+    return url.replace(" ", "%20").replace("(", "%28").replace(")", "%29")
+
+
+def _md_paper(n: int, p: Paper) -> list[str]:
+    meta = f" ({_md(_authors_short(p))})" if _authors_short(p) else ""
+    lines = [f"{n}. **{_md(p.title)}**{meta} — [link]({_md_url(p.link)})"]
+    s = p.structured
+    if s is None:
+        return lines + [f"   {_md(p.summary)}"]
+    for name in CLAIM_FIELDS:
+        claims = getattr(s, name)
+        if name in s.not_stated:
+            lines.append(f"   - **{name.capitalize()}:** _not stated in the abstract_")
+        for c in claims:
+            lines += [
+                f"   - **{name.capitalize()}:** {_md(c.text)}",
+                f"     > “{_md(c.evidence)}” — verified in abstract",
+            ]
+    if s.unverified_claims:
+        lines.append(f"   - _{s.unverified_claims} claim(s) dropped: quote not found in abstract_")
+    return lines
+
+
+def build_markdown(review: ReviewResponse) -> str:
+    """The whole review as Markdown: theme summaries, then per-paper structured claims.
+
+    [n] in a theme refers to the n-th paper in that cluster's numbered list."""
+    out = [f"# Literature review: {_md(review.topic)}", ""]
+    out.append(f"Generated {review.created_at:%Y-%m-%d %H:%M} UTC.")
+    if any(p.structured for p in ordered_papers(review)):
+        out.append("Claims are grounded in each paper's abstract only; full texts were not read.")
+    if review.warnings:
+        out += ["", "> **Warnings**"] + [f"> - {_md(w)}" for w in review.warnings]
+    if not review.clusters:
+        out += ["", _md(review.message or "No papers found.")]
+    for cid in sorted_cluster_ids(review.clusters):
+        info = review.cluster_info.get(cid)
+        out += ["", f"## {_md(cluster_heading(review, cid))}", ""]
+        if info and info.theme_summary:
+            out += [_md(info.theme_summary, brackets=False), ""]
+        if info and info.invalid_citations:
+            bad = ", ".join(f"[{n}]" for n in info.invalid_citations)
+            out += [f"_Removed citations that matched no paper in this cluster: {bad}_", ""]
+        for n, p in enumerate(review.clusters[cid], 1):
+            out += _md_paper(n, p)
+    return "\n".join(out) + "\n"
 
 
 def _footer(canvas, doc) -> None:

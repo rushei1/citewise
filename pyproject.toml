@@ -10,5 +10,8 @@ extend-immutable-calls = ["fastapi.Depends", "fastapi.Query"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-m 'not slow'"
-markers = ["slow: loads real ML models (needs network/weights); skipped by default"]
+markers = [
+    "slow: loads real ML models (needs weights/network); skipped unless --run-slow",
+    "llm: calls a real LLM endpoint; skipped unless --run-llm",
+    "network: hits real external APIs; skipped unless --run-network",
+]

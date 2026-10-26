@@ -24,10 +24,19 @@ def normalize_topic(topic: str) -> str:
     return " ".join(topic.lower().split())
 
 
-def cache_params(max_results: int, num_clusters: int, summarizer: str, embedder: str) -> str:
+def cache_params(
+    max_results: int,
+    num_clusters: int,
+    summarizer: str,
+    embedder: str,
+    sources: list[str],
+    filters: dict,
+) -> str:
     """Canonical JSON of everything besides the topic that affects a result."""
     return json.dumps(
         {
+            "sources": sorted(sources),
+            "filters": filters,
             "max_results": max_results,
             "num_clusters": num_clusters,
             "summarizer_model": summarizer,

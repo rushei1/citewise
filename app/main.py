@@ -77,6 +77,13 @@ def create_app() -> FastAPI:
         topic: str = Query(..., description="Enter research topic"),
         num_clusters: int | None = Query(None, ge=1, le=8, description="Defaults to config"),
         max_results: int | None = Query(None, ge=1, le=30, description="Defaults to config"),
+        year_from: int | None = Query(None, ge=1900, le=2100),
+        year_to: int | None = Query(None, ge=1900, le=2100),
+        min_citations: int | None = Query(None, ge=0),
+        venue_contains: str | None = Query(None, max_length=100),
+        sources_param: str | None = Query(
+            None, alias="sources", description="Comma list: arxiv, semantic_scholar"
+        ),
         summarizer: SummarizerLike = Depends(get_summarizer),
         clusterer: Clusterer = Depends(get_clusterer),
         sources: dict[str, PaperSource] = Depends(get_sources),
@@ -89,18 +96,29 @@ def create_app() -> FastAPI:
         num_clusters = num_clusters or settings.default_num_clusters
         max_results = max_results or settings.arxiv_max_results
 
-        names = _parse_sources(settings.default_sources, sources)
+        names = _parse_sources(sources_param or settings.default_sources, sources)
+        if year_from and year_to and year_from > year_to:
+            raise HTTPException(status_code=422, detail="year_from must be <= year_to.")
+        filters = SearchFilters(
+            year_from=year_from,
+            year_to=year_to,
+            min_citations=min_citations,
+            venue_contains=(venue_contains or "").strip() or None,
+        )
         params = cache_params(
-            max_results, num_clusters, settings.summarizer_model, settings.embedding_model
+            max_results,
+            num_clusters,
+            settings.summarizer_model,
+            settings.embedding_model,
+            names,
+            filters.model_dump(),
         )
         if cached := db.find_cached(topic, params):
             log.info("cache hit for %r (review %d)", topic, cached.review_id)
             return cached
 
         try:
-            retrieval = retrieve(
-                topic, sources, names, max_results, SearchFilters(), clusterer.embedder
-            )
+            retrieval = retrieve(topic, sources, names, max_results, filters, clusterer.embedder)
         except FetchError as e:
             log.error("arXiv fetch failed for %r: %s", topic, e)
             raise HTTPException(status_code=502, detail=f"Could not fetch papers: {e}") from e

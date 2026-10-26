@@ -14,6 +14,24 @@ MAX_CANDIDATES = 90
 log = logging.getLogger(__name__)
 
 
+def apply_filters(papers: list[PaperIn], f: SearchFilters) -> list[PaperIn]:
+    """Drop papers that fail a filter. A paper missing the field a filter needs (e.g. no
+    citation count from arXiv) cannot be shown to satisfy it, so it is dropped too."""
+
+    def ok(p: PaperIn) -> bool:
+        if f.year_from is not None and (p.year is None or p.year < f.year_from):
+            return False
+        if f.year_to is not None and (p.year is None or p.year > f.year_to):
+            return False
+        if f.min_citations is not None and (p.citation_count or 0) < f.min_citations:
+            return False
+        if f.venue_contains and f.venue_contains.lower() not in (p.venue or "").lower():
+            return False
+        return True
+
+    return [p for p in papers if ok(p)]
+
+
 @dataclass
 class Retrieval:
     papers: list[PaperIn]
@@ -47,7 +65,7 @@ def retrieve(
     errors = [(name, err) for name, _, err in results if err]
     if len(errors) == len(names):
         raise FetchError("; ".join(f"{name}: {err}" for name, err in errors))
-    papers = deduplicate([p for _, found, _ in results for p in found])
+    papers = apply_filters(deduplicate([p for _, found, _ in results for p in found]), filters)
     return Retrieval(
         rank_by_relevance(query, papers, embedder, max_results),
         [f"{name}: {err}" for name, err in errors],

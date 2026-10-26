@@ -3,6 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
 from app.schemas import PaperIn, SearchFilters
+from app.services.dedup import deduplicate
 from app.services.fetch import FetchError, PaperSource
 
 log = logging.getLogger(__name__)
@@ -38,5 +39,5 @@ def retrieve(
     errors = [(name, err) for name, _, err in results if err]
     if len(errors) == len(names):
         raise FetchError("; ".join(f"{name}: {err}" for name, err in errors))
-    papers = [p for _, found, _ in results for p in found]
+    papers = deduplicate([p for _, found, _ in results for p in found])
     return Retrieval(papers[:max_results], [f"{name}: {err}" for name, err in errors])

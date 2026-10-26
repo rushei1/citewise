@@ -67,6 +67,7 @@ class Http:
         max_delay: float = 30.0,
         limiter: RateLimiter | None = None,
         get: Callable[..., requests.Response] = requests.get,
+        post: Callable[..., requests.Response] = requests.post,
         sleep: Callable[[float], None] = time.sleep,
         rand: Callable[[], float] = random.random,
     ):
@@ -76,6 +77,7 @@ class Http:
         self.max_delay = max_delay
         self.limiter = limiter
         self._get = get
+        self._post = post
         self._sleep = sleep
         self._rand = rand
 
@@ -86,11 +88,11 @@ class Http:
         backoff = self.base_delay * 2 ** (state.attempt_number - 1)
         return min(self.max_delay, backoff + self._rand() * self.base_delay)
 
-    def _attempt(self, url: str, params, headers):
+    def _attempt(self, send: Callable[[], requests.Response], url: str):
         if self.limiter:
             self.limiter.wait()
         try:
-            res = self._get(url, params=params, headers=headers, timeout=self.timeout)
+            res = send()
         except (requests.ConnectionError, requests.Timeout) as e:
             raise _Retryable(f"{type(e).__name__}: {e}") from e
         except requests.RequestException as e:
@@ -105,6 +107,16 @@ class Http:
             raise HttpError(f"invalid JSON from {url}") from e
 
     def get_json(self, url: str, params: dict | None = None, headers: dict | None = None):
+        return self._request(
+            lambda: self._get(url, params=params, headers=headers, timeout=self.timeout), url
+        )
+
+    def post_json(self, url: str, body: dict, headers: dict | None = None):
+        return self._request(
+            lambda: self._post(url, json=body, headers=headers, timeout=self.timeout), url
+        )
+
+    def _request(self, send: Callable[[], requests.Response], url: str):
         retrying = Retrying(
             stop=stop_after_attempt(self.retries),
             wait=self._wait,
@@ -116,6 +128,6 @@ class Http:
             reraise=True,
         )
         try:
-            return retrying(self._attempt, url, params, headers)
+            return retrying(self._attempt, send, url)
         except _Retryable as e:
             raise HttpError(f"gave up after {self.retries} attempts: {e}") from e

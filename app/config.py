@@ -15,6 +15,13 @@ class Settings(BaseSettings):
     default_num_clusters: int = 3
     summarizer_backend: Literal["hf", "llm"] = "hf"
     summarizer_model: str = "facebook/bart-large-cnn"
+    # LLM backend (SUMMARIZER_BACKEND=llm). No default model: unset means unavailable.
+    llm_provider: Literal["openai", "anthropic"] = "openai"  # openai = any compatible server
+    llm_base_url: str | None = None
+    llm_api_key: str | None = None
+    llm_model: str | None = None
+    anthropic_api_key: str | None = None
+    llm_timeout_seconds: float = 60.0
     embedding_model: str = "all-MiniLM-L6-v2"
     db_path: Path = Path("data/reviews.db")
     api_url: str = "http://127.0.0.1:8000"

@@ -1,0 +1,13 @@
+# Lint + tests. Deliberately excludes torch / transformers / sentence-transformers:
+# the test suite uses fakes, so CI stays light. Keep the pins below in sync with requirements.txt.
+pytest==8.4.1
+pytest-cov==6.2.1
+httpx==0.28.1
+ruff==0.12.3
+fastapi==0.116.1
+arxiv==2.2.0
+pydantic==2.11.7
+pydantic-settings==2.10.1
+reportlab==4.4.2
+scikit-learn==1.6.1
+numpy==2.0.2

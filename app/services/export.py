@@ -69,7 +69,7 @@ def citation_keys(papers: list[Paper]) -> list[str]:
 
 def _bib_value(s: str) -> str:
     """URLs, DOIs and ids are kept verbatim; only characters that unbalance braces are removed."""
-    return re.sub(r"[{}\s]", "", s)
+    return re.sub(r"[{}\\\s]", "", s)
 
 
 def _bib_entry(key: str, p: Paper) -> str:
@@ -164,6 +164,124 @@ def build_markdown(review: ReviewResponse) -> str:
         for n, p in enumerate(review.clusters[cid], 1):
             out += _md_paper(n, p)
     return "\n".join(out) + "\n"
+
+
+TEX_TYPOGRAPHY = {
+    "‘": "`",
+    "’": "'",
+    "“": "``",
+    "”": "''",
+    "–": "--",
+    "—": "---",
+    "…": r"\ldots{}",
+    " ": "~",
+    "−": "-",
+}
+
+
+def _tex(s: str) -> str:
+    """Text safe for pdflatex with T1 + utf8: specials escaped, typographic punctuation mapped,
+    and anything outside Latin-1 (Greek, CJK, ...) replaced by '?' rather than failing the build."""
+    out = []
+    for c in _one_line(s):
+        if c in TEX_TYPOGRAPHY:
+            out.append(TEX_TYPOGRAPHY[c])
+        elif c in TEX_SPECIAL:
+            out.append(TEX_SPECIAL[c])
+        else:
+            out.append(c if ord(c) <= 0xFF else "?")
+    return "".join(out)
+
+
+def _tex_theme(text: str, keys: list[str]) -> str:
+    """Escape a theme summary and turn its [n] citations into \\cite{key}."""
+
+    def cite(m: re.Match) -> str:
+        picked = [keys[int(n) - 1] for n in m.group(1).split(",") if 1 <= int(n) <= len(keys)]
+        return f"\\cite{{{','.join(picked)}}}" if picked else ""
+
+    return re.sub(r"\[(\d+(?:\s*,\s*\d+)*)\]", cite, _tex(text))
+
+
+def _tex_authors(p: Paper) -> str:
+    return _tex(", ".join(p.authors)) if p.authors else ""
+
+
+def _tex_item(p: Paper, key: str) -> list[str]:
+    meta = ", ".join(x for x in (_tex_authors(p), str(p.year) if p.year else "") if x)
+    lines = [f"\\item \\textbf{{{_tex(p.title)}}}~\\cite{{{key}}}" + (f" ({meta})" if meta else "")]
+    s = p.structured
+    if s is None:
+        return lines + [f"  {_tex(p.summary)}"]
+    lines.append("  \\begin{itemize}")
+    for name in CLAIM_FIELDS:
+        if name in s.not_stated:
+            lines.append(
+                f"    \\item \\textbf{{{name.capitalize()}.}} \\emph{{not stated in abstract}}"
+            )
+        for c in getattr(s, name):
+            lines.append(
+                f"    \\item \\textbf{{{name.capitalize()}.}} {_tex(c.text)} "
+                f"(\\emph{{``{_tex(c.evidence)}''}})"
+            )
+    if s.unverified_claims:
+        lines.append(
+            f"    \\item \\emph{{{s.unverified_claims} claim(s) dropped: quote not found}}"
+        )
+    return lines + ["  \\end{itemize}"]
+
+
+def _tex_bibitem(key: str, p: Paper) -> str:
+    parts = [f"{_tex_authors(p)}." if p.authors else "", f"{_tex(p.title)}."]
+    if p.venue:
+        parts.append(f"\\emph{{{_tex(p.venue)}}}.")
+    if p.year:
+        parts.append(f"{p.year}.")
+    parts.append(f"\\url{{{_bib_value(p.link)}}}")
+    return f"\\bibitem{{{key}}} " + " ".join(x for x in parts if x)
+
+
+def build_latex(review: ReviewResponse) -> str:
+    """A self-contained .tex: sections per cluster, \\cite for theme citations and a
+    thebibliography block, so a single pdflatex run suffices (no bibtex step)."""
+    papers = ordered_papers(review)
+    keys = citation_keys(papers)
+    out = [
+        r"\documentclass[11pt]{article}",
+        r"\usepackage[T1]{fontenc}",
+        r"\usepackage[utf8]{inputenc}",
+        r"\usepackage[a4paper,margin=2.5cm]{geometry}",
+        r"\usepackage[hidelinks]{hyperref}",
+        f"\\title{{Literature review: {_tex(review.topic)}}}",
+        f"\\date{{{review.created_at:%Y-%m-%d}}}",
+        r"\begin{document}",
+        r"\maketitle",
+    ]
+    if any(p.structured for p in papers):
+        out += ["", "Claims are grounded in each paper's abstract only; full texts were not read."]
+    if review.warnings:
+        out += ["", r"\begin{itemize}"] + [f"\\item {_tex(w)}" for w in review.warnings]
+        out.append(r"\end{itemize}")
+    if not review.clusters:
+        out += ["", _tex(review.message or "No papers found.")]
+    offset = 0
+    for cid in sorted_cluster_ids(review.clusters):
+        members = review.clusters[cid]
+        member_keys = keys[offset : offset + len(members)]
+        offset += len(members)
+        info = review.cluster_info.get(cid)
+        out += ["", f"\\section{{{_tex(cluster_heading(review, cid))}}}", ""]
+        if info and info.theme_summary:
+            out += [_tex_theme(info.theme_summary, member_keys), ""]
+        out.append(r"\begin{enumerate}")
+        for p, key in zip(members, member_keys, strict=True):
+            out += _tex_item(p, key)
+        out.append(r"\end{enumerate}")
+    if papers:
+        out += ["", f"\\begin{{thebibliography}}{{{len(papers)}}}"]
+        out += [_tex_bibitem(k, p) for k, p in zip(keys, papers, strict=True)]
+        out.append(r"\end{thebibliography}")
+    return "\n".join(out + [r"\end{document}", ""])
 
 
 def _footer(canvas, doc) -> None:

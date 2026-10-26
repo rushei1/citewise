@@ -67,6 +67,7 @@ class ReviewDB:
             cached=cached,
             clusters=result["clusters"],
             message=result.get("message"),
+            warnings=result.get("warnings", []),
         )
 
     def find_cached(self, topic: str, params: str) -> ReviewResponse | None:
@@ -76,12 +77,18 @@ class ReviewDB:
                 "ORDER BY id DESC LIMIT 1",
                 (normalize_topic(topic), params),
             ).fetchone()
-        return self._to_response(row, cached=True) if row else None
+        if row is None or json.loads(row["result_json"]).get("warnings"):
+            return None  # degraded (partial-source) results are history, not cache
+        return self._to_response(row, cached=True)
 
     def save(self, topic: str, params: str, review: ReviewResponse) -> ReviewResponse:
         """Store a freshly generated review and return it with its real id."""
         created_at = datetime.now(UTC)
-        result = {"clusters": review.model_dump()["clusters"], "message": review.message}
+        result = {
+            "clusters": review.model_dump()["clusters"],
+            "message": review.message,
+            "warnings": review.warnings,
+        }
         with self._connect() as conn:
             cur = conn.execute(
                 "INSERT INTO reviews (topic_normalized, topic_display, params_json, result_json, "

@@ -11,12 +11,17 @@ from app.schemas import Paper, ReviewResponse, SearchFilters
 from app.services import fetch
 from app.services.cluster import Embedder
 from app.services.export import build_pdf
+from app.services.http import RateLimiter
 from app.services.summarize import Summarizer
 
 
 def test_arxiv_source_success(monkeypatch):
     monkeypatch.setattr(fetch, "_arxiv_search", lambda q, n: ["ok", q, n])
-    assert fetch.ArxivSource().search("t", 3, SearchFilters()) == ["ok", "t", 3]
+    assert fetch.ArxivSource(limiter=RateLimiter(0)).search("t", 3, SearchFilters()) == [
+        "ok",
+        "t",
+        3,
+    ]
 
 
 def test_arxiv_source_wraps_errors(monkeypatch):
@@ -25,13 +30,13 @@ def test_arxiv_source_wraps_errors(monkeypatch):
 
     monkeypatch.setattr(fetch, "_arxiv_search", fail)
     with pytest.raises(fetch.FetchError, match="network down"):
-        fetch.ArxivSource().search("t", 3, SearchFilters())
+        fetch.ArxivSource(limiter=RateLimiter(0)).search("t", 3, SearchFilters())
 
 
 def test_arxiv_source_timeout(monkeypatch):
     monkeypatch.setattr(fetch, "_arxiv_search", lambda q, n: time.sleep(1))
     with pytest.raises(fetch.FetchError, match="did not respond"):
-        fetch.ArxivSource(timeout=0.05).search("t", 3, SearchFilters())
+        fetch.ArxivSource(timeout=0.05, limiter=RateLimiter(0)).search("t", 3, SearchFilters())
 
 
 def test_arxiv_search_maps_results(monkeypatch):

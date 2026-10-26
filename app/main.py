@@ -47,6 +47,17 @@ def _get_or_404(db: ReviewDB, review_id: int) -> ReviewResponse:
     return review
 
 
+def _parse_sources(raw: str, available: dict[str, PaperSource]) -> list[str]:
+    names = list(dict.fromkeys(n.strip().lower() for n in raw.split(",") if n.strip()))
+    unknown = [n for n in names if n not in available]
+    if not names or unknown:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unknown source(s) {unknown or raw!r}; choose from {sorted(available)}.",
+        )
+    return names
+
+
 def create_app() -> FastAPI:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
@@ -78,6 +89,7 @@ def create_app() -> FastAPI:
         num_clusters = num_clusters or settings.default_num_clusters
         max_results = max_results or settings.arxiv_max_results
 
+        names = _parse_sources(settings.default_sources, sources)
         params = cache_params(
             max_results, num_clusters, settings.summarizer_model, settings.embedding_model
         )
@@ -86,7 +98,7 @@ def create_app() -> FastAPI:
             return cached
 
         try:
-            retrieval = retrieve(topic, sources, ["arxiv"], max_results, SearchFilters())
+            retrieval = retrieve(topic, sources, names, max_results, SearchFilters())
         except FetchError as e:
             log.error("arXiv fetch failed for %r: %s", topic, e)
             raise HTTPException(status_code=502, detail=f"Could not fetch papers: {e}") from e
@@ -112,6 +124,7 @@ def create_app() -> FastAPI:
             created_at=datetime.now(UTC),
             clusters=clusters,
             message=None if papers else "No papers found for this topic.",
+            warnings=retrieval.warnings,
         )
         return db.save(topic, params, review)
 

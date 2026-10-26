@@ -7,7 +7,7 @@ from typing import Protocol
 import arxiv
 
 from app.schemas import PaperIn, SearchFilters
-from app.services.http import Http, HttpError
+from app.services.http import Http, HttpError, RateLimiter
 
 log = logging.getLogger(__name__)
 
@@ -51,13 +51,16 @@ def _arxiv_search(query: str, max_results: int) -> list[PaperIn]:
 class ArxivSource:
     name = "arxiv"
 
-    def __init__(self, timeout: float = 30.0):
+    def __init__(self, timeout: float = 30.0, limiter: RateLimiter | None = None):
         self.timeout = timeout
+        # arXiv's API terms ask for at most one request every 3 seconds.
+        self.limiter = limiter or RateLimiter(3.0)
 
     def search(self, query: str, max_results: int, filters: SearchFilters) -> list[PaperIn]:
         # arXiv has no usable year/citation filters here; they are applied after merging.
         # arxiv.py has no request timeout, so bound the call from outside.
         # ponytail: a timed-out request keeps its worker thread until it returns.
+        self.limiter.wait()
         pool = ThreadPoolExecutor(max_workers=1)
         try:
             return pool.submit(_arxiv_search, query, max_results).result(timeout=self.timeout)
@@ -78,7 +81,8 @@ class SemanticScholarSource:
     name = "semantic_scholar"
 
     def __init__(self, http: Http | None = None, api_key: str | None = None):
-        self.http = http or Http()
+        # S2 allows ~1 request/second with a key; the shared unauthenticated pool is stricter.
+        self.http = http or Http(limiter=RateLimiter(1.0))
         self.api_key = api_key
 
     def search(self, query: str, max_results: int, filters: SearchFilters) -> list[PaperIn]:

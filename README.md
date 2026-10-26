@@ -96,6 +96,19 @@ A full-stack AI-powered application that automatically fetches, summarizes, clus
 
 ---
 
+## ⚠️ Limitations (v1.0)
+
+Baseline the upcoming upgrade is measured against:
+
+- BART truncates input to 1024 characters, so long abstracts are cut off.
+- The number of clusters is fixed at 3, and the app crashes when fewer than 3 papers come back.
+- arXiv is the only paper source.
+- There is no evaluation of summary or cluster quality.
+- There are no tests.
+- Review history lives on the client filesystem as JSON files named after the topic.
+
+---
+
 ## 💡 Future Enhancements
 - Add support for saving reviews to cloud (e.g., Firebase / Supabase)
 - Model fine-tuning for domain-specific summarization

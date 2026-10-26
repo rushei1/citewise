@@ -4,7 +4,7 @@ from io import BytesIO
 from xml.sax.saxutils import escape
 
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer
 
@@ -291,37 +291,78 @@ def _footer(canvas, doc) -> None:
     canvas.restoreState()
 
 
+def _pdf(s: str) -> str:
+    """Escape for reportlab Paragraph markup. Base-14 Helvetica covers Windows-1252 only, so
+    anything outside it (Greek, CJK, ...) becomes '?' instead of a black box."""
+    safe = "".join(c if _in_cp1252(c) else "?" for c in _one_line(s))
+    return escape(safe)
+
+
+def _in_cp1252(c: str) -> bool:
+    try:
+        c.encode("cp1252")
+    except UnicodeEncodeError:
+        return False
+    return True
+
+
+def _pdf_paper(n: int, p: Paper, styles) -> list:
+    link = escape(p.link, {'"': "&quot;"})
+    meta = _authors_short(p)
+    story = [
+        Paragraph(f"[{n}] {_pdf(p.title)}", styles["Heading4"]),
+        Paragraph(
+            (f"{_pdf(meta)}<br/>" if meta else "")
+            + f'<link href="{link}" color="blue">{escape(p.link)}</link>',
+            styles["Normal"],
+        ),
+        Spacer(1, 0.15 * cm),
+    ]
+    s = p.structured
+    if s is None:
+        story.append(Paragraph(_pdf(p.summary), styles["BodyText"]))
+    else:
+        item = ParagraphStyle("claim", parent=styles["BodyText"], leftIndent=0.6 * cm)
+        quote = ParagraphStyle("quote", parent=item, leftIndent=1.2 * cm, textColor="#444444")
+        for name in CLAIM_FIELDS:
+            label = f"<b>{name.capitalize()}:</b>"
+            if name in s.not_stated:
+                story.append(Paragraph(f"{label} <i>not stated in the abstract</i>", item))
+            for c in getattr(s, name):
+                story.append(Paragraph(f"{label} {_pdf(c.text)}", item))
+                story.append(Paragraph(f"&quot;{_pdf(c.evidence)}&quot; [verified]", quote))
+        if s.unverified_claims:
+            note = f"{s.unverified_claims} claim(s) dropped: quote not found in abstract"
+            story.append(Paragraph(f"<i>{note}</i>", item))
+    return story + [Spacer(1, 0.4 * cm)]
+
+
 def build_pdf(review: ReviewResponse) -> bytes:
-    """Render a review as a PDF. All user/arXiv text is XML-escaped for Paragraph markup."""
+    """Render a review as a PDF: cluster labels, theme summaries ([n] = n-th paper of that
+    cluster) and each paper's structured claims with their evidence quotes."""
     styles = getSampleStyleSheet()
     story = [
-        Paragraph(f"Lazy Researcher Review: {escape(review.topic)}", styles["Title"]),
+        Paragraph(f"Lazy Researcher Review: {_pdf(review.topic)}", styles["Title"]),
         Paragraph(f"Generated {review.created_at:%Y-%m-%d %H:%M} UTC", styles["Normal"]),
         Spacer(1, 0.5 * cm),
     ]
+    for w in review.warnings:
+        story.append(Paragraph(f"<i>Warning: {_pdf(w)}</i>", styles["Normal"]))
     if not review.clusters:
-        story.append(Paragraph(escape(review.message or "No papers found."), styles["Normal"]))
+        story.append(Paragraph(_pdf(review.message or "No papers found."), styles["Normal"]))
 
     for i, cluster_id in enumerate(sorted_cluster_ids(review.clusters)):
         if i:
             story.append(PageBreak())
-        heading = "Misc / unclustered" if cluster_id == "-1" else f"Cluster {int(cluster_id) + 1}"
-        story.append(Paragraph(heading, styles["Heading2"]))
-        for paper in review.clusters[cluster_id]:
-            link = escape(paper.link, {'"': "&quot;"})
-            story += [
-                Paragraph(escape(paper.title), styles["Heading4"]),
-                Paragraph(
-                    f'<link href="{link}" color="blue">{escape(paper.link)}</link>',
-                    styles["Normal"],
-                ),
-                Spacer(1, 0.15 * cm),
-                Paragraph(escape(paper.summary), styles["BodyText"]),
-                Spacer(1, 0.4 * cm),
-            ]
+        story.append(Paragraph(_pdf(cluster_heading(review, cluster_id)), styles["Heading2"]))
+        info = review.cluster_info.get(cluster_id)
+        if info and info.theme_summary:
+            story += [Paragraph(_pdf(info.theme_summary), styles["BodyText"]), Spacer(1, 0.3 * cm)]
+        for n, paper in enumerate(review.clusters[cluster_id], 1):
+            story += _pdf_paper(n, paper, styles)
 
     buf = BytesIO()
-    SimpleDocTemplate(buf, pagesize=A4, title=f"Review: {review.topic}").build(
+    SimpleDocTemplate(buf, pagesize=A4, title=f"Review: {_pdf(review.topic)}").build(
         story, onFirstPage=_footer, onLaterPages=_footer
     )
     return buf.getvalue()

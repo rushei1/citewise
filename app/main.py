@@ -8,6 +8,7 @@ from app.config import Settings, get_settings
 from app.db import ReviewDB, cache_params
 from app.schemas import ErrorResponse, Paper, PaperIn, ReviewListItem, ReviewResponse
 from app.services.cluster import Clusterer, Embedder
+from app.services.export import build_pdf
 from app.services.fetch import FetchError, fetch_papers
 from app.services.summarize import Summarizer, SummarizerLike
 
@@ -115,6 +116,19 @@ def create_app() -> FastAPI:
     )
     def get_review(review_id: int, db: ReviewDB = Depends(get_db)):
         return _get_or_404(db, review_id)
+
+    @app.get(
+        "/reviews/{review_id}/pdf",
+        response_class=Response,
+        responses={200: {"content": {"application/pdf": {}}}, 404: {"model": ErrorResponse}},
+    )
+    def review_pdf(review_id: int, db: ReviewDB = Depends(get_db)):
+        review = _get_or_404(db, review_id)
+        return Response(
+            content=build_pdf(review),
+            media_type="application/pdf",
+            headers={"Content-Disposition": f'attachment; filename="review_{review_id}.pdf"'},
+        )
 
     @app.delete("/reviews/{review_id}", status_code=204, responses={404: {"model": ErrorResponse}})
     def delete_review(review_id: int, db: ReviewDB = Depends(get_db)):

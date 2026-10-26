@@ -9,6 +9,8 @@ class Settings(BaseSettings):
 
     arxiv_max_results: int = 10
     arxiv_timeout_seconds: float = 30.0
+    default_sources: str = "arxiv"  # comma list: arxiv, semantic_scholar
+    s2_api_key: str | None = None
     default_num_clusters: int = 3
     summarizer_model: str = "facebook/bart-large-cnn"
     embedding_model: str = "all-MiniLM-L6-v2"

@@ -9,7 +9,7 @@ from app.db import ReviewDB, cache_params
 from app.schemas import ErrorResponse, Paper, ReviewListItem, ReviewResponse, SearchFilters
 from app.services.cluster import Clusterer, Embedder
 from app.services.export import build_pdf
-from app.services.fetch import ArxivSource, FetchError, PaperSource
+from app.services.fetch import ArxivSource, FetchError, PaperSource, SemanticScholarSource
 from app.services.retrieve import retrieve
 from app.services.summarize import Summarizer, SummarizerLike
 
@@ -33,7 +33,11 @@ def get_db() -> ReviewDB:
 
 @lru_cache
 def get_sources() -> dict[str, PaperSource]:
-    return {"arxiv": ArxivSource(get_settings().arxiv_timeout_seconds)}
+    settings = get_settings()
+    return {
+        "arxiv": ArxivSource(settings.arxiv_timeout_seconds),
+        "semantic_scholar": SemanticScholarSource(api_key=settings.s2_api_key),
+    }
 
 
 def _get_or_404(db: ReviewDB, review_id: int) -> ReviewResponse:

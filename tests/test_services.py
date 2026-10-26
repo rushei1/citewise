@@ -105,7 +105,7 @@ def test_default_factories_use_settings():
     main.get_clusterer.cache_clear()
     assert main.get_summarizer().model_name == get_settings().summarizer_model
     assert main.get_clusterer().embedder.model_name == get_settings().embedding_model
-    assert set(main.get_sources()) == {"arxiv"}
+    assert set(main.get_sources()) == {"arxiv", "semantic_scholar"}
 
 
 def test_settings_env_override(monkeypatch):

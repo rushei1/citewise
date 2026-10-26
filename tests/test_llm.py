@@ -88,6 +88,35 @@ def test_make_llm_client(env, expected):
     assert (type(client) is expected) if expected else client is None
 
 
+def test_llm_backend_is_wired_only_when_configured(monkeypatch, tmp_path):
+    from app import main
+
+    factories = (
+        main.get_llm_client,
+        main.get_llm_cache,
+        main.get_summarizers,
+        main.get_theme_writer,
+    )
+
+    def build(**env):
+        for f in factories:
+            f.cache_clear()
+        monkeypatch.setattr(main, "get_settings", lambda: Settings(_env_file=None, **env))
+        return main.get_summarizers(), main.get_theme_writer()
+
+    try:
+        summarizers, themes = build()
+        assert set(summarizers) == {"hf"} and themes is None
+        summarizers, themes = build(
+            llm_model="m", llm_api_key="k", llm_cache_path=tmp_path / "c.db"
+        )
+        assert set(summarizers) == {"hf", "llm"} and themes is not None
+        assert summarizers["llm"].id.startswith("llm:m:")
+    finally:  # don't leak objects built from the fake settings into later tests
+        for f in factories:
+            f.cache_clear()
+
+
 def test_post_json_retries_like_get():
     sleeps, calls = [], []
 

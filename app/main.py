@@ -98,7 +98,9 @@ def create_app() -> FastAPI:
             return cached
 
         try:
-            retrieval = retrieve(topic, sources, names, max_results, SearchFilters())
+            retrieval = retrieve(
+                topic, sources, names, max_results, SearchFilters(), clusterer.embedder
+            )
         except FetchError as e:
             log.error("arXiv fetch failed for %r: %s", topic, e)
             raise HTTPException(status_code=502, detail=f"Could not fetch papers: {e}") from e

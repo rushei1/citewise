@@ -35,8 +35,12 @@ class Clusterer:
         """Return one cluster label per text, in order."""
         from sklearn.cluster import KMeans
 
+        n = len(texts)
+        k = min(num_clusters, n)
+        if k <= 1:
+            return [0] * n
         labels = (
-            KMeans(n_clusters=num_clusters, random_state=42, n_init="auto")
+            KMeans(n_clusters=k, random_state=42, n_init="auto")
             .fit(self.embedder.encode(texts))
             .labels_
         )

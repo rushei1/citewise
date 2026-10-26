@@ -33,20 +33,22 @@ def create_app() -> FastAPI:
     @app.get("/review", response_model=ReviewResponse)
     def generate_review(
         topic: str = Query(..., description="Enter research topic"),
+        num_clusters: int | None = Query(None, ge=1, le=8, description="Defaults to config"),
+        max_results: int | None = Query(None, ge=1, le=30, description="Defaults to config"),
         summarizer: SummarizerLike = Depends(get_summarizer),
         clusterer: Clusterer = Depends(get_clusterer),
         fetcher=Depends(get_fetcher),
         settings: Settings = Depends(get_settings),
     ):
-        papers: list[PaperIn] = fetcher(
-            topic, settings.arxiv_max_results, settings.arxiv_timeout_seconds
-        )
+        num_clusters = num_clusters or settings.default_num_clusters
+        max_results = max_results or settings.arxiv_max_results
+        papers: list[PaperIn] = fetcher(topic, max_results, settings.arxiv_timeout_seconds)
         entries = [
             Paper(title=p.title, summary=summarizer.summarize(p.title, p.abstract), link=p.link)
             for p in papers
         ]
         texts = [f"{e.title}\n{e.summary}" for e in entries]
-        labels = clusterer.cluster(texts, settings.default_num_clusters)
+        labels = clusterer.cluster(texts, num_clusters)
 
         clusters: dict[str, list[Paper]] = {}
         for entry, label in zip(entries, labels, strict=True):

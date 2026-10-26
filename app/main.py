@@ -11,14 +11,15 @@ from app.services.cluster import Clusterer, Embedder
 from app.services.export import build_pdf
 from app.services.fetch import ArxivSource, FetchError, PaperSource, SemanticScholarSource
 from app.services.retrieve import retrieve
-from app.services.summarize import Summarizer, SummarizerLike
+from app.services.summarize import BACKENDS, HFSummarizer, Summarizer
 
 log = logging.getLogger(__name__)
 
 
 @lru_cache
-def get_summarizer() -> SummarizerLike:
-    return Summarizer(get_settings().summarizer_model)
+def get_summarizers() -> dict[str, Summarizer]:
+    """The summarizer backends that are usable right now, by name."""
+    return {"hf": HFSummarizer(get_settings().summarizer_model)}
 
 
 @lru_cache
@@ -58,6 +59,16 @@ def _parse_sources(raw: str, available: dict[str, PaperSource]) -> list[str]:
     return names
 
 
+def _pick_summarizer(name: str, available: dict[str, Summarizer]) -> Summarizer:
+    if name in available:
+        return available[name]
+    if name in BACKENDS:
+        raise HTTPException(status_code=503, detail=f"Summarizer {name!r} is not configured.")
+    raise HTTPException(
+        status_code=422, detail=f"Unknown summarizer {name!r}; use one of {BACKENDS}."
+    )
+
+
 def create_app() -> FastAPI:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
@@ -84,7 +95,10 @@ def create_app() -> FastAPI:
         sources_param: str | None = Query(
             None, alias="sources", description="Comma list: arxiv, semantic_scholar"
         ),
-        summarizer: SummarizerLike = Depends(get_summarizer),
+        summarizer_name: str | None = Query(
+            None, alias="summarizer", description="hf or llm; defaults to SUMMARIZER_BACKEND"
+        ),
+        summarizers: dict[str, Summarizer] = Depends(get_summarizers),
         clusterer: Clusterer = Depends(get_clusterer),
         sources: dict[str, PaperSource] = Depends(get_sources),
         db: ReviewDB = Depends(get_db),
@@ -96,6 +110,7 @@ def create_app() -> FastAPI:
         num_clusters = num_clusters or settings.default_num_clusters
         max_results = max_results or settings.arxiv_max_results
 
+        summarizer = _pick_summarizer(summarizer_name or settings.summarizer_backend, summarizers)
         names = _parse_sources(sources_param or settings.default_sources, sources)
         if year_from and year_to and year_from > year_to:
             raise HTTPException(status_code=422, detail="year_from must be <= year_to.")
@@ -108,7 +123,7 @@ def create_app() -> FastAPI:
         params = cache_params(
             max_results,
             num_clusters,
-            settings.summarizer_model,
+            summarizer.id,
             settings.embedding_model,
             names,
             filters.model_dump(),
@@ -128,7 +143,8 @@ def create_app() -> FastAPI:
         entries = [
             Paper(
                 **p.model_dump(exclude={"abstract"}),
-                summary=summarizer.summarize(p.title, p.abstract),
+                summary=(s := summarizer.summarize(p)).text(),
+                structured=s if s.is_structured else None,
             )
             for p in papers
         ]

@@ -1,5 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -12,6 +13,7 @@ class Settings(BaseSettings):
     default_sources: str = "arxiv"  # comma list: arxiv, semantic_scholar
     s2_api_key: str | None = None
     default_num_clusters: int = 3
+    summarizer_backend: Literal["hf", "llm"] = "hf"
     summarizer_model: str = "facebook/bart-large-cnn"
     embedding_model: str = "all-MiniLM-L6-v2"
     db_path: Path = Path("data/reviews.db")

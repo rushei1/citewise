@@ -4,8 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.db import ReviewDB
-from app.main import app, get_clusterer, get_db, get_sources, get_summarizer
-from app.schemas import PaperIn
+from app.main import app, get_clusterer, get_db, get_sources, get_summarizers
+from app.schemas import PaperIn, PaperSummary
 from app.services.cluster import Clusterer
 
 MARKERS = ("slow", "llm", "network")
@@ -26,12 +26,14 @@ def pytest_collection_modifyitems(config, items):
 
 
 class FakeSummarizer:
+    id = "fake"
+
     def __init__(self):
         self.calls = 0
 
-    def summarize(self, title: str, abstract: str) -> str:
+    def summarize(self, paper: PaperIn) -> PaperSummary:
         self.calls += 1
-        return f"Summary of {title}"
+        return PaperSummary(overview=f"Summary of {paper.title}")
 
 
 class FakeEmbedder:
@@ -81,7 +83,7 @@ def db(tmp_path):
 
 @pytest.fixture
 def client(summarizer, fetcher, db):
-    app.dependency_overrides[get_summarizer] = lambda: summarizer
+    app.dependency_overrides[get_summarizers] = lambda: {"hf": summarizer}
     app.dependency_overrides[get_clusterer] = lambda: Clusterer(FakeEmbedder())
     app.dependency_overrides[get_sources] = lambda: {fetcher.name: fetcher}
     app.dependency_overrides[get_db] = lambda: db

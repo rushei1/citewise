@@ -7,12 +7,12 @@ import pytest
 
 from app import main
 from app.config import Settings, get_settings
-from app.schemas import Paper, ReviewResponse, SearchFilters
+from app.schemas import Paper, PaperIn, ReviewResponse, SearchFilters
 from app.services import fetch
 from app.services.cluster import Embedder
 from app.services.export import build_pdf
 from app.services.http import RateLimiter
-from app.services.summarize import Summarizer
+from app.services.summarize import HFSummarizer
 
 
 def test_arxiv_source_success(monkeypatch):
@@ -78,10 +78,11 @@ def test_summarizer_loads_lazily_once(monkeypatch):
         return lambda text, **kw: [{"summary_text": text[:10]}]
 
     monkeypatch.setitem(sys.modules, "transformers", types.SimpleNamespace(pipeline=pipeline))
-    s = Summarizer("my-model", max_input_chars=20)
+    s = HFSummarizer("my-model", max_input_chars=20)
     assert loads == []  # nothing at construction
-    assert s.summarize("Title", "x" * 100) == "Title. xxx"
-    s.summarize("a", "b")
+    paper = PaperIn(title="Title", abstract="x" * 100, link="l")
+    assert s.summarize(paper).overview == "Title. xxx"
+    s.summarize(PaperIn(title="a", abstract="b", link="l"))
     assert loads == ["my-model"]
 
 
@@ -106,9 +107,9 @@ def test_embedder_loads_lazily_once(monkeypatch):
 
 
 def test_default_factories_use_settings():
-    main.get_summarizer.cache_clear()
+    main.get_summarizers.cache_clear()
     main.get_clusterer.cache_clear()
-    assert main.get_summarizer().model_name == get_settings().summarizer_model
+    assert main.get_summarizers()["hf"].model_name == get_settings().summarizer_model
     assert main.get_clusterer().embedder.model_name == get_settings().embedding_model
     assert set(main.get_sources()) == {"arxiv", "semantic_scholar"}
 
@@ -134,3 +135,13 @@ def test_pdf_many_pages():
         clusters={"0": [paper] * 10, "1": [paper]},
     )
     assert build_pdf(review).startswith(b"%PDF")
+
+
+def test_paper_summary_text_and_structure():
+    from app.schemas import Claim, PaperSummary
+
+    assert not PaperSummary(overview="x").is_structured
+    s = PaperSummary(problem=[Claim(text="p", evidence="e")], not_stated=["limitations"])
+    assert s.is_structured
+    assert s.text() == "Problem: p"
+    assert PaperSummary().text() == "No summary available."

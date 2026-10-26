@@ -27,10 +27,54 @@ class SearchFilters(BaseModel):
     venue_contains: str | None = None
 
 
+CLAIM_FIELDS = ("problem", "method", "results", "limitations")
+
+
+class Claim(BaseModel):
+    text: str
+    evidence: str  # verbatim quote from the abstract
+
+
+class PaperSummary(BaseModel):
+    """What a summarizer returns. HF fills only `overview`; the LLM backend fills the claim
+    lists. Every kept claim has been checked against the abstract (see services/summarize.py)."""
+
+    overview: str = ""
+    problem: list[Claim] = []
+    method: list[Claim] = []
+    results: list[Claim] = []
+    limitations: list[Claim] = []
+    not_stated: list[str] = []  # fields the abstract says nothing about
+    unverified_claims: int = 0  # claims dropped because their evidence was not in the abstract
+
+    @property
+    def is_structured(self) -> bool:
+        return bool(
+            self.problem
+            or self.method
+            or self.results
+            or self.limitations
+            or self.not_stated
+            or self.unverified_claims
+        )
+
+    def text(self) -> str:
+        """Flat text for clients and exports that only know the v1 `summary` string."""
+        if self.overview:
+            return self.overview
+        parts = []
+        for name in CLAIM_FIELDS:
+            claims = getattr(self, name)
+            if claims:
+                parts.append(f"{name.capitalize()}: " + " ".join(c.text for c in claims))
+        return "\n".join(parts) or "No summary available."
+
+
 class Paper(BaseModel):
     title: str
     summary: str
     link: str
+    structured: PaperSummary | None = None  # additive: only set for the claim-based backend
     # Additive metadata (v1.1 clients can ignore it)
     authors: list[str] = []
     year: int | None = None

@@ -86,7 +86,7 @@ def test_health_loads_no_models(monkeypatch):
     def boom(self):
         raise AssertionError("model loaded")
 
-    monkeypatch.setattr(summarize.Summarizer, "_load", boom)
+    monkeypatch.setattr(summarize.HFSummarizer, "_load", boom)
     r = TestClient(app).get("/health")
     assert r.json() == {"status": "ok"}
     assert not {"torch", "transformers", "sentence_transformers"} & set(sys.modules)
@@ -247,3 +247,14 @@ def test_new_metadata_is_returned(client, fetcher):
         "ICML",
         "10/x",
     )
+
+
+def test_unknown_summarizer_is_422(client):
+    r = client.get("/review", params={"topic": "t", "summarizer": "nope"})
+    assert r.status_code == 422
+
+
+def test_unconfigured_llm_summarizer_is_503(client):
+    r = client.get("/review", params={"topic": "t", "summarizer": "llm"})
+    assert r.status_code == 503
+    assert "not configured" in r.json()["detail"]

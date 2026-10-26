@@ -43,6 +43,21 @@ class FakeEmbedder:
         return [[b / 255 for b in hashlib.md5(t.encode()).digest()[:8]] for t in texts]
 
 
+class ScriptedLLM:
+    """Stands in for an LLMClient: returns the scripted replies in order (the last one repeats)
+    and records every message list it was sent."""
+
+    model = "fake-llm"
+
+    def __init__(self, *replies: str):
+        self.replies = list(replies)
+        self.calls: list[list[dict]] = []
+
+    def complete(self, messages):
+        self.calls.append([dict(m) for m in messages])
+        return self.replies.pop(0) if len(self.replies) > 1 else self.replies[0]
+
+
 def make_papers(n: int, title: str = "Paper") -> list[PaperIn]:
     return [
         PaperIn(title=f"{title} {i}", abstract=f"Abstract {i}", link=f"http://arxiv.org/abs/{i}")

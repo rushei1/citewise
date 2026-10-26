@@ -10,16 +10,31 @@ from app.schemas import ErrorResponse, Paper, ReviewListItem, ReviewResponse, Se
 from app.services.cluster import Clusterer, Embedder
 from app.services.export import build_pdf
 from app.services.fetch import ArxivSource, FetchError, PaperSource, SemanticScholarSource
+from app.services.llm import LLMClient, make_llm_client
 from app.services.retrieve import retrieve
-from app.services.summarize import BACKENDS, HFSummarizer, Summarizer
+from app.services.summarize import (
+    BACKENDS,
+    HFSummarizer,
+    LLMSummarizer,
+    Summarizer,
+    summarize_all,
+)
 
 log = logging.getLogger(__name__)
 
 
 @lru_cache
+def get_llm_client() -> LLMClient | None:
+    return make_llm_client(get_settings())
+
+
+@lru_cache
 def get_summarizers() -> dict[str, Summarizer]:
     """The summarizer backends that are usable right now, by name."""
-    return {"hf": HFSummarizer(get_settings().summarizer_model)}
+    backends: dict[str, Summarizer] = {"hf": HFSummarizer(get_settings().summarizer_model)}
+    if client := get_llm_client():
+        backends["llm"] = LLMSummarizer(client)
+    return backends
 
 
 @lru_cache
@@ -140,13 +155,16 @@ def create_app() -> FastAPI:
 
         papers = retrieval.papers
         log.info("fetched %d papers for %r", len(papers), topic)
+        summaries, errors = summarize_all(summarizer, papers)
+        if papers and len(errors) == len(papers):
+            raise HTTPException(status_code=502, detail=f"Summarization failed: {errors[0]}")
         entries = [
             Paper(
                 **p.model_dump(exclude={"abstract"}),
-                summary=(s := summarizer.summarize(p)).text(),
+                summary=s.text(),
                 structured=s if s.is_structured else None,
             )
-            for p in papers
+            for p, s in zip(papers, summaries, strict=True)
         ]
         texts = [f"{e.title}\n{e.summary}" for e in entries]
         labels = clusterer.cluster(texts, num_clusters)
@@ -160,7 +178,7 @@ def create_app() -> FastAPI:
             created_at=datetime.now(UTC),
             clusters=clusters,
             message=None if papers else "No papers found for this topic.",
-            warnings=retrieval.warnings,
+            warnings=retrieval.warnings + errors,
         )
         return db.save(topic, params, review)
 

@@ -30,3 +30,12 @@ build/
 *.bak
 *.swp
 *.swo
+
+.venv/
+data/
+*.db
+.coverage
+.pytest_cache/
+.ruff_cache/
+.eval_cache/
+htmlcov/

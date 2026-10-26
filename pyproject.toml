@@ -1,0 +1,17 @@
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: loads real ML models (needs weights/network); skipped unless --run-slow",
+    "llm: calls a real LLM endpoint; skipped unless --run-llm",
+    "network: hits real external APIs; skipped unless --run-network",
+]

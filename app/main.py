@@ -7,7 +7,7 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Response
 from app.config import Settings, get_settings
 from app.db import ReviewDB, cache_params
 from app.schemas import ErrorResponse, Paper, ReviewListItem, ReviewResponse, SearchFilters
-from app.services.cluster import Clusterer, Embedder
+from app.services.cluster import CLUSTERERS, Embedder, EmbedderLike
 from app.services.export import build_pdf
 from app.services.fetch import ArxivSource, FetchError, PaperSource, SemanticScholarSource
 from app.services.llm import LLMCache, LLMClient, make_llm_client
@@ -43,8 +43,8 @@ def get_summarizers() -> dict[str, Summarizer]:
 
 
 @lru_cache
-def get_clusterer() -> Clusterer:
-    return Clusterer(Embedder(get_settings().embedding_model))
+def get_embedder() -> EmbedderLike:
+    return Embedder(get_settings().embedding_model)
 
 
 @lru_cache
@@ -66,6 +66,20 @@ def _get_or_404(db: ReviewDB, review_id: int) -> ReviewResponse:
     if review is None:
         raise HTTPException(status_code=404, detail="Review not found.")
     return review
+
+
+def _parse_num_clusters(raw: str | None, default: int | str) -> int | None:
+    """None means auto. Out-of-range or non-numeric values are a 422, like any bad parameter."""
+    value = default if raw is None else raw.strip().lower()
+    if value == "auto":
+        return None
+    try:
+        k = int(value)
+    except ValueError:
+        k = 0
+    if not 1 <= k <= 8:
+        raise HTTPException(status_code=422, detail="num_clusters must be 1-8 or 'auto'.")
+    return k
 
 
 def _parse_sources(raw: str, available: dict[str, PaperSource]) -> list[str]:
@@ -106,7 +120,10 @@ def create_app() -> FastAPI:
     )
     def generate_review(
         topic: str = Query(..., description="Enter research topic"),
-        num_clusters: int | None = Query(None, ge=1, le=8, description="Defaults to config"),
+        num_clusters: str | None = Query(None, description="1-8 or auto; defaults to config"),
+        cluster_method: str | None = Query(
+            None, description=f"One of {', '.join(CLUSTERERS)}; defaults to CLUSTER_METHOD"
+        ),
         max_results: int | None = Query(None, ge=1, le=30, description="Defaults to config"),
         year_from: int | None = Query(None, ge=1900, le=2100),
         year_to: int | None = Query(None, ge=1900, le=2100),
@@ -119,7 +136,7 @@ def create_app() -> FastAPI:
             None, alias="summarizer", description="hf or llm; defaults to SUMMARIZER_BACKEND"
         ),
         summarizers: dict[str, Summarizer] = Depends(get_summarizers),
-        clusterer: Clusterer = Depends(get_clusterer),
+        embedder: EmbedderLike = Depends(get_embedder),
         sources: dict[str, PaperSource] = Depends(get_sources),
         db: ReviewDB = Depends(get_db),
         settings: Settings = Depends(get_settings),
@@ -127,7 +144,13 @@ def create_app() -> FastAPI:
         topic = topic.strip()
         if not topic:
             raise HTTPException(status_code=422, detail="Topic must not be empty.")
-        num_clusters = num_clusters or settings.default_num_clusters
+        k = _parse_num_clusters(num_clusters, settings.default_num_clusters)
+        method = (cluster_method or settings.cluster_method).strip().lower()
+        if method not in CLUSTERERS:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Unknown cluster_method {method!r}; use one of {list(CLUSTERERS)}.",
+            )
         max_results = max_results or settings.arxiv_max_results
 
         summarizer = _pick_summarizer(summarizer_name or settings.summarizer_backend, summarizers)
@@ -142,7 +165,8 @@ def create_app() -> FastAPI:
         )
         params = cache_params(
             max_results,
-            num_clusters,
+            None if method == "hdbscan" else (k or "auto"),  # hdbscan ignores k
+            method,
             summarizer.id,
             settings.embedding_model,
             names,
@@ -153,7 +177,7 @@ def create_app() -> FastAPI:
             return cached
 
         try:
-            retrieval = retrieve(topic, sources, names, max_results, filters, clusterer.embedder)
+            retrieval = retrieve(topic, sources, names, max_results, filters, embedder)
         except FetchError as e:
             log.error("arXiv fetch failed for %r: %s", topic, e)
             raise HTTPException(status_code=502, detail=f"Could not fetch papers: {e}") from e
@@ -171,8 +195,9 @@ def create_app() -> FastAPI:
             )
             for p, s in zip(papers, summaries, strict=True)
         ]
-        texts = [f"{e.title}\n{e.summary}" for e in entries]
-        labels = clusterer.cluster(texts, num_clusters)
+        # embed the source text, not the lossy summary
+        vectors = embedder.encode([f"{p.title}. {p.abstract}" for p in papers])
+        labels = CLUSTERERS[method].cluster(vectors, k)
 
         clusters: dict[str, list[Paper]] = {}
         for entry, label in zip(entries, labels, strict=True):

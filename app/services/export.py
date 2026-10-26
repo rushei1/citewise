@@ -6,7 +6,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer
 
-from app.schemas import ReviewResponse
+from app.schemas import ReviewResponse, sorted_cluster_ids
 
 
 def _footer(canvas, doc) -> None:
@@ -27,10 +27,11 @@ def build_pdf(review: ReviewResponse) -> bytes:
     if not review.clusters:
         story.append(Paragraph(escape(review.message or "No papers found."), styles["Normal"]))
 
-    for i, cluster_id in enumerate(sorted(review.clusters, key=int)):
+    for i, cluster_id in enumerate(sorted_cluster_ids(review.clusters)):
         if i:
             story.append(PageBreak())
-        story.append(Paragraph(f"Cluster {int(cluster_id) + 1}", styles["Heading2"]))
+        heading = "Misc / unclustered" if cluster_id == "-1" else f"Cluster {int(cluster_id) + 1}"
+        story.append(Paragraph(heading, styles["Heading2"]))
         for paper in review.clusters[cluster_id]:
             link = escape(paper.link, {'"': "&quot;"})
             story += [

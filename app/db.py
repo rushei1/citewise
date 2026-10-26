@@ -26,7 +26,8 @@ def normalize_topic(topic: str) -> str:
 
 def cache_params(
     max_results: int,
-    num_clusters: int,
+    num_clusters: int | str | None,
+    cluster_method: str,
     summarizer: str,
     embedder: str,
     sources: list[str],
@@ -39,6 +40,7 @@ def cache_params(
             "filters": filters,
             "max_results": max_results,
             "num_clusters": num_clusters,
+            "cluster_method": cluster_method,
             "summarizer_model": summarizer,
             "embedding_model": embedder,
         },

@@ -95,6 +95,11 @@ class ReviewResponse(BaseModel):
     warnings: list[str] = []
 
 
+def sorted_cluster_ids(ids) -> list[str]:
+    """Numeric order, with the "unclustered" group (-1) last."""
+    return sorted(ids, key=lambda i: (int(i) < 0, int(i)))
+
+
 class ReviewListItem(BaseModel):
     id: int
     topic: str

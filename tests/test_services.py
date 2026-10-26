@@ -108,9 +108,9 @@ def test_embedder_loads_lazily_once(monkeypatch):
 
 def test_default_factories_use_settings():
     main.get_summarizers.cache_clear()
-    main.get_clusterer.cache_clear()
+    main.get_embedder.cache_clear()
     assert main.get_summarizers()["hf"].model_name == get_settings().summarizer_model
-    assert main.get_clusterer().embedder.model_name == get_settings().embedding_model
+    assert main.get_embedder().model_name == get_settings().embedding_model
     assert set(main.get_sources()) == {"arxiv", "semantic_scholar"}
 
 

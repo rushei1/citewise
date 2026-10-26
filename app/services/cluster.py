@@ -1,6 +1,11 @@
 import threading
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from typing import Protocol
+
+import numpy as np
+
+NOISE = -1  # HDBSCAN's label for papers that fit no cluster
+MAX_AUTO_K = 8
 
 
 class EmbedderLike(Protocol):
@@ -27,21 +32,91 @@ class Embedder:
         return self._load().encode(texts)
 
 
-class Clusterer:
-    def __init__(self, embedder: EmbedderLike):
-        self.embedder = embedder
+class Clusterer(Protocol):
+    name: str
 
-    def cluster(self, texts: list[str], num_clusters: int) -> list[int]:
-        """Return one cluster label per text, in order."""
-        from sklearn.cluster import KMeans
+    def cluster(self, vectors: Sequence[Sequence[float]], k: int | None) -> list[int]:
+        """One label per vector, in order. k=None means choose automatically; methods that
+        find their own cluster count (HDBSCAN) ignore k. Never raises for tiny inputs."""
+        ...
 
-        n = len(texts)
-        k = min(num_clusters, n)
+
+def _unit(vectors) -> np.ndarray:
+    """L2-normalize so euclidean distance orders points like cosine similarity."""
+    x = np.asarray(vectors, dtype=float)
+    norms = np.linalg.norm(x, axis=1, keepdims=True)
+    return x / np.where(norms == 0, 1.0, norms)
+
+
+def _auto_k(x: np.ndarray, fit: Callable[[np.ndarray, int], np.ndarray]) -> int:
+    """k in 2..min(8, n-1) with the best silhouette score; the smaller k wins ties.
+    Falls back to 1 when there are too few points to score a split."""
+    best_score, best_k = -2.0, 1
+    for k in range(2, min(MAX_AUTO_K, len(x) - 1) + 1):
+        labels = fit(x, k)
+        if len(set(labels)) < 2:
+            continue
+        from sklearn.metrics import silhouette_score
+
+        score = float(silhouette_score(x, labels))
+        if score > best_score:
+            best_score, best_k = score, k
+    return best_k
+
+
+class _FixedK:
+    """Shared k handling for methods that take a cluster count."""
+
+    name: str
+
+    def _fit(self, x: np.ndarray, k: int) -> np.ndarray:
+        raise NotImplementedError
+
+    def cluster(self, vectors, k: int | None) -> list[int]:
+        n = len(vectors)
+        if n == 0:
+            return []
+        x = _unit(vectors)
+        k = _auto_k(x, self._fit) if k is None else min(k, n)
         if k <= 1:
             return [0] * n
-        labels = (
-            KMeans(n_clusters=k, random_state=42, n_init="auto")
-            .fit(self.embedder.encode(texts))
-            .labels_
-        )
+        return [int(label) for label in self._fit(x, k)]
+
+
+class KMeansClusterer(_FixedK):
+    name = "kmeans"
+
+    def _fit(self, x, k):
+        from sklearn.cluster import KMeans
+
+        return KMeans(n_clusters=k, random_state=42, n_init="auto").fit_predict(x)
+
+
+class AgglomerativeClusterer(_FixedK):
+    name = "agglomerative"
+
+    def _fit(self, x, k):
+        from sklearn.cluster import AgglomerativeClustering
+
+        return AgglomerativeClustering(n_clusters=k).fit_predict(x)  # ward linkage
+
+
+class HDBSCANClusterer:
+    """Density-based: finds its own number of clusters and marks outliers as NOISE."""
+
+    name = "hdbscan"
+
+    def cluster(self, vectors, k: int | None = None) -> list[int]:
+        n = len(vectors)
+        if n < 3:  # too few points to talk about density
+            return [0] * n
+        from sklearn.cluster import HDBSCAN
+
+        # ponytail: min_cluster_size is a guess (10% of n, at least 2), tune with the Phase 4 eval
+        labels = HDBSCAN(min_cluster_size=max(2, round(n * 0.1))).fit_predict(_unit(vectors))
         return [int(label) for label in labels]
+
+
+CLUSTERERS: dict[str, Clusterer] = {
+    c.name: c for c in (KMeansClusterer(), AgglomerativeClusterer(), HDBSCANClusterer())
+}

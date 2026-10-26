@@ -12,7 +12,8 @@ class Settings(BaseSettings):
     arxiv_timeout_seconds: float = 30.0
     default_sources: str = "arxiv"  # comma list: arxiv, semantic_scholar
     s2_api_key: str | None = None
-    default_num_clusters: int = 3
+    default_num_clusters: int | Literal["auto"] = 3  # "auto" picks k by silhouette
+    cluster_method: Literal["kmeans", "agglomerative", "hdbscan"] = "kmeans"
     summarizer_backend: Literal["hf", "llm"] = "hf"
     summarizer_model: str = "facebook/bart-large-cnn"
     # LLM backend (SUMMARIZER_BACKEND=llm). No default model: unset means unavailable.

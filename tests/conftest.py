@@ -4,9 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.db import ReviewDB
-from app.main import app, get_clusterer, get_db, get_sources, get_summarizers
+from app.main import app, get_db, get_embedder, get_sources, get_summarizers
 from app.schemas import PaperIn, PaperSummary
-from app.services.cluster import Clusterer
 
 MARKERS = ("slow", "llm", "network")
 
@@ -99,7 +98,7 @@ def db(tmp_path):
 @pytest.fixture
 def client(summarizer, fetcher, db):
     app.dependency_overrides[get_summarizers] = lambda: {"hf": summarizer}
-    app.dependency_overrides[get_clusterer] = lambda: Clusterer(FakeEmbedder())
+    app.dependency_overrides[get_embedder] = lambda: FakeEmbedder()
     app.dependency_overrides[get_sources] = lambda: {fetcher.name: fetcher}
     app.dependency_overrides[get_db] = lambda: db
     yield TestClient(app)

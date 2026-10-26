@@ -1,7 +1,7 @@
 import pytest
 
 from app.schemas import PaperIn
-from app.services.cluster import Clusterer, Embedder
+from app.services.cluster import CLUSTERERS, Embedder
 from app.services.summarize import HFSummarizer
 
 ABSTRACTS = [
@@ -32,5 +32,5 @@ def test_real_models_end_to_end():
         summarizer.summarize(PaperIn(title=t, abstract=a, link="l")).overview for t, a in ABSTRACTS
     ]
     assert all(len(s) > 10 for s in summaries)
-    labels = Clusterer(Embedder()).cluster(summaries, 2)
+    labels = CLUSTERERS["kmeans"].cluster(Embedder().encode(summaries), 2)
     assert len(labels) == 3

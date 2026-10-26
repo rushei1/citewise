@@ -32,6 +32,32 @@ class Embedder:
         return self._load().encode(texts)
 
 
+def keyword_labels(docs: dict[str, list[str]], top_n: int = 3) -> dict[str, str]:
+    """Short label per cluster from its top c-TF-IDF terms (no LLM). `docs` maps cluster id to
+    the texts of its papers. The NOISE cluster gets a fixed label and takes no part in scoring."""
+    labels = {"-1": "Misc / unclustered"} if str(NOISE) in docs else {}
+    ids = [i for i in docs if i != str(NOISE)]
+    if not ids:
+        return labels
+    from sklearn.feature_extraction.text import CountVectorizer
+
+    try:
+        vec = CountVectorizer(stop_words="english", token_pattern=r"(?u)\b[a-zA-Z][a-zA-Z]+\b")
+        counts = vec.fit_transform([" ".join(docs[i]) for i in ids]).toarray().astype(float)
+    except ValueError:  # nothing left after stop words
+        return labels | {i: f"Cluster {int(i) + 1}" for i in ids}
+    terms = vec.get_feature_names_out()
+    # c-TF-IDF: term frequency inside the cluster, down-weighted by how common the term is overall
+    tf = counts / np.maximum(counts.sum(axis=1, keepdims=True), 1)
+    idf = np.log(1 + counts.sum() / len(ids) / counts.sum(axis=0))
+    scores = tf * idf
+    for row, cid in enumerate(ids):
+        top = sorted(range(len(terms)), key=lambda j: (-scores[row, j], terms[j]))[:top_n]
+        picked = [str(terms[j]) for j in top if scores[row, j] > 0]
+        labels[cid] = ", ".join(picked) or f"Cluster {int(cid) + 1}"
+    return labels
+
+
 class Clusterer(Protocol):
     name: str
 

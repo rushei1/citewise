@@ -85,12 +85,21 @@ class Paper(BaseModel):
     source: str | None = None
 
 
+class ClusterInfo(BaseModel):
+    label: str  # short keyword label (c-TF-IDF), or "Misc / unclustered"
+    # 3-5 sentences written only from the cluster's verified claims. [n] cites the n-th paper
+    # (1-based) in clusters[<id>]. Only set with the llm backend.
+    theme_summary: str | None = None
+    invalid_citations: list[int] = []  # [n] the model wrote that named no paper; stripped
+
+
 class ReviewResponse(BaseModel):
     review_id: int
     topic: str
     created_at: datetime
     cached: bool = False
     clusters: dict[str, list[Paper]]
+    cluster_info: dict[str, ClusterInfo] = {}  # additive, keyed like clusters
     message: str | None = None
     warnings: list[str] = []
 

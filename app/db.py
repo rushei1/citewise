@@ -77,6 +77,7 @@ class ReviewDB:
             created_at=row["created_at"],
             cached=cached,
             clusters=result["clusters"],
+            cluster_info=result.get("cluster_info", {}),
             message=result.get("message"),
             warnings=result.get("warnings", []),
         )
@@ -97,6 +98,7 @@ class ReviewDB:
         created_at = datetime.now(UTC)
         result = {
             "clusters": review.model_dump()["clusters"],
+            "cluster_info": review.model_dump()["cluster_info"],
             "message": review.message,
             "warnings": review.warnings,
         }

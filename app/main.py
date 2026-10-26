@@ -6,11 +6,19 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Response
 
 from app.config import Settings, get_settings
 from app.db import ReviewDB, cache_params
-from app.schemas import ErrorResponse, Paper, ReviewListItem, ReviewResponse, SearchFilters
-from app.services.cluster import CLUSTERERS, Embedder, EmbedderLike
+from app.schemas import (
+    ClusterInfo,
+    ErrorResponse,
+    Paper,
+    ReviewListItem,
+    ReviewResponse,
+    SearchFilters,
+    sorted_cluster_ids,
+)
+from app.services.cluster import CLUSTERERS, Embedder, EmbedderLike, keyword_labels
 from app.services.export import build_pdf
 from app.services.fetch import ArxivSource, FetchError, PaperSource, SemanticScholarSource
-from app.services.llm import LLMCache, LLMClient, make_llm_client
+from app.services.llm import LLMCache, LLMClient, LLMError, make_llm_client
 from app.services.retrieve import retrieve
 from app.services.summarize import (
     BACKENDS,
@@ -19,6 +27,7 @@ from app.services.summarize import (
     Summarizer,
     summarize_all,
 )
+from app.services.theme import ThemeWriter
 
 log = logging.getLogger(__name__)
 
@@ -31,6 +40,12 @@ def get_llm_client() -> LLMClient | None:
 @lru_cache
 def get_llm_cache() -> LLMCache:
     return LLMCache(get_settings().llm_cache_path)
+
+
+@lru_cache
+def get_theme_writer() -> ThemeWriter | None:
+    client = get_llm_client()
+    return ThemeWriter(client, get_llm_cache()) if client else None
 
 
 @lru_cache
@@ -80,6 +95,28 @@ def _parse_num_clusters(raw: str | None, default: int | str) -> int | None:
     if not 1 <= k <= 8:
         raise HTTPException(status_code=422, detail="num_clusters must be 1-8 or 'auto'.")
     return k
+
+
+def _add_themes(
+    writer: ThemeWriter, clusters: dict[str, list[Paper]], info: dict[str, ClusterInfo]
+) -> list[str]:
+    """Fill in theme summaries (skipping the unclustered group); returns warnings."""
+    warnings = []
+    for cid in sorted_cluster_ids(clusters):
+        if cid == "-1":
+            continue
+        try:
+            theme = writer.write(clusters[cid])
+        except LLMError as e:
+            warnings.append(f"theme for {info[cid].label!r} failed: {e}")
+            continue
+        if theme is None:
+            continue
+        info[cid].theme_summary = theme.text
+        info[cid].invalid_citations = theme.invalid_citations
+        if theme.text is None:
+            warnings.append(f"theme for {info[cid].label!r} dropped: no valid citations")
+    return warnings
 
 
 def _parse_sources(raw: str, available: dict[str, PaperSource]) -> list[str]:
@@ -137,6 +174,7 @@ def create_app() -> FastAPI:
         ),
         summarizers: dict[str, Summarizer] = Depends(get_summarizers),
         embedder: EmbedderLike = Depends(get_embedder),
+        theme_writer: ThemeWriter | None = Depends(get_theme_writer),
         sources: dict[str, PaperSource] = Depends(get_sources),
         db: ReviewDB = Depends(get_db),
         settings: Settings = Depends(get_settings),
@@ -200,15 +238,22 @@ def create_app() -> FastAPI:
         labels = CLUSTERERS[method].cluster(vectors, k)
 
         clusters: dict[str, list[Paper]] = {}
-        for entry, label in zip(entries, labels, strict=True):
+        docs: dict[str, list[str]] = {}
+        for entry, p, label in zip(entries, papers, labels, strict=True):
             clusters.setdefault(str(label), []).append(entry)
+            docs.setdefault(str(label), []).append(f"{p.title}. {p.abstract}")
+        cluster_info = {cid: ClusterInfo(label=lab) for cid, lab in keyword_labels(docs).items()}
+        warnings = retrieval.warnings + errors
+        if theme_writer and summarizer.id.startswith("llm:"):
+            warnings += _add_themes(theme_writer, clusters, cluster_info)
         review = ReviewResponse(
             review_id=0,  # assigned by db.save
             topic=topic,
             created_at=datetime.now(UTC),
             clusters=clusters,
+            cluster_info=cluster_info,
             message=None if papers else "No papers found for this topic.",
-            warnings=retrieval.warnings + errors,
+            warnings=warnings,
         )
         return db.save(topic, params, review)
 

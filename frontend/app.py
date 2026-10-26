@@ -1,107 +1,105 @@
-import streamlit as st
-import requests
 import os
-import json
-import tempfile
-from pathlib import Path
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
 
-# Setup
+import requests
+import streamlit as st
+
+API_URL = os.environ.get("API_URL", "http://127.0.0.1:8000").rstrip("/")
+REVIEW_TIMEOUT = 600  # first run downloads and loads the models
+
 st.set_page_config(page_title="Lazy Researcher Toolkit", layout="wide")
 st.title("🧠 Lazy Researcher Toolkit")
 st.subheader("Enter a research topic to get auto-generated literature summaries")
 
-# Storage path
-history_dir = Path("history")
-history_dir.mkdir(exist_ok=True)
 
-# Input
-topic = st.text_input("🔍 Research Topic", placeholder="e.g. Vision Transformers for Medical Imaging")
-
-# PDF Export
-def export_pdf(clusters, topic):
-    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
-    c = canvas.Canvas(temp_file.name, pagesize=A4)
-    width, height = A4
-    y = height - 50
-
-    c.setFont("Helvetica-Bold", 16)
-    c.drawString(50, y, f"Lazy Researcher Review: {topic}")
-    y -= 30
-
-    c.setFont("Helvetica", 11)
-    for cluster_id in sorted(clusters.keys(), key=int):
-        c.setFont("Helvetica-Bold", 13)
-        c.drawString(50, y, f"🔗 Cluster {int(cluster_id) + 1}")
-        y -= 20
-
-        for paper in clusters[cluster_id]:
-            title, summary, link = paper['title'], paper['summary'], paper['link']
-            text = f"📄 {title}\n🔗 {link}\n{summary}"
-            for line in text.split('\n'):
-                wrapped = [line[i:i + 110] for i in range(0, len(line), 110)]
-                for w in wrapped:
-                    if y < 40:
-                        c.showPage()
-                        y = height - 50
-                    c.drawString(50, y, w)
-                    y -= 15
-            y -= 20
-
-    c.save()
-    return temp_file.name
-
-# Load a saved review
-saved_files = list(history_dir.glob("*.json"))
-if saved_files:
-    options = [f.stem for f in saved_files]
-    selected_file = st.selectbox("📂 Load previous review", ["None"] + options)
-
-    if selected_file != "None":
-        with open(history_dir / f"{selected_file}.json", "r") as f:
-            data = json.load(f)
-        st.success(f"Loaded previous topic: {data['topic']}")
-        clusters = data["clusters"]
-
-        for cluster_id in sorted(clusters.keys(), key=int):
-            st.markdown(f"### 🔗 Cluster {int(cluster_id) + 1}")
-            for paper in clusters[cluster_id]:
-                with st.expander(f"📄 {paper['title']}"):
-                    st.markdown(f"🔗 [View Paper]({paper['link']})", unsafe_allow_html=True)
-                    st.markdown(paper['summary'])
-
-        if st.button("📥 Export to PDF"):
-            pdf_path = export_pdf(clusters, data['topic'])
-            with open(pdf_path, "rb") as f:
-                st.download_button("Download PDF", data=f, file_name="literature_review.pdf", mime="application/pdf")
-
-# Generate new review
-if st.button("Generate Review") and topic:
-    with st.spinner("Fetching and summarizing papers..."):
+def api_get(path: str, timeout: int = 30, **params) -> requests.Response | None:
+    """GET from the API; show the API's error message and return None on any failure."""
+    try:
+        res = requests.get(f"{API_URL}{path}", params=params, timeout=timeout)
+    except requests.RequestException as e:
+        st.error(f"❌ Could not reach the API at {API_URL}: {e}")
+        return None
+    if res.status_code != 200:
         try:
-            res = requests.get("http://127.0.0.1:8000/review", params={"topic": topic})
-            data = res.json()
+            detail = res.json().get("detail", res.text)
+        except ValueError:
+            detail = res.text
+        st.error(f"❌ API error {res.status_code}: {detail}")
+        return None
+    return res
 
-            # Save for later
-            file_name = topic.lower().replace(" ", "_")
-            with open(history_dir / f"{file_name}.json", "w") as f:
-                json.dump(data, f, indent=2)
 
-            st.success(f"✅ Review generated for topic: {data['topic']}")
-            clusters = data["clusters"]
+@st.cache_data(show_spinner=False)
+def fetch_pdf(review_id: int) -> bytes | None:
+    res = api_get(f"/reviews/{review_id}/pdf")
+    return res.content if res else None
 
-            for cluster_id in sorted(clusters.keys(), key=int):
-                st.markdown(f"### 🔗 Cluster {int(cluster_id) + 1}")
-                for paper in clusters[cluster_id]:
-                    with st.expander(f"📄 {paper['title']}"):
-                        st.markdown(f"🔗 [View Paper]({paper['link']})", unsafe_allow_html=True)
-                        st.markdown(paper['summary'])
 
-            if st.button("📥 Export to PDF"):
-                pdf_path = export_pdf(clusters, topic)
-                with open(pdf_path, "rb") as f:
-                    st.download_button("Download PDF", data=f, file_name="literature_review.pdf", mime="application/pdf")
+def load_selected() -> None:
+    review_id = st.session_state.selected_review
+    if review_id is None:
+        return
+    res = api_get(f"/reviews/{review_id}")
+    if res:
+        st.session_state.review = res.json()
 
-        except Exception as e:
-            st.error(f"❌ Something went wrong: {str(e)}")
+
+# Previous reviews (survive reruns via the API, not the filesystem)
+history_res = api_get("/reviews")
+history = history_res.json() if history_res else []
+st.selectbox(
+    "📂 Load previous review",
+    [None] + [h["id"] for h in history],
+    format_func=lambda i: (
+        "None"
+        if i is None
+        else next(f"{h['topic']} ({h['created_at'][:10]})" for h in history if h["id"] == i)
+    ),
+    key="selected_review",
+    on_change=load_selected,
+)
+
+topic = st.text_input(
+    "🔍 Research Topic", placeholder="e.g. Vision Transformers for Medical Imaging"
+)
+col1, col2 = st.columns(2)
+num_clusters = col1.slider("Clusters", 1, 8, 3)
+max_results = col2.slider("Papers to fetch", 1, 30, 10)
+
+if st.button("Generate Review"):
+    if not topic.strip():
+        st.warning("Please enter a topic first.")
+    else:
+        with st.spinner("Fetching and summarizing papers..."):
+            res = api_get(
+                "/review",
+                timeout=REVIEW_TIMEOUT,
+                topic=topic,
+                num_clusters=num_clusters,
+                max_results=max_results,
+            )
+        if res:
+            st.session_state.review = res.json()
+
+review = st.session_state.get("review")
+if review:
+    st.success(f"✅ Review for topic: {review['topic']}")
+    if review["cached"]:
+        st.info("⚡ From cache")
+    if review.get("message"):
+        st.warning(review["message"])
+
+    pdf = fetch_pdf(review["review_id"])
+    if pdf:
+        st.download_button(
+            "📥 Export to PDF",
+            data=pdf,
+            file_name=f"literature_review_{review['review_id']}.pdf",
+            mime="application/pdf",
+        )
+
+    for cluster_id in sorted(review["clusters"], key=int):
+        st.markdown(f"### 🔗 Cluster {int(cluster_id) + 1}")
+        for paper in review["clusters"][cluster_id]:
+            with st.expander(f"📄 {paper['title']}"):
+                st.markdown(f"🔗 [View Paper]({paper['link']})")
+                st.markdown(paper["summary"])

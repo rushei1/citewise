@@ -16,7 +16,7 @@ from app.schemas import (
     sorted_cluster_ids,
 )
 from app.services.cluster import CLUSTERERS, Embedder, EmbedderLike, keyword_labels
-from app.services.export import build_pdf
+from app.services.export import build_bibtex, build_pdf
 from app.services.fetch import ArxivSource, FetchError, PaperSource, SemanticScholarSource
 from app.services.llm import LLMCache, LLMClient, LLMError, make_llm_client
 from app.services.retrieve import retrieve
@@ -81,6 +81,14 @@ def _get_or_404(db: ReviewDB, review_id: int) -> ReviewResponse:
     if review is None:
         raise HTTPException(status_code=404, detail="Review not found.")
     return review
+
+
+def _download(body: str | bytes, media_type: str, review_id: int, ext: str) -> Response:
+    return Response(
+        content=body.encode("utf-8") if isinstance(body, str) else body,
+        media_type=media_type,
+        headers={"Content-Disposition": f'attachment; filename="review_{review_id}.{ext}"'},
+    )
 
 
 def _parse_num_clusters(raw: str | None, default: int | str) -> int | None:
@@ -281,6 +289,15 @@ def create_app() -> FastAPI:
             media_type="application/pdf",
             headers={"Content-Disposition": f'attachment; filename="review_{review_id}.pdf"'},
         )
+
+    @app.get(
+        "/reviews/{review_id}/bibtex",
+        response_class=Response,
+        responses={200: {"content": {"application/x-bibtex": {}}}, 404: {"model": ErrorResponse}},
+    )
+    def review_bibtex(review_id: int, db: ReviewDB = Depends(get_db)):
+        review = _get_or_404(db, review_id)
+        return _download(build_bibtex(review), "application/x-bibtex", review_id, "bib")
 
     @app.delete("/reviews/{review_id}", status_code=204, responses={404: {"model": ErrorResponse}})
     def delete_review(review_id: int, db: ReviewDB = Depends(get_db)):

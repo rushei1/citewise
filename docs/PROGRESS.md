@@ -18,13 +18,28 @@ Branch: `upgrade-v2` (renamed from `v1.1-infra`; no history was rewritten). Tag 
 - The S2 test fixture is SYNTHETIC (`tests/fixtures/s2_search_synthetic.json`, abstracts invented): live recording kept hitting HTTP 429. One real call earlier did succeed after 4 retries and confirmed the field mapping.
 - Docker check: real `sources=arxiv,semantic_scholar&year_from=2019` request returned arXiv papers plus a `semantic_scholar: ... HTTP 429` warning, as designed. A real S2 success inside the app was not observed (needs `S2_API_KEY`).
 
+## Phase 3 (done, 2026-10-27; branch `upgrade-v2-phase3`, 241 tests pass, 99% of `app/`)
+- 3.1 `Summarizer` protocol (`summarize(paper) -> PaperSummary`), `HFSummarizer`, `SUMMARIZER_BACKEND` + `summarizer` query param.
+- 3.2 `LLMClient` protocol with OpenAI-compatible and Anthropic clients over the shared `Http` helper (now also `post_json`), token-usage logging, no default model name.
+- 3.3 `LLMSummarizer`: JSON claims with quotes, pydantic validation, 2 retries with the error fed back, programmatic evidence check, `not stated` enforced by schema.
+- 3.4 SQLite LLM cache keyed by sha256(model, prompt version, abstract); also used for theme replies.
+- 3.5 kmeans / agglomerative / hdbscan behind a `Clusterer` protocol, `num_clusters=auto` (silhouette), embedding of `title + abstract`.
+- 3.6 c-TF-IDF cluster labels; LLM theme summaries with checked `[n]` citations.
+- 3.7 BibTeX, Markdown, LaTeX exports and a richer PDF (`/reviews/{id}/bibtex|markdown|latex|pdf`).
+- 3.8 Streamlit UI for all of the above. 3.9 tests. 3.10 README, `docs/architecture.md` (Mermaid), compose passes the LLM variables through.
+- Verified end to end in Docker with real arXiv and the real MiniLM embedder, and a local fake OpenAI-compatible server standing in for the LLM: invented evidence was dropped and counted, `[99]` was stripped from a theme, a repeat request was `cached: true`, a different `cluster_method` re-used all six cached summaries, and all four export routes returned valid files. Container, volumes and image were removed afterwards.
+- Deviations: tests were committed together with each task instead of one trailing `test:` commit (plus one final commit for the gaps). Work is on `upgrade-v2-phase3`, branched from `upgrade-v2`, because the background job ran in a git worktree (a worktree cannot check out the branch the main checkout holds). HDBSCAN comes from scikit-learn (no extra package) and `min_cluster_size` is an untuned guess. No new dependencies were added.
+- Decisions: evidence shorter than 12 characters never verifies (otherwise "the" would ground a claim); verification is literal (no quote or dash folding). Themes are written only for clusters of 2+ papers that have verified claims, and a theme without any valid citation is dropped with a warning. A failed paper summary is a warning with a placeholder; all papers failing is a 502. Degraded results (any warning) are stored but not cache-served, as before. The review cache key now includes the summarizer id and cluster method (old v1.1 cache rows simply miss). `DEFAULT_NUM_CLUSTERS` also accepts `auto`; hdbscan ignores the count and shares one cache entry across counts. The unclustered group has id `-1` and sorts last. Exports use Windows-1252 (PDF) / Latin-1 (LaTeX) text; other characters print as `?`.
+
 ## Not verified
+- No live LLM was used anywhere: the LLM path is tested with a scripted fake client and the end-to-end check above used a fake server. The `llm`-marked test (`pytest --run-llm`, needs `LLM_MODEL` plus a key or base URL) has not been run. Real model behaviour (JSON compliance, how often quotes verify) is exactly what Phase 4 should measure.
+- The generated `.tex` has not been compiled: no LaTeX installation here. It is checked structurally in tests, and a compile test runs automatically where `pdflatex` exists.
 - `slow` pytest (real models) was not run via pytest, but the same models ran for real inside Docker (see below).
 - Pinned `requirements.txt` (torch etc.) was resolved with `pip install --dry-run` in a fresh 3.11 venv, not fully installed.
-- GitHub Actions workflow has not run yet (nothing pushed).
+- GitHub Actions workflow has not run yet (nothing pushed). Frontend tests need streamlit, which CI does not install, so they are skipped there.
 
 ## Next
-- Phase 3 (LLM summarization with grounding).
+- Phase 4 (evaluation). Merge Phase 3 first: from the main checkout on `upgrade-v2`, `git merge --ff-only upgrade-v2-phase3`.
 
 ## Decisions / deviations
 - Work started from the narrower v1.1 brief, then the all-phases brief arrived mid-run. Phase 0 items

@@ -4,7 +4,17 @@ Branch: `upgrade-v2` (renamed from `v1.1-infra`; no history was rewritten). Tag 
 
 ## Done
 - Phase 0: license, ruff/pytest/pre-commit config, env example, gitignore, this file.
-- Phase 1.1-1.9: package split, schemas, config, clustering fix, errors/health, SQLite cache, server-side PDF, frontend fixes, pinned requirements.
+- Phase 0: also v1.0 limitations section in README.
+- Phase 1 (1.1-1.13): package split, schemas, config, clustering fix, errors/health, SQLite cache, server-side PDF, frontend fixes, pinned requirements, tests (35 pass, 99% coverage of `app/`), Docker/compose/Makefile, CI, README v1.1. Tagged `v1.1` locally.
+
+## Not verified
+- `docker compose up --build`: Docker daemon was not running here; only `docker compose config` was validated.
+- `slow` test (real models) and the real arXiv call were not run.
+- Pinned `requirements.txt` (torch etc.) was resolved with `pip install --dry-run` in a fresh 3.11 venv, not fully installed.
+- GitHub Actions workflow has not run yet (nothing pushed).
+
+## Next
+- Phase 2 (better retrieval). Stopped at the v1.1 checkpoint as the brief requires.
 
 ## Decisions / deviations
 - Work started from the narrower v1.1 brief, then the all-phases brief arrived mid-run. Phase 0 items

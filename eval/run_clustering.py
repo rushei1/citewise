@@ -58,7 +58,9 @@ METHODS = [
     ("kmeans", "auto", True),
     ("agglomerative", "k=true", False),
     ("agglomerative", "auto", False),
-    ("hdbscan", "n/a", False),
+    ("hdbscan", "n/a", False),  # the app's own min_cluster_size rule
+    ("hdbscan", "mcs=5", False),  # sensitivity: fixed min_cluster_size
+    ("hdbscan", "mcs=10", False),
     ("bertopic", "n/a", True),
 ]
 
@@ -144,6 +146,11 @@ def predict(method: str, k_mode: str, x: np.ndarray, k_true: int, seed: int, doc
         k = k_true if k_mode == "k=true" else _auto_k(x, fit_agglomerative)
         return [int(label) for label in fit_agglomerative(x, k)]
     if method == "hdbscan":
+        if k_mode.startswith("mcs="):
+            from sklearn.cluster import HDBSCAN
+
+            model = HDBSCAN(min_cluster_size=int(k_mode.removeprefix("mcs=")))
+            return [int(label) for label in model.fit_predict(x)]
         return HDBSCANClusterer().cluster(x, None)
     if method == "bertopic":
         return fit_bertopic(x, docs, seed)

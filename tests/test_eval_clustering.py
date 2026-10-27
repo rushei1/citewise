@@ -61,6 +61,8 @@ def test_full_run_recovers_obvious_clusters_and_reports_all_methods(tmp_path):
         ("agglomerative", "k=true"),
         ("agglomerative", "auto"),
         ("hdbscan", "n/a"),
+        ("hdbscan", "mcs=5"),
+        ("hdbscan", "mcs=10"),
     }
     assert rows[("kmeans", "k=true")]["ari"]["mean"] > 0.9
     assert rows[("kmeans", "k=true")]["n_runs"] == 3  # randomised: one run per seed

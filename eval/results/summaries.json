@@ -1,0 +1,1875 @@
+{
+  "hf": [
+    {
+      "id": "2301.00320",
+      "text": "Social media has been widely explored as a potential source of communication and information in disasters and emergency situations. In this paper, we explore one such challenge and propose a text classification framework to deal with Twitter noisy data.",
+      "latency_s": 21.30273830005899,
+      "error": null
+    },
+    {
+      "id": "2301.00442",
+      "text": "Identity and access management (I&AM) is the umbrella term for managing users and their permissions. It is required for users to access different services. These services can either be provided from their home organization, like a company or university, or from external service providers.",
+      "latency_s": 6.420419599977322,
+      "error": null
+    },
+    {
+      "id": "2301.00330",
+      "text": "On-device training remains an open problem for EdgeAI. We propose a new gradient filtering approach which enables on-device CNN model training. Our approach creates a special structure with fewer unique elements in the gradient map.",
+      "latency_s": 5.561222999938764,
+      "error": null
+    },
+    {
+      "id": "2301.00847",
+      "text": " Database management systems are considered to be a crucial element from both business and technological standpoint. This paper divides different types of database management systems into two main categories (relational and non-relational) and several sub categories. Ranking of various sub categories for the month of July, 2021 are presented in the form of popularity score calculated and managed by DB-Engines.",
+      "latency_s": 8.605314700049348,
+      "error": null
+    },
+    {
+      "id": "2301.00844",
+      "text": "The blowout preventer (BOP) system is one of the most important well safety barriers during the drilling phase because it can prevent the development of blowout events. This paper investigates BOP system's main failures using an LSA-based methodology.",
+      "latency_s": 5.954921999946237,
+      "error": null
+    },
+    {
+      "id": "2301.00337",
+      "text": "Tendon-driven devices are preferred in medicine for their improved outcomes via minimally invasive procedures. TDRMs come with unique challenges such as sterilization and reuse, simultaneous control of tendons, hysteresis in the tendon-sheath mechanism and unmodeled effects of the proximal section shape.",
+      "latency_s": 7.439034900045954,
+      "error": null
+    },
+    {
+      "id": "2301.00321",
+      "text": "This paper presents our solutions for the MediaEval 2022 task on DisasterMM. The task is composed of two subtasks, namely (i) Relevance Classification of Twitter Posts (RCTP), and (ii) Location Extraction from Twitter Texts (LETT) The RCTP subtask aims at differentiating flood-related and non-relevant social posts. LETT is a Named Entity Recognition (NER) task and aims at the extraction of location information from the text.",
+      "latency_s": 12.044407499954104,
+      "error": null
+    },
+    {
+      "id": "2301.00443",
+      "text": "TaxIdMA: Towards a Taxonomy for Attacks related to Identities. Identity management refers to the technology and policies for the identification, authentication, and authorization of users in computer networks.",
+      "latency_s": 4.664811599999666,
+      "error": null
+    },
+    {
+      "id": "2301.00345",
+      "text": "MTNeuro: A Benchmark for Evaluating Representations of Brain Structure Across Multiple Levels of Abstraction. There are multiple scales of abstraction from which we can describe the same image. Our benchmark is built on volumetric, micrometer-resolution X-ray microtomography images.",
+      "latency_s": 7.643845199956559,
+      "error": null
+    },
+    {
+      "id": "2301.00929",
+      "text": "EQUI-VOCAL is a new system that automatically synthesizes queries over videos from limited user interactions. The user only provides a handful of positive and negative examples of what they are looking for.",
+      "latency_s": 5.64025049994234,
+      "error": null
+    },
+    {
+      "id": "2301.00910",
+      "text": "In the era of information overload, recommender systems (RSs) have become an indispensable part of online service platforms. Traditional RSs estimate user interests and predict their future behaviors by utilizing correlations in the observational historical activities, their profiles, and the content of interacted items. Since the inherent causal reasons that lead to the observed users' behaviors are not considered, multiple types of biases could exist.",
+      "latency_s": 9.342867500032298,
+      "error": null
+    },
+    {
+      "id": "2301.00362",
+      "text": "Goal-Guided Transformer-Enabled Reinforcement Learning for Efficient Autonomous Navigation. We propose a novel variant of the Vision Transformer as the backbone of the perception system. We pre-train it with expert p",
+      "latency_s": 5.568706599995494,
+      "error": null
+    },
+    {
+      "id": "2301.00355",
+      "text": "Second Thought is a new learning paradigm that enables language models to re-align with human values. The generated editing steps offer better interpretability and ease for interactive error correction. Extensive human evaluations further confirm its effectiveness.",
+      "latency_s": 6.4006658999715,
+      "error": null
+    },
+    {
+      "id": "2301.00444",
+      "text": "This paper presents a comprehensive classification of identity management approaches. It makes use of three axes: topology, type of user, and type of environment. The analysis of existing approaches using the resulting identity management cube (IMC) highlights the trade-off between user control and trust in attributes.",
+      "latency_s": 6.892249200027436,
+      "error": null
+    },
+    {
+      "id": "2301.00363",
+      "text": "Mapping smallholder cashew plantations to inform sustainable tree crop expansion in Benin. Cashews are grown by over 3 million smallholders in more than 40 countries worldwide as a principal source of income.",
+      "latency_s": 5.037032800028101,
+      "error": null
+    },
+    {
+      "id": "2301.01189",
+      "text": "FAIR (Findable Accessible Interoperable Reusable) data sharing aims to achieve at scale. We argue that it is not sustainable to keep accumulating and maintaining all datasets for rapid access. We address the issue of cold data storage: when to dispose of data for offline storage.",
+      "latency_s": 6.2829490000149235,
+      "error": null
+    },
+    {
+      "id": "2301.00979",
+      "text": "There has been a growing interest in benchmarking sequential recommendation models. Petrov and Macdonald developed a more efficient and effective implementation of BERT4Rec. The results demonstrate that our improved loss function significantly enhances the performance of GRU4Rec, they say.",
+      "latency_s": 6.063455199939199,
+      "error": null
+    },
+    {
+      "id": "2301.00379",
+      "text": "A review of Implementation and Challenges of Unmanned Aerial Vehicles for Spraying Applications and Crop Monitoring in Indonesia. UAVs have been used in various sectors, including livestock, forestry, and agriculture. This study examines the urgency of UAV implementation in the agriculture sector.",
+      "latency_s": 6.451597600011155,
+      "error": null
+    },
+    {
+      "id": "2301.00374",
+      "text": "ORUGA is a method that tries to automatically optimize the readability of any text in English. The core idea behind the method is that certain factors affect the readable of a text.",
+      "latency_s": 4.749286400037818,
+      "error": null
+    },
+    {
+      "id": "2301.00479",
+      "text": "Blockchain, also coined as decentralized AI, has the potential to empower AI to be more trustworthy by creating a decentralized trust of privacy, security, and audibility. Studies on the design principle of blockchain as a trust engine for an integrated society of cyber-physical-social-system (CPSS) are still absent.",
+      "latency_s": 9.462510199984536,
+      "error": null
+    },
+    {
+      "id": "2301.00366",
+      "text": "This paper proposes a novel self-supervised based Cut-and-Paste GAN to perform foreground object segmentation. The proposed method empowers the generator to create meaningful masks by forcing it to learn informative per-pixel as well as global image feedback from the discriminator.",
+      "latency_s": 9.663210299913771,
+      "error": null
+    },
+    {
+      "id": "2301.01227",
+      "text": "Semantic units structure a knowledge graph into identifiable and semantically meaningful subgraphs. Each unit is represented by its own resource, instantiates a corresponding semantic unit class, and can be implemented as a FAIR Digital Object and a nanopublication in RDF/OWL.",
+      "latency_s": 7.175962700042874,
+      "error": null
+    },
+    {
+      "id": "2301.00993",
+      "text": "Most of the existing offline evaluation practices for reinforcement learning-based recommendation are based on a next-item prediction protocol. We detail three shortcomings of such an evaluation protocol. Our suggestions for alternative ways to evaluate RL-based recommender systems aim to shed light on the existing possibilities and inspire future research.",
+      "latency_s": 7.315530599909835,
+      "error": null
+    },
+    {
+      "id": "2301.00452",
+      "text": "Human-in-the-loop Embodied Intelligence with Interactive Simulation Environment for Surgical Robot Learning. Surgical robot automation has attracted increasing research interest over the past decade.",
+      "latency_s": 4.812825400033034,
+      "error": null
+    },
+    {
+      "id": "2301.00395",
+      "text": " CORGI-PM is the first sentence-level Chinese corpus for gender bias probing and mitigation. It contains 32.9k sentences with high-quality labels derived by following an annotation scheme specifically developed forgender bias in the Chinese context.",
+      "latency_s": 6.603370000026189,
+      "error": null
+    },
+    {
+      "id": "2301.00710",
+      "text": "Internet services face more attacks than ever. A honeypot helps to collect information about an attacker by pretending to be a vulnerable target. This thesis will present a honeypot solution to investigate malicious activities in heiCLOUD.",
+      "latency_s": 5.91761169990059,
+      "error": null
+    },
+    {
+      "id": "2301.00371",
+      "text": " Domain adaptive detection aims to improve the generalization of detectors on target domain. The key is to encode the dependencies across different granularities including pixel-, instance-, and category-levels simultaneously to align two domains.",
+      "latency_s": 6.2251291000284255,
+      "error": null
+    },
+    {
+      "id": "2301.01228",
+      "text": "The ability to build a dataset has become more critical than ever, especially in the industry. This paper presents the concept of DMOps which is derived from real-world experiences with NLP data management.",
+      "latency_s": 5.535444000037387,
+      "error": null
+    },
+    {
+      "id": "2301.01037",
+      "text": "Uptrendz is a multi-domain recommendation platform that can be customized to provide real-time recommendations in an API-centric way. We believe that our demonstration shows a convenient way to adapt, deploy and evaluate a recommender system. The source-code and documentation are available on GitHub.",
+      "latency_s": 8.747408699942753,
+      "error": null
+    },
+    {
+      "id": "2301.00521",
+      "text": "In current model-free reinforcement learning (RL) algorithms, stability criteria based on sampling methods are commonly utilized to guide policy optimization. These criteria only guarantee the infinite-time convergence of the system's state to an equilibrium point, which leads to sub-optimality of the policy. In this paper, we propose a policy optimization technique incorporating sampling-based Lyapunov stability.",
+      "latency_s": 12.35426870000083,
+      "error": null
+    },
+    {
+      "id": "2301.00397",
+      "text": "Current models (both RNN-based and pre-training based) have more than 23\\% inflected forms. As a result, the encoder will generate separate embeddings for the inflection forms.",
+      "latency_s": 9.15865080000367,
+      "error": null
+    },
+    {
+      "id": "2301.00823",
+      "text": "Digital identity management for individuals is either inconvenient and error-prone or creates undesirable lock-in effects. Decentralized or self-sovereign identity (SSI) aims to offer a solution to this dilemma.",
+      "latency_s": 7.026610599947162,
+      "error": null
+    },
+    {
+      "id": "2301.00394",
+      "text": "Deep Learning Technique for Human Parsing: A Survey and Outlook. Human parsing aims to partition humans in image or video into multiple pixel-level semantic parts. In the last decade, it has gained significantly increased interest in the computer vision community.",
+      "latency_s": 6.415987599990331,
+      "error": null
+    },
+    {
+      "id": "2301.02182",
+      "text": "The discovered models serve as the starting point for process mining techniques that are used to address performance and compliance problems. The algorithm applying synthesis rules from the free-choice net theory discovers process models with more flexible (non-block) structures.",
+      "latency_s": 6.345006800023839,
+      "error": null
+    },
+    {
+      "id": "2301.01737",
+      "text": " Recommender systems (RS) commonly retrieve potential candidate items for users from a massive number of items. We build upon the classical Two-Tower model and introduce the novel Multi-Source Augmentations using a Contrastive Learning framework.",
+      "latency_s": 6.560319799929857,
+      "error": null
+    },
+    {
+      "id": "2301.00523",
+      "text": "This paper concerns realizing highly efficient information-theoretic robot exploration with desired performance in complex scenes. We build a continuous lightweight inference model to predict the mutual information (MI) and the associated prediction confidence of the robot's candidate actions.",
+      "latency_s": 7.195082199992612,
+      "error": null
+    },
+    {
+      "id": "2301.00399",
+      "text": "QDMR formalism in semantic parsing is implemented using sequence to sequence model with attention. It is shown how semantic operator prediction could be augmented with other models like the CopyNet model or the recursive neural net model.",
+      "latency_s": 5.52372080006171,
+      "error": null
+    },
+    {
+      "id": "2301.00888",
+      "text": "Advances in deep learning enabled Internet of Things (IoTs) to take decisions and run cognitive tasks locally. This research introduces a decentralized-control edge model where most computation and decisions are moved to the IoT level.",
+      "latency_s": 5.843289300100878,
+      "error": null
+    },
+    {
+      "id": "2301.00406",
+      "text": "Non-line-of-sight (NLOS) imaging aims to reconstruct the three-dimensional hidden scenes from the data measured in the line- of-sight. We propose novel NLOS reconstruction models based on curvature regularization.",
+      "latency_s": 5.945902100065723,
+      "error": null
+    },
+    {
+      "id": "2301.02185",
+      "text": "Process discovery aims to discover models that can explain the behaviors of event logs extracted from information systems. State-of-the-art approaches that exploit the representational bias of process trees to provide guarantees are constrained to be block-structured.",
+      "latency_s": 5.842153799952939,
+      "error": null
+    }
+  ],
+  "llm": [
+    {
+      "id": "2301.00320",
+      "text": "Method: A text classification framework is proposed to differentiate between relevant and non-relevant Twitter posts. Several transformers are employed, both individually and in combination.\nResults: The highest F1-score of 0.87 is achieved.",
+      "structured": {
+        "overview": "",
+        "problem": [],
+        "method": [
+          {
+            "text": "A text classification framework is proposed to differentiate between relevant and non-relevant Twitter posts.",
+            "evidence": "we explore one such challenge and propose a text classification framework to deal with Twitter noisy data."
+          },
+          {
+            "text": "Several transformers are employed, both individually and in combination.",
+            "evidence": "so as to differentiate between relevant and non-relevant Twitter posts, achieving the highest F1-score of 0.87."
+          }
+        ],
+        "results": [
+          {
+            "text": "The highest F1-score of 0.87 is achieved.",
+            "evidence": "achieving the highest F1-score of 0.87."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 89.83889600005932,
+      "prompt_tokens": 312,
+      "completion_tokens": 295,
+      "error": null
+    },
+    {
+      "id": "2301.00442",
+      "text": "Problem: The requirements for identity and access management (I&AM) have evolved from accessing individual web services to managing IT services from various service providers with multiple accounts. Existing I&AM models and approaches suffer from trustworthiness and liability issues, and interoperability issues are inherent due to their development in heterogeneous environments.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The requirements for identity and access management (I&AM) have evolved from accessing individual web services to managing IT services from various service providers with multiple accounts.",
+            "evidence": "Today, the requirements have evolved from simply accessing individual web services in the internet or at a company to the majority of all IT services from different service providers with various accounts."
+          },
+          {
+            "text": "Existing I&AM models and approaches suffer from trustworthiness and liability issues, and interoperability issues are inherent due to their development in heterogeneous environments.",
+            "evidence": "Current approaches suffer, as an example, from trustworthiness and liability issues. Interoperability issues are even more inherent as the approaches partly develop apart, forming an heterogeneous environment."
+          }
+        ],
+        "method": [],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "method",
+          "results",
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 213.5398862999864,
+      "prompt_tokens": 3010,
+      "completion_tokens": 689,
+      "error": null
+    },
+    {
+      "id": "2301.00330",
+      "text": "Problem: The large number of operations and memory consumption required during training by the back-propagation algorithm is a problem for on-device training in EdgeAI, federated learning, and many other applications.\nMethod: A new gradient filtering approach for on-device CNN model training is proposed, which creates a special structure with fewer unique elements in the gradient map, reducing computational complexity and memory consumption of back propagation during training.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The large number of operations and memory consumption required during training by the back-propagation algorithm is a problem for on-device training in EdgeAI, federated learning, and many other applications.",
+            "evidence": "Despite its importance for federated learning, continuous learning and many other applications, on-device training remains an open problem for EdgeAI. The problem stems from the large number of operations (e.g., floating point multiplications and additions) and memory consumption required during training by the back-propagation algorithm."
+          }
+        ],
+        "method": [
+          {
+            "text": "A new gradient filtering approach for on-device CNN model training is proposed, which creates a special structure with fewer unique elements in the gradient map, reducing computational complexity and memory consumption of back propagation during training.",
+            "evidence": "Consequently, in this paper, we propose a new gradient filtering approach which enables on-device CNN model training. More precisely, our approach creates a special structure with fewer unique elements in the gradient map, thus significantly reducing the computational complexity and memory consumption of back propagation during training."
+          }
+        ],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 2
+      },
+      "latency_s": 140.45879649999551,
+      "prompt_tokens": 484,
+      "completion_tokens": 577,
+      "error": null
+    },
+    {
+      "id": "2301.00847",
+      "text": "Problem: Identifying the types and popularity of database management systems\nMethod: Categorizing database management systems into relational and non-relational, and further into subcategories Ranking the subcategories based on popularity\nResults: Relational models are the most popular systems with Oracle and MySQL being the most popular systems Time Series and Document Store DBMSs are becoming more popular",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Identifying the types and popularity of database management systems",
+            "evidence": "Databases are considered to be integral part of modern information systems. Almost every web or mobile application uses some kind of database."
+          }
+        ],
+        "method": [
+          {
+            "text": "Categorizing database management systems into relational and non-relational, and further into subcategories",
+            "evidence": "This paper divides different types of database management systems into two main categories (relational and non-relational) and several sub categories."
+          },
+          {
+            "text": "Ranking the subcategories based on popularity",
+            "evidence": "Ranking of various sub categories for the month of July, 2021 are presented in the form of popularity score calculated and managed by DB-Engines."
+          }
+        ],
+        "results": [
+          {
+            "text": "Relational models are the most popular systems with Oracle and MySQL being the most popular systems",
+            "evidence": "Complete ranking and trend of top 20 systems has shown that relational models are still most popular systems with Oracle and MySQL being two most popular systems."
+          },
+          {
+            "text": "Time Series and Document Store DBMSs are becoming more popular",
+            "evidence": "However, recent trends have shown DBMSs like Time Series and Document Store getting more and more popular with their wide use in IOT technology and BigData, respectively."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 109.92866800003685,
+      "prompt_tokens": 372,
+      "completion_tokens": 363,
+      "error": null
+    },
+    {
+      "id": "2301.00844",
+      "text": "Problem: Investigation of main failures in the blowout preventer (BOP) system\nMethod: LSA-based methodology to identify failure scenarios of BOP components Analysis of failure records from the International Association of Drilling Contractors' RAPID-S53 database\nResults: Identified main failure scenarios of the components annular preventer, shear rams preventer, compensated chamber solenoid valve, and hydraulic regulators Highlighted that the major failures of the components under consideration were leakages caused by damaged elastomeric seals",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Investigation of main failures in the blowout preventer (BOP) system",
+            "evidence": "The blowout preventer (BOP) system is one of the most important well safety barriers during the drilling phase because it can prevent the development of blowout events."
+          }
+        ],
+        "method": [
+          {
+            "text": "LSA-based methodology to identify failure scenarios of BOP components",
+            "evidence": "This paper investigates BOP system's main failures using an LSA-based methodology."
+          },
+          {
+            "text": "Analysis of failure records from the International Association of Drilling Contractors' RAPID-S53 database",
+            "evidence": "A total of 1312 failure records from companies worldwide were collected from the International Association of Drilling Contractors' RAPID-S53 database."
+          }
+        ],
+        "results": [
+          {
+            "text": "Identified main failure scenarios of the components annular preventer, shear rams preventer, compensated chamber solenoid valve, and hydraulic regulators",
+            "evidence": "The main failure scenarios of the components annular preventer, shear rams preventer, compensated chamber solenoid valve, and hydraulic regulators were identified using the proposed methodology."
+          },
+          {
+            "text": "Highlighted that the major failures of the components under consideration were leakages caused by damaged elastomeric seals",
+            "evidence": "The findings highlighted that the major failures of the components under consideration were leakages caused by damaged elastomeric seals."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 126.83326039998792,
+      "prompt_tokens": 462,
+      "completion_tokens": 471,
+      "error": null
+    },
+    {
+      "id": "2301.00337",
+      "text": "Problem: Challenges in using Tendon-driven robotic manipulators (TDRMs) in medical applications Difficulties in actuation and sterilization of TDRMs Hysteresis in the tendon-sheath mechanism of TDRMs Unmodeled effects of the proximal section shape in TDRMs\nMethod: Introduction of a separable TDRM Development of an open-loop redundant controller Proposal of simple linear hysteresis compensation and re-tension compensation\nResults: Reduction in distal tip error",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Challenges in using Tendon-driven robotic manipulators (TDRMs) in medical applications",
+            "evidence": "This work tackles practical issues which arise when using a tendon-driven robotic manipulator (TDRM) with a long, flexible, passive proximal section in medical applications."
+          },
+          {
+            "text": "Difficulties in actuation and sterilization of TDRMs",
+            "evidence": "A separable TDRM which overcomes difficulties in actuation and sterilization is introduced,"
+          },
+          {
+            "text": "Hysteresis in the tendon-sheath mechanism of TDRMs",
+            "evidence": "simple linear hysteresis compensation"
+          },
+          {
+            "text": "Unmodeled effects of the proximal section shape in TDRMs",
+            "evidence": "unmodeled effects of the proximal section shape"
+          }
+        ],
+        "method": [
+          {
+            "text": "Introduction of a separable TDRM",
+            "evidence": "A separable TDRM which overcomes difficulties in actuation and sterilization is introduced,"
+          },
+          {
+            "text": "Development of an open-loop redundant controller",
+            "evidence": "An open-loop redundant controller which resolves the redundancy in the kinematics is developed."
+          },
+          {
+            "text": "Proposal of simple linear hysteresis compensation and re-tension compensation",
+            "evidence": "simple linear hysteresis compensation and re-tension compensation based on the physical properties of the device are proposed."
+          }
+        ],
+        "results": [
+          {
+            "text": "Reduction in distal tip error",
+            "evidence": "The controller and compensation methods are evaluated on a testbed for a straight proximal section, a curved proximal section at various static angles, and a proximal section which dynamically changes angles; and overall, distal tip error was reduced."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 131.235033200006,
+      "prompt_tokens": 427,
+      "completion_tokens": 514,
+      "error": null
+    },
+    {
+      "id": "2301.00321",
+      "text": "Problem: The problem addressed is the MediaEval 2022 task on DisasterMM, which includes two subtasks: Relevance Classification of Twitter Posts (RCTP) and Location Extraction from Twitter Texts (LETT)\nMethod: For RCTP, four models were proposed based on BERT, RoBERTa, Distil BERT, and ALBERT For LETT, three models were used namely BERT, RoBERTa, and Distil BERTA\nResults: For RCTP, the F1-score for BERT, RoBERTa, Distil BERT, and ALBERT were 0.7934, 0.7970, 0.7613, and 0.7924 respectively For LETT, the F1-score for BERT, RoBERTa, and Distil BERTA were 0.6256, 0.6744, and 0.6723 respectively",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The problem addressed is the MediaEval 2022 task on DisasterMM, which includes two subtasks: Relevance Classification of Twitter Posts (RCTP) and Location Extraction from Twitter Texts (LETT)",
+            "evidence": "This paper presents our solutions for the MediaEval 2022 task on DisasterMM. The task is composed of two subtasks, namely (i) Relevance Classification of Twitter Posts (RCTP), and (ii) Location Extraction from Twitter Texts (LETT)."
+          }
+        ],
+        "method": [
+          {
+            "text": "For RCTP, four models were proposed based on BERT, RoBERTa, Distil BERT, and ALBERT",
+            "evidence": "For RCTP, we proposed four different solutions based on BERT, RoBERTa, Distil BERT, and ALBERT"
+          },
+          {
+            "text": "For LETT, three models were used namely BERT, RoBERTa, and Distil BERTA",
+            "evidence": "For LETT, we used three models namely BERT, RoBERTa, and Distil BERTA"
+          }
+        ],
+        "results": [
+          {
+            "text": "For RCTP, the F1-score for BERT, RoBERTa, Distil BERT, and ALBERT were 0.7934, 0.7970, 0.7613, and 0.7924 respectively",
+            "evidence": "For RCTP, we proposed four different solutions based on BERT, RoBERTa, Distil BERT, and ALBERT obtaining an F1-score of 0.7934, 0.7970, 0.7613, and 0.7924, respectively."
+          },
+          {
+            "text": "For LETT, the F1-score for BERT, RoBERTa, and Distil BERTA were 0.6256, 0.6744, and 0.6723 respectively",
+            "evidence": "For LETT, we used three models namely BERT, RoBERTa, and Distil BERTA obtaining an F1-score of 0.6256, 0.6744, and 0.6723, respectively."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 179.6146860999288,
+      "prompt_tokens": 420,
+      "completion_tokens": 605,
+      "error": null
+    },
+    {
+      "id": "2301.00443",
+      "text": "Problem: Identity management systems pose an attractive target for attacks Different requirements, typical problems, and attack vectors for various identity management systems\nMethod: Proposal of a framework Taxonomy for Identity Management Attacks (TaxIdMA) Evaluation of the taxonomy with eight real-world attacks or vulnerabilities\nResults: Capability of the proposed taxonomy framework TaxIdMA in describing and categorizing eight real-world attacks or vulnerabilities",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Identity management systems pose an attractive target for attacks",
+            "evidence": "Identity management systems, where digital identities are managed, pose an attractive target for attacks."
+          },
+          {
+            "text": "Different requirements, typical problems, and attack vectors for various identity management systems",
+            "evidence": "With the heterogeneity of identity management systems, every type (i.e., models, protocols, implementations) has different requirements, typical problems, and hence attack vectors."
+          }
+        ],
+        "method": [
+          {
+            "text": "Proposal of a framework Taxonomy for Identity Management Attacks (TaxIdMA)",
+            "evidence": "The framework Taxonomy for Identity Management Attacks (TaxIdMA) for attacks related to identities is proposed."
+          },
+          {
+            "text": "Evaluation of the taxonomy with eight real-world attacks or vulnerabilities",
+            "evidence": "This analysis shows the capability of the proposed taxonomy framework TaxIdMA in describing and categorizing these attacks."
+          }
+        ],
+        "results": [
+          {
+            "text": "Capability of the proposed taxonomy framework TaxIdMA in describing and categorizing eight real-world attacks or vulnerabilities",
+            "evidence": "This analysis shows the capability of the proposed taxonomy framework TaxIdMA in describing and categorizing these attacks."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 195.90191980008967,
+      "prompt_tokens": 388,
+      "completion_tokens": 412,
+      "error": null
+    },
+    {
+      "id": "2301.00345",
+      "text": "Problem: Learning to automatically parse images to build representations of both small-scale features and global properties of an image in brain mapping Developing a multi-task neuroimaging benchmark for brain-region prediction and pixel-level semantic segmentation of microstructures\nMethod: Generating a number of different prediction challenges\nResults: Highlighting the rich heterogeneity of the dataset Providing insights into how self-supervised approaches can be used to learn representations that capture multiple attributes of a single image and perform well on a variety of downstream tasks",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Learning to automatically parse images to build representations of both small-scale features and global properties of an image in brain mapping",
+            "evidence": "Learning to automatically parse images to build representations of both small-scale features (e.g., the presence of cells or blood vessels) and global properties of an image (e.g., which brain region the image comes from) is a crucial and open challenge."
+          },
+          {
+            "text": "Developing a multi-task neuroimaging benchmark for brain-region prediction and pixel-level semantic segmentation of microstructures",
+            "evidence": "Our multi-task neuroimaging benchmark (MTNeuro) is built on volumetric, micrometer-resolution X-ray microtomography images spanning a large thalamocortical section of mouse brain, encompassing multiple cortical and subcortical regions."
+          }
+        ],
+        "method": [
+          {
+            "text": "Generating a number of different prediction challenges",
+            "evidence": "We generated a number of different prediction challenges"
+          }
+        ],
+        "results": [
+          {
+            "text": "Highlighting the rich heterogeneity of the dataset",
+            "evidence": "Our experiments not only highlight the rich heterogeneity of this dataset,"
+          },
+          {
+            "text": "Providing insights into how self-supervised approaches can be used to learn representations that capture multiple attributes of a single image and perform well on a variety of downstream tasks",
+            "evidence": "but also provide insights into how self-supervised approaches can be used to learn representations that capture multiple attributes of a single image and perform well on a variety of downstream tasks."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 128.7882518999977,
+      "prompt_tokens": 509,
+      "completion_tokens": 486,
+      "error": null
+    },
+    {
+      "id": "2301.00929",
+      "text": "Problem: The problem is to automatically synthesize queries over videos from limited user interactions. The problem involves finding events without database expertise, with limited labeling effort, and without declarative specifications or sketches.\nMethod: EQUI-VOCAL utilizes initial examples and additional ones collected through active learning to efficiently synthesize complex user queries. The system uses spatio-temporal scene graphs in its data model and query language.\nResults: The system outperforms two baseline systems in terms of F1 score, synthesis time, and robustness to noise.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The problem is to automatically synthesize queries over videos from limited user interactions.",
+            "evidence": "We introduce EQUI-VOCAL: a new system that automatically synthesizes queries over videos from limited user interactions."
+          },
+          {
+            "text": "The problem involves finding events without database expertise, with limited labeling effort, and without declarative specifications or sketches.",
+            "evidence": "Our approach enables users to find events without database expertise, with limited labeling effort, and without declarative specifications or sketches."
+          }
+        ],
+        "method": [
+          {
+            "text": "EQUI-VOCAL utilizes initial examples and additional ones collected through active learning to efficiently synthesize complex user queries.",
+            "evidence": "EQUI-VOCAL utilizes these initial examples and additional ones collected through active learning to efficiently synthesize complex user queries."
+          },
+          {
+            "text": "The system uses spatio-temporal scene graphs in its data model and query language.",
+            "evidence": "Core to EQUI-VOCAL's design is the use of spatio-temporal scene graphs in its data model and query language"
+          }
+        ],
+        "results": [
+          {
+            "text": "The system outperforms two baseline systems in terms of F1 score, synthesis time, and robustness to noise.",
+            "evidence": "Our system outperforms two baseline systems -- in terms of F1 score, synthesis time, and robustness to noise -- and can flexibly synthesize complex queries that the baselines do not support."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 131.25306839996483,
+      "prompt_tokens": 366,
+      "completion_tokens": 475,
+      "error": null
+    },
+    {
+      "id": "2301.00910",
+      "text": "Problem: Traditional recommender systems (RSs) lack causal reasoning ability Multiple biases could exist in the generated recommendations Explainability and generalization abilities of recommendations cannot be guaranteed\nMethod: Enhancing traditional RSs with causal inference techniques",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Traditional recommender systems (RSs) lack causal reasoning ability",
+            "evidence": "In the era of information overload, recommender systems (RSs) have become an indispensable part of online service platforms. Traditional RSs estimate user interests and predict their future behaviors by utilizing correlations in the observational historical activities, their profiles, and the content of interacted items."
+          },
+          {
+            "text": "Multiple biases could exist in the generated recommendations",
+            "evidence": "However, since the inherent causal reasons that lead to the observed users' behaviors are not considered, multiple types of biases could exist in the generated recommendations."
+          },
+          {
+            "text": "Explainability and generalization abilities of recommendations cannot be guaranteed",
+            "evidence": "The causal motives that drive user activities are usually entangled in these RSs, where the explainability and generalization abilities of recommendations cannot be guaranteed."
+          }
+        ],
+        "method": [
+          {
+            "text": "Enhancing traditional RSs with causal inference techniques",
+            "evidence": "To address these drawbacks, recent years have witnessed an upsurge of interest in enhancing traditional RSs with causal inference techniques."
+          }
+        ],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "results",
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 95.88695379998535,
+      "prompt_tokens": 482,
+      "completion_tokens": 330,
+      "error": null
+    },
+    {
+      "id": "2301.00362",
+      "text": "Problem: Inefficient data usage in deep reinforcement learning (DRL)-based autonomous navigation\nMethod: Proposing a novel Goal-guided Transformer-enabled reinforcement learning (GTRL) approach Using a Goal-guided Transformer (GoT) as the backbone of the perception system Pre-training the GoT with expert priors Using reinforcement learning for decision-making\nResults: Superior navigation performance Superiority in terms of data efficiency, performance, robustness, and sim-to-real generalization",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Inefficient data usage in deep reinforcement learning (DRL)-based autonomous navigation",
+            "evidence": "Despite some successful applications of goal-driven navigation, existing deep reinforcement learning (DRL)-based approaches notoriously suffers from poor data efficiency issue."
+          }
+        ],
+        "method": [
+          {
+            "text": "Proposing a novel Goal-guided Transformer-enabled reinforcement learning (GTRL) approach",
+            "evidence": "In light of this, we present a novel Goal-guided Transformer-enabled reinforcement learning (GTRL) approach"
+          },
+          {
+            "text": "Using a Goal-guided Transformer (GoT) as the backbone of the perception system",
+            "evidence": "we propose a novel variant of the Vision Transformer as the backbone of the perception system, namely Goal-guided Transformer (GoT)"
+          },
+          {
+            "text": "Pre-training the GoT with expert priors",
+            "evidence": "Subsequently, a reinforcement learning algorithm is instantiated for the decision-making system, taking the goal-oriented scene representation from the GoT as the input and generating decision commands."
+          },
+          {
+            "text": "Using reinforcement learning for decision-making",
+            "evidence": "a reinforcement learning algorithm is instantiated for the decision-making system"
+          }
+        ],
+        "results": [
+          {
+            "text": "Superior navigation performance",
+            "evidence": "As a result, our approach motivates the scene representation to concentrate mainly on goal-relevant features, which substantially enhances the data efficiency of the DRL learning process, leading to superior navigation performance."
+          },
+          {
+            "text": "Superiority in terms of data efficiency, performance, robustness, and sim-to-real generalization",
+            "evidence": "Both simulation and real-world experimental results manifest the superiority of our approach in terms of data efficiency, performance, robustness, and sim-to-real generalization, compared with other state-of-the-art (SOTA) baselines."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 146.46652490005363,
+      "prompt_tokens": 566,
+      "completion_tokens": 530,
+      "error": null
+    },
+    {
+      "id": "2301.00355",
+      "text": "Problem: The problem is to align language models with human values\nMethod: The method involves modeling the chain-of-edits between value-unaligned and value-aligned text, LM fine-tuning, and reinforcement learning\nResults: The results show superior performance in three value alignment benchmark datasets and strong human-value transfer learning ability in few-shot scenarios The generated editing steps offer better interpretability and ease for interactive error correction",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The problem is to align language models with human values",
+            "evidence": "a new learning paradigm that enables language models (LMs) to re-align with human values"
+          }
+        ],
+        "method": [
+          {
+            "text": "The method involves modeling the chain-of-edits between value-unaligned and value-aligned text, LM fine-tuning, and reinforcement learning",
+            "evidence": "By modeling the chain-of-edits between value-unaligned and value-aligned text, with LM fine-tuning and additional refinement through reinforcement learning"
+          }
+        ],
+        "results": [
+          {
+            "text": "The results show superior performance in three value alignment benchmark datasets and strong human-value transfer learning ability in few-shot scenarios",
+            "evidence": "achieves superior performance in three value alignment benchmark datasets but also shows strong human-value transfer learning ability in few-shot scenarios"
+          },
+          {
+            "text": "The generated editing steps offer better interpretability and ease for interactive error correction",
+            "evidence": "Extensive human evaluations further confirm its effectiveness"
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 73.08809780003503,
+      "prompt_tokens": 298,
+      "completion_tokens": 300,
+      "error": null
+    },
+    {
+      "id": "2301.00444",
+      "text": "Problem: There is a need for a comprehensive classification of identity management approaches\nMethod: The classification uses three axes: topology, type of user, and type of environment The IMC (Identity Management Cube) is used for the analysis of existing approaches A comparative analysis of IMC and established models is conducted\nResults: The trade-off between user control and trust in attributes is highlighted Missing links between the approaches are identified The IMC is extended by a morphology of identity management",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "There is a need for a comprehensive classification of identity management approaches",
+            "evidence": "This paper presents a comprehensive classification of identity management approaches."
+          }
+        ],
+        "method": [
+          {
+            "text": "The classification uses three axes: topology, type of user, and type of environment",
+            "evidence": "The classification makes use of three axes: topology, type of user, and type of environment."
+          },
+          {
+            "text": "The IMC (Identity Management Cube) is used for the analysis of existing approaches",
+            "evidence": "The analysis of existing approaches using the resulting identity management cube (IMC) highlights the trade-off between user control and trust in attributes."
+          },
+          {
+            "text": "A comparative analysis of IMC and established models is conducted",
+            "evidence": "A comparative analysis of IMC and established models identifies missing links between the approaches."
+          }
+        ],
+        "results": [
+          {
+            "text": "The trade-off between user control and trust in attributes is highlighted",
+            "evidence": "The analysis of existing approaches using the resulting identity management cube (IMC) highlights the trade-off between user control and trust in attributes."
+          },
+          {
+            "text": "Missing links between the approaches are identified",
+            "evidence": "A comparative analysis of IMC and established models identifies missing links between the approaches."
+          },
+          {
+            "text": "The IMC is extended by a morphology of identity management",
+            "evidence": "The morphology is then mapped to the life cycle of users and identity management in a further step."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 104.85032109997701,
+      "prompt_tokens": 331,
+      "completion_tokens": 476,
+      "error": null
+    },
+    {
+      "id": "2301.00363",
+      "text": "Problem: Lack of information on the distribution and growth of cashew trees across Benin\nMethod: Use of 2.4-m Planet Basemaps and 0.5-m aerial imagery, deep learning algorithms, and large-scale ground truth datasets to create a national map of cashew in Benin and characterize the expansion of cashew plantations between 2015 and 2021 Development of SpatioTemporal Classification with Attention (STCA) model and Clustering Augmented Self-supervised Temporal Classification (CASTC) model\nResults: The STCA model has an overall accuracy over 85% and the CASTC model achieved an overall accuracy of 76% The cashew area in Benin almost doubled from 2015 to 2021 60% of new plantation development came from cropland or fallow land Encroachment of cashew plantations into protected areas has increased by 55% Only half of cashew plantations were high-density in 2021",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Lack of information on the distribution and growth of cashew trees across Benin",
+            "evidence": "A lack of information on where and how cashew trees grow across the country hinders decision-making that could support increased cashew production and poverty alleviation."
+          }
+        ],
+        "method": [
+          {
+            "text": "Use of 2.4-m Planet Basemaps and 0.5-m aerial imagery, deep learning algorithms, and large-scale ground truth datasets to create a national map of cashew in Benin and characterize the expansion of cashew plantations between 2015 and 2021",
+            "evidence": "By leveraging 2.4-m Planet Basemaps and 0.5-m aerial imagery, newly developed deep learning algorithms, and large-scale ground truth datasets, we successfully produced the first national map of cashew in Benin and characterized the expansion of cashew plantations between 2015 and 2021."
+          },
+          {
+            "text": "Development of SpatioTemporal Classification with Attention (STCA) model and Clustering Augmented Self-supervised Temporal Classification (CASTC) model",
+            "evidence": "We developed a SpatioTemporal Classification with Attention (STCA) model to map the distribution of cashew plantations, which can fully capture texture information from discriminative time steps during a growing season. We further developed a Clustering Augmented Self-supervised Temporal Classification (CASTC) model to distinguish high-density versus low-density cashew plantations by automatic feature extraction and optimized clustering."
+          }
+        ],
+        "results": [
+          {
+            "text": "The STCA model has an overall accuracy over 85% and the CASTC model achieved an overall accuracy of 76%",
+            "evidence": "Results show that the STCA model has an overall accuracy over 85% and the CASTC model achieved an overall accuracy of 76%."
+          },
+          {
+            "text": "The cashew area in Benin almost doubled from 2015 to 2021",
+            "evidence": "We found that the cashew area in Benin almost doubled from 2015 to 2021"
+          },
+          {
+            "text": "60% of new plantation development came from cropland or fallow land",
+            "evidence": "60% of new plantation development coming from cropland or fallow land,"
+          },
+          {
+            "text": "Encroachment of cashew plantations into protected areas has increased by 55%",
+            "evidence": "encroachment of cashew plantations into protected areas has increased by 55%."
+          },
+          {
+            "text": "Only half of cashew plantations were high-density in 2021",
+            "evidence": "Only half of cashew plantations were high-density in 2021, suggesting high potential for intensification."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 205.5120784000028,
+      "prompt_tokens": 616,
+      "completion_tokens": 752,
+      "error": null
+    },
+    {
+      "id": "2301.01189",
+      "text": "Problem: The accumulation and maintenance of all datasets for rapid access is not sustainable due to monetary and ecological costs of maintaining repositories. There is a need to address the issue of cold data storage: when to dispose of data for offline storage.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The accumulation and maintenance of all datasets for rapid access is not sustainable due to monetary and ecological costs of maintaining repositories.",
+            "evidence": "Accessing research data at any time is what FAIR (Findable Accessible Interoperable Reusable) data sharing aims to achieve at scale. Yet, we argue that it is not sustainable to keep accumulating and maintaining all datasets for rapid access, considering the monetary and ecological cost of maintaining repositories."
+          },
+          {
+            "text": "There is a need to address the issue of cold data storage: when to dispose of data for offline storage.",
+            "evidence": "Here, we address the issue of cold data storage: when to dispose of data for offline storage,"
+          }
+        ],
+        "method": [],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "method",
+          "results",
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 112.29009259992745,
+      "prompt_tokens": 1225,
+      "completion_tokens": 440,
+      "error": null
+    },
+    {
+      "id": "2301.00979",
+      "text": "Problem: Benchmarking sequential recommendation models and improving existing models\nMethod: Analyzing advantages and disadvantages of commonly used loss functions in sequential recommendation Developing an improved loss function for sequential recommendation Conducting experiments on two influential open-source libraries\nResults: Improved performance of GRU4Rec, SASRec, SR-GNN, and S3Rec models Improved SASRec benchmark outperforms BERT4Rec on the ML-1M and Beauty datasets",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Benchmarking sequential recommendation models and improving existing models",
+            "evidence": "There has been a growing interest in benchmarking sequential recommendation models and reproducing/improving existing models."
+          }
+        ],
+        "method": [
+          {
+            "text": "Analyzing advantages and disadvantages of commonly used loss functions in sequential recommendation",
+            "evidence": "We analyzed the advantages and disadvantages of commonly used loss functions in sequential recommendation and proposed an improved loss function that leverages their strengths."
+          },
+          {
+            "text": "Developing an improved loss function for sequential recommendation",
+            "evidence": "Therefore, we analyzed the advantages and disadvantages of commonly used loss functions in sequential recommendation and proposed an improved loss function that leverages their strengths."
+          },
+          {
+            "text": "Conducting experiments on two influential open-source libraries",
+            "evidence": "We conduct extensive experiments on two influential open-source libraries,"
+          }
+        ],
+        "results": [
+          {
+            "text": "Improved performance of GRU4Rec, SASRec, SR-GNN, and S3Rec models",
+            "evidence": "the results demonstrate that our improved loss function significantly enhances the performance of GRU4Rec, SASRec, SR-GNN, and S3Rec models,"
+          },
+          {
+            "text": "Improved SASRec benchmark outperforms BERT4Rec on the ML-1M and Beauty datasets",
+            "evidence": "the improved SASRec benchmark outperforms BERT4Rec on the ML-1M and Beauty datasets and achieves similar results to BERT4Rec on the ML-20M and Steam datasets."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 143.27684609999415,
+      "prompt_tokens": 486,
+      "completion_tokens": 490,
+      "error": null
+    },
+    {
+      "id": "2301.00379",
+      "text": "Problem: The need for urgent implementation of UAVs in the agriculture sector Challenges in implementing agricultural UAVs in Indonesia\nMethod: Discussion of the application of UAVs in agriculture, particularly in spraying and crop monitoring Presentation of a short history of UAVs\nResults: UAVs are highly capable of increasing the productivity of the farm and reducing farmers' workload in agricultural applications",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The need for urgent implementation of UAVs in the agriculture sector",
+            "evidence": "This paper discusses the application of UAVs in agriculture, particularly in spraying and crop monitoring. This study examines the urgency of UAV implementation in the agriculture sector."
+          },
+          {
+            "text": "Challenges in implementing agricultural UAVs in Indonesia",
+            "evidence": "The challenges in implementing agricultural UAVs in Indonesia are also presented."
+          }
+        ],
+        "method": [
+          {
+            "text": "Discussion of the application of UAVs in agriculture, particularly in spraying and crop monitoring",
+            "evidence": "This paper discusses the application of UAVs in agriculture, particularly in spraying and crop monitoring."
+          },
+          {
+            "text": "Presentation of a short history of UAVs",
+            "evidence": "A short history of UAVs is provided in this paper to portray the development of UAVs from time to time."
+          }
+        ],
+        "results": [
+          {
+            "text": "UAVs are highly capable of increasing the productivity of the farm and reducing farmers' workload in agricultural applications",
+            "evidence": "In agricultural applications, UAVs are highly capable of increasing the productivity of the farm and reducing farmers' workload."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 2
+      },
+      "latency_s": 119.22812929993961,
+      "prompt_tokens": 417,
+      "completion_tokens": 458,
+      "error": null
+    },
+    {
+      "id": "2301.00374",
+      "text": "Problem: The problem is to automatically optimize the readability of any text in English.\nMethod: The method involves a genetic learning strategy to replace some existing words with their most suitable synonyms.\nResults: The results show that the method was able to optimize the degree of readability in all cases without significantly altering their form or meaning.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The problem is to automatically optimize the readability of any text in English.",
+            "evidence": "This research presents ORUGA, a method that tries to automatically optimize the readability of any text in English."
+          }
+        ],
+        "method": [
+          {
+            "text": "The method involves a genetic learning strategy to replace some existing words with their most suitable synonyms.",
+            "evidence": "The core idea behind the method is that certain factors affect the readability of a text, some of which are quantifiable (number of words, syllables, presence or absence of adverbs, and so on). The nature of these factors allows us to implement a genetic learning strategy to replace some existing words with their most suitable synonyms to facilitate optimization."
+          }
+        ],
+        "results": [
+          {
+            "text": "The results show that the method was able to optimize the degree of readability in all cases without significantly altering their form or meaning.",
+            "evidence": "An exhaustive study on a substantial number and diversity of texts confirms that our method was able to optimize the degree of readability in all cases without significantly altering their form or meaning."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 93.9338891999796,
+      "prompt_tokens": 395,
+      "completion_tokens": 373,
+      "error": null
+    },
+    {
+      "id": "2301.00479",
+      "text": "Problem: Lack of systematic studies on the design principle of blockchain as a trust engine for an integrated society of cyber-physical-social-system (CPSS) Controversy over whether blockchain lives up to its original design principle as a distributed database\nMethod: Hybrid method of qualitative and quantitative studies\nResults: Taxonomy of 7 categories in the current development of the blockchain community Research and practice are more centered around privacy and security and applicability Opportunities for future scholars, practitioners, and policy-makers in less exploited facets Conclusion that a synthetic solution that crosses discipline boundaries is necessary",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Lack of systematic studies on the design principle of blockchain as a trust engine for an integrated society of cyber-physical-social-system (CPSS)",
+            "evidence": "Systematic studies on the design principle of blockchain as a trust engine for an integrated society of cyber-physical-social-system (CPSS) are still absent."
+          },
+          {
+            "text": "Controversy over whether blockchain lives up to its original design principle as a distributed database",
+            "evidence": "the answer to whether blockchain lives up to its original design principle as a distributed database is controversial."
+          }
+        ],
+        "method": [
+          {
+            "text": "Hybrid method of qualitative and quantitative studies",
+            "evidence": "Using a hybrid method of qualitative and quantitative studies,"
+          }
+        ],
+        "results": [
+          {
+            "text": "Taxonomy of 7 categories in the current development of the blockchain community",
+            "evidence": "the current development of the blockchain community reveals a taxonomy of 7 categories, namely, privacy and security, scalability, decentralization, applicability, governance and regulation, system design, and cross-chain interoperability."
+          },
+          {
+            "text": "Research and practice are more centered around privacy and security and applicability",
+            "evidence": "Both research and practice are more centered around the first category of privacy and security and the fourth category of applicability."
+          },
+          {
+            "text": "Opportunities for future scholars, practitioners, and policy-makers in less exploited facets",
+            "evidence": "Future scholars, practitioners, and policy-makers have vast opportunities in other, much less exploited facets and the synthesis at the interface of multiple aspects."
+          },
+          {
+            "text": "Conclusion that a synthetic solution that crosses discipline boundaries is necessary",
+            "evidence": "Finally, in counter-examples, we conclude that a synthetic solution that crosses discipline boundaries is necessary to close the gaps between the current design of blockchain and the design principle of a trust engine for a truly intelligent world."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 140.26453309995122,
+      "prompt_tokens": 487,
+      "completion_tokens": 525,
+      "error": null
+    },
+    {
+      "id": "2301.00366",
+      "text": "Problem: The problem addressed in this paper is foreground object segmentation and generating realistic composite images without manual annotations.\nMethod: The method proposed is a self-supervised based Cut-and-Paste GAN, coupled with a U-Net based discriminator. The method learns semantic and structural information through pseudo labels created using the self-supervised task.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The problem addressed in this paper is foreground object segmentation and generating realistic composite images without manual annotations.",
+            "evidence": "a novel self-supervised based Cut-and-Paste GAN to perform foreground object segmentation and generate realistic composite images without manual annotations."
+          }
+        ],
+        "method": [
+          {
+            "text": "The method proposed is a self-supervised based Cut-and-Paste GAN, coupled with a U-Net based discriminator.",
+            "evidence": "a novel self-supervised based Cut-and-Paste GAN to perform foreground object segmentation and generate realistic composite images without manual annotations. We accomplish this goal by a simple yet effective self-supervised approach coupled with the U-Net based discriminator."
+          },
+          {
+            "text": "The method learns semantic and structural information through pseudo labels created using the self-supervised task.",
+            "evidence": "The proposed method extends the ability of the standard discriminators to learn not only the global data representations via classification (real/fake) but also learn semantic and structural information through pseudo labels created using the self-supervised task."
+          }
+        ],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "results",
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 104.03736769990064,
+      "prompt_tokens": 345,
+      "completion_tokens": 412,
+      "error": null
+    },
+    {
+      "id": "2301.01227",
+      "text": "Problem: Challenges impeding the use of FAIR knowledge graphs\nResults: Semantic units structure knowledge graphs, support making statements about statements, and can be used for various tasks",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Challenges impeding the use of FAIR knowledge graphs",
+            "evidence": "Knowledge graphs and ontologies are becoming increasingly important as technical solutions for Findable, Accessible, Interoperable, and Reusable data and metadata (FAIR Guiding Principles). We discuss four challenges that impede the use of FAIR knowledge graphs"
+          }
+        ],
+        "method": [],
+        "results": [
+          {
+            "text": "Semantic units structure knowledge graphs, support making statements about statements, and can be used for various tasks",
+            "evidence": "Semantic units structure a knowledge graph into identifiable and semantically meaningful subgraphs. Each unit is represented by its own resource, instantiates a corresponding semantic unit class, and can be implemented as a FAIR Digital Object and a nanopublication in RDF/OWL and property graphs. We distinguish statement and compound units as basic categories of semantic units. Statement units represent smallest, independent propositions that are semantically meaningful for a human reader. They consist of one or more triples and mathematically partition a knowledge graph. We distinguish assertional, contingent (prototypical), and universal statement units as basic types of statement units and propose representational schemes and formal semantics for them (including for absence statements, negations, and cardinality restrictions) that do not involve blank nodes and that translate back to OWL. Compound units, on the other hand, represent semantically meaningful collections of semantic units and we distinguish various types of compound units, representing different levels of representational granularity, different types of granularity trees, and different frames of reference. Semantic units support making statements about statements, can be used for graph-alignment, subgraph-matching, knowledge graph profiling, and for managing access restrictions to sensitive data."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 112.69719540001824,
+      "prompt_tokens": 553,
+      "completion_tokens": 478,
+      "error": null
+    },
+    {
+      "id": "2301.00993",
+      "text": "Problem: The paper identifies an issue with the common paradigm for offline evaluation of sequential recommender systems, specifically for reinforcement learning-based recommenders.\nMethod: The paper suggests that the existing offline evaluation practices for reinforcement learning-based recommendation are based on a next-item prediction protocol.\nResults: The paper outlines three shortcomings of the next-item prediction protocol for evaluating reinforcement learning-based recommenders. The paper mentions that this evaluation protocol cannot reflect the potential benefits of reinforcement learning and hides critical deficiencies of certain offline RL agents.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The paper identifies an issue with the common paradigm for offline evaluation of sequential recommender systems, specifically for reinforcement learning-based recommenders.",
+            "evidence": "In this paper, we argue that the paradigm commonly adopted for offline evaluation of sequential recommender systems is unsuitable for evaluating reinforcement learning-based recommenders."
+          }
+        ],
+        "method": [
+          {
+            "text": "The paper suggests that the existing offline evaluation practices for reinforcement learning-based recommendation are based on a next-item prediction protocol.",
+            "evidence": "We find that most of the existing offline evaluation practices for reinforcement learning-based recommendation are based on a next-item prediction protocol,"
+          }
+        ],
+        "results": [
+          {
+            "text": "The paper outlines three shortcomings of the next-item prediction protocol for evaluating reinforcement learning-based recommenders.",
+            "evidence": "detail three shortcomings of such an evaluation protocol."
+          },
+          {
+            "text": "The paper mentions that this evaluation protocol cannot reflect the potential benefits of reinforcement learning and hides critical deficiencies of certain offline RL agents.",
+            "evidence": "cannot reflect the potential benefits that reinforcement learning (RL) is expected to bring while it hides critical deficiencies of certain offline RL agents."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 76.96626510005444,
+      "prompt_tokens": 324,
+      "completion_tokens": 346,
+      "error": null
+    },
+    {
+      "id": "2301.00452",
+      "text": "Problem: The lack of support for human interactions through physical input devices in existing open-sourced simulators for surgical robot learning The need to investigate how human demonstrations affect policy learning in surgical robot learning\nMethod: Developing a new interactive simulation platform for surgical robot learning Establishing the platform based on the previously released SurRoL simulator with new features for high-quality human interaction\nResults: Improvement of the simulation environment with the designed new features Promising results in terms of learning efficiency",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The lack of support for human interactions through physical input devices in existing open-sourced simulators for surgical robot learning",
+            "evidence": "existing open-sourced simulators for surgical robot are still not sufficiently supporting human interactions through physical input devices"
+          },
+          {
+            "text": "The need to investigate how human demonstrations affect policy learning in surgical robot learning",
+            "evidence": "how the human demonstrations would affect policy learning"
+          }
+        ],
+        "method": [
+          {
+            "text": "Developing a new interactive simulation platform for surgical robot learning",
+            "evidence": "In this work, we study human-in-the-loop embodied intelligence with a new interactive simulation platform for surgical robot learning"
+          },
+          {
+            "text": "Establishing the platform based on the previously released SurRoL simulator with new features for high-quality human interaction",
+            "evidence": "Specifically, we establish our platform based on our previously released SurRoL simulator with several new features co-developed to allow high-quality human interaction via an input device"
+          }
+        ],
+        "results": [
+          {
+            "text": "Improvement of the simulation environment with the designed new features",
+            "evidence": "We showcase the improvement of our simulation environment with the designed new features"
+          },
+          {
+            "text": "Promising results in terms of learning efficiency",
+            "evidence": "Promising results are obtained in terms of learning efficiency"
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 106.08842089993414,
+      "prompt_tokens": 473,
+      "completion_tokens": 456,
+      "error": null
+    },
+    {
+      "id": "2301.00395",
+      "text": "Problem: There is a need for a Chinese corpus for gender bias probing and mitigation.\nMethod: The proposed Chinese corpus, CORGI-PM, contains 32.9k sentences with high-quality labels. The models are required to detect, classify, and mitigate textual gender bias. Experiments are conducted with state-of-the-art language models to provide baselines.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "There is a need for a Chinese corpus for gender bias probing and mitigation.",
+            "evidence": "To this end, we propose a Chinese corpus foR Gender bIas Probing and Mitigation CORGI-PM,"
+          }
+        ],
+        "method": [
+          {
+            "text": "The proposed Chinese corpus, CORGI-PM, contains 32.9k sentences with high-quality labels.",
+            "evidence": "which contains 32.9k sentences with high-quality labels"
+          },
+          {
+            "text": "The models are required to detect, classify, and mitigate textual gender bias.",
+            "evidence": "we address three challenges for automatic textual gender bias mitigation,"
+          },
+          {
+            "text": "Experiments are conducted with state-of-the-art language models to provide baselines.",
+            "evidence": "We also conduct experiments with state-of-the-art language models to provide baselines."
+          }
+        ],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "results",
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 85.71538459998555,
+      "prompt_tokens": 376,
+      "completion_tokens": 371,
+      "error": null
+    },
+    {
+      "id": "2301.00710",
+      "text": "Problem: Increased attacks on Internet services Need for a secure infrastructure Investigation of malicious activities in heiCLOUD Detecting attacks in restricted network zones at Heidelberg University Detecting honeypots at the transport level Mitigating attacks with a customized OpenSSH server\nMethod: Presenting a honeypot solution Creating a concept to discover leaks in the firewall Introducing a method for detecting honeypots at the transport level Presenting a customized OpenSSH server",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Increased attacks on Internet services",
+            "evidence": "In this age of digitalization, Internet services face more attacks than ever."
+          },
+          {
+            "text": "Need for a secure infrastructure",
+            "evidence": "how honeypots can contribute to a more secure infrastructure"
+          },
+          {
+            "text": "Investigation of malicious activities in heiCLOUD",
+            "evidence": "This thesis will present a honeypot solution to investigate malicious activities in heiCLOUD"
+          },
+          {
+            "text": "Detecting attacks in restricted network zones at Heidelberg University",
+            "evidence": "To detect attackers in restricted network zones at Heidelberg University"
+          },
+          {
+            "text": "Detecting honeypots at the transport level",
+            "evidence": "a method for detecting honeypots at the transport level"
+          },
+          {
+            "text": "Mitigating attacks with a customized OpenSSH server",
+            "evidence": "a customized OpenSSH server that works as an intermediary instance will be presented to mitigate these efforts."
+          }
+        ],
+        "method": [
+          {
+            "text": "Presenting a honeypot solution",
+            "evidence": "This thesis will present a honeypot solution to investigate malicious activities in heiCLOUD"
+          },
+          {
+            "text": "Creating a concept to discover leaks in the firewall",
+            "evidence": "Furthermore, to consider an attacker's point of view, a method for detecting honeypots at the transport level will be introduced."
+          },
+          {
+            "text": "Introducing a method for detecting honeypots at the transport level",
+            "evidence": "Furthermore, to consider an attacker's point of view, a method for detecting honeypots at the transport level will be introduced."
+          },
+          {
+            "text": "Presenting a customized OpenSSH server",
+            "evidence": "a customized OpenSSH server that works as an intermediary instance will be presented to mitigate these efforts."
+          }
+        ],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 150.31396640010644,
+      "prompt_tokens": 407,
+      "completion_tokens": 607,
+      "error": null
+    },
+    {
+      "id": "2301.00371",
+      "text": "Problem: Improving the generalization of detectors on target domain Reducing discrepancy in feature distributions between two domains\nMethod: Unified multi-granularity alignment (MGA)-based detection framework Omni-scale gated fusion (OSGF) module Multi-granularity discriminators Adaptive exponential moving average (AEMA) strategy\nResults: Superiority of MGA over other approaches on FCOS and Faster R-CNN detectors",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Improving the generalization of detectors on target domain",
+            "evidence": "Domain adaptive detection aims to improve the generalization of detectors on target domain."
+          },
+          {
+            "text": "Reducing discrepancy in feature distributions between two domains",
+            "evidence": "To reduce discrepancy in feature distributions between two domains,"
+          }
+        ],
+        "method": [
+          {
+            "text": "Unified multi-granularity alignment (MGA)-based detection framework",
+            "evidence": "we introduce a unified multi-granularity alignment (MGA)-based detection framework for domain-invariant feature learning."
+          },
+          {
+            "text": "Omni-scale gated fusion (OSGF) module",
+            "evidence": "Based on pixel-level features, we first develop an omni-scale gated fusion (OSGF) module to aggregate discriminative representations of instances with scale-aware convolutions,"
+          },
+          {
+            "text": "Multi-granularity discriminators",
+            "evidence": "we introduce multi-granularity discriminators to identify where, either source or target domains,"
+          },
+          {
+            "text": "Adaptive exponential moving average (AEMA) strategy",
+            "evidence": "Furthermore, we present an adaptive exponential moving average (AEMA) strategy that explores model assessments for model update to improve pseudo labels and alleviate local misalignment problem,"
+          }
+        ],
+        "results": [
+          {
+            "text": "Superiority of MGA over other approaches on FCOS and Faster R-CNN detectors",
+            "evidence": "Extensive experiments on multiple domain adaption scenarios validate the superiority of MGA over other approaches on FCOS and Faster R-CNN detectors."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 115.39999079995323,
+      "prompt_tokens": 516,
+      "completion_tokens": 467,
+      "error": null
+    },
+    {
+      "id": "2301.01228",
+      "text": "Problem: The significance of data within the machine learning (ML) pipeline is highlighted in data-centric AI. There is a need to optimize the building of datasets for NLP products in the industry.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The significance of data within the machine learning (ML) pipeline is highlighted in data-centric AI.",
+            "evidence": "Data-centric AI has shed light on the significance of data within the machine learning (ML) pipeline."
+          },
+          {
+            "text": "There is a need to optimize the building of datasets for NLP products in the industry.",
+            "evidence": "The ability to build a dataset has become more critical than ever, especially in the industry."
+          }
+        ],
+        "method": [],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "results",
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 55.68007800006308,
+      "prompt_tokens": 318,
+      "completion_tokens": 238,
+      "error": null
+    },
+    {
+      "id": "2301.01037",
+      "text": "Problem: Adapting a real-time recommender system to multiple application domains\nMethod: Presenting Uptrendz, a multi-domain recommendation platform Customizing Uptrendz for real-time recommendations in an API-centric way Setting up a real-time movie recommender using the MovieLens-100k dataset Supporting multiple application domains based on entrepreneurial start-up founding Differentiating between domains on the item- and system-level\nResults: Demonstration of a convenient way to adapt, deploy and evaluate a recommender system in an API-centric way Availability of source-code and documentation on GitHub",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Adapting a real-time recommender system to multiple application domains",
+            "evidence": "In this work, we tackle the problem of adapting a real-time recommender system to multiple application domains,"
+          }
+        ],
+        "method": [
+          {
+            "text": "Presenting Uptrendz, a multi-domain recommendation platform",
+            "evidence": "We present Uptrendz, a multi-domain recommendation platform"
+          },
+          {
+            "text": "Customizing Uptrendz for real-time recommendations in an API-centric way",
+            "evidence": "that can be customized to provide real-time recommendations in an API-centric way"
+          },
+          {
+            "text": "Setting up a real-time movie recommender using the MovieLens-100k dataset",
+            "evidence": "We demonstrate (i) how to set up a real-time movie recommender using the popular MovieLens-100k dataset,"
+          },
+          {
+            "text": "Supporting multiple application domains based on entrepreneurial start-up founding",
+            "evidence": "and (ii) how to simultaneously support multiple application domains based on the use-case of recommendations in entrepreneurial start-up founding."
+          },
+          {
+            "text": "Differentiating between domains on the item- and system-level",
+            "evidence": "We differentiate between domains on the item- and system-level."
+          }
+        ],
+        "results": [
+          {
+            "text": "Demonstration of a convenient way to adapt, deploy and evaluate a recommender system in an API-centric way",
+            "evidence": "We believe that our demonstration shows a convenient way to adapt, deploy and evaluate a recommender system in an API-centric way."
+          },
+          {
+            "text": "Availability of source-code and documentation on GitHub",
+            "evidence": "The source-code and documentation that demonstrates how to utilize the configured Uptrendz API is available on GitHub."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 141.63248459994793,
+      "prompt_tokens": 374,
+      "completion_tokens": 510,
+      "error": null
+    },
+    {
+      "id": "2301.00521",
+      "text": "Method: The method is a policy optimization technique incorporating sampling-based Lyapunov stability. The development of the Adaptive Lyapunov-based Actor-Critic (ALAC) algorithm.\nResults: The results show significant outperformance of the approach on ten robotic tasks compared to previous studies.",
+      "structured": {
+        "overview": "",
+        "problem": [],
+        "method": [
+          {
+            "text": "The method is a policy optimization technique incorporating sampling-based Lyapunov stability.",
+            "evidence": "In this paper, we propose a policy optimization technique incorporating sampling-based Lyapunov stability."
+          },
+          {
+            "text": "The development of the Adaptive Lyapunov-based Actor-Critic (ALAC) algorithm.",
+            "evidence": "To achieve this, we integrate the optimization method into the Actor-Critic framework, resulting in the development of the Adaptive Lyapunov-based Actor-Critic (ALAC) algorithm."
+          }
+        ],
+        "results": [
+          {
+            "text": "The results show significant outperformance of the approach on ten robotic tasks compared to previous studies.",
+            "evidence": "Through evaluations conducted on ten robotic tasks, our approach outperforms previous studies significantly, effectively guiding the system to generate stable patterns."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 93.55675170000177,
+      "prompt_tokens": 367,
+      "completion_tokens": 363,
+      "error": null
+    },
+    {
+      "id": "2301.00397",
+      "text": "",
+      "structured": null,
+      "latency_s": 501.4849387999857,
+      "prompt_tokens": 3327,
+      "completion_tokens": 1737,
+      "error": "no valid JSON after 3 attempts: Invalid \\escape: line 5 column 256 (char 443)"
+    },
+    {
+      "id": "2301.00823",
+      "text": "Problem: Digital identity management for individuals is inconvenient, error-prone, creates lock-in effects, violates privacy, and security expectations. These issues inhibit the digital transformation and are particularly concerning in the context of novel applications.\nMethod: Several academic works and practical solutions exist to reduce or avoid excessive information disclosure.\nResults: The SSI solutions that are currently built with anonymous credentials still lack essential features such as scalable revocation, certificate chaining, and integration with secure elements. General-purpose ZKPs can appropriately address these pressing challenges. The performance of zk-SNARK-based anonymous credentials is already practical.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Digital identity management for individuals is inconvenient, error-prone, creates lock-in effects, violates privacy, and security expectations.",
+            "evidence": "Today, digital identity management for individuals is either inconvenient and error-prone or creates undesirable lock-in effects and violates privacy and security expectations."
+          },
+          {
+            "text": "These issues inhibit the digital transformation and are particularly concerning in the context of novel applications.",
+            "evidence": "These shortcomings inhibit the digital transformation in general and seem particularly concerning in the context of novel applications such as access control for decentralized autonomous organizations and identification in the Metaverse."
+          }
+        ],
+        "method": [
+          {
+            "text": "Several academic works and practical solutions exist to reduce or avoid excessive information disclosure.",
+            "evidence": "Several academic works and practical solutions exist to reduce or avoid such excessive information disclosure,"
+          }
+        ],
+        "results": [
+          {
+            "text": "The SSI solutions that are currently built with anonymous credentials still lack essential features such as scalable revocation, certificate chaining, and integration with secure elements.",
+            "evidence": "We first demonstrate that the SSI solutions that are currently built with anonymous credentials still lack essential features such as scalable revocation, certificate chaining, and integration with secure elements."
+          },
+          {
+            "text": "General-purpose ZKPs can appropriately address these pressing challenges.",
+            "evidence": "We then argue that general-purpose ZKPs in the form of zk-SNARKs can appropriately address these pressing challenges."
+          },
+          {
+            "text": "The performance of zk-SNARK-based anonymous credentials is already practical.",
+            "evidence": "We describe our implementation and conduct performance tests on different edge devices to illustrate that the performance of zk-SNARK-based anonymous credentials is already practical."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 2
+      },
+      "latency_s": 156.8573531000875,
+      "prompt_tokens": 542,
+      "completion_tokens": 637,
+      "error": null
+    },
+    {
+      "id": "2301.00394",
+      "text": "Problem: Partitioning humans in images or videos into multiple pixel-level semantic parts Confusion about important concepts, existing challenges, and potential research directions in human parsing Lack of understanding in single human parsing, multiple human parsing, and video human parsing\nMethod: Comprehensive review of three core sub-tasks of human parsing Quantitative performance comparisons of reviewed methods on benchmark datasets\nResults: Introduction of respective task settings, background concepts, relevant problems and applications, representative literature, and datasets for each sub-task Quantitative performance comparisons of the reviewed methods on benchmark datasets Provision of a regularly updated project page",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Partitioning humans in images or videos into multiple pixel-level semantic parts",
+            "evidence": "Human parsing aims to partition humans in image or video into multiple pixel-level semantic parts."
+          },
+          {
+            "text": "Confusion about important concepts, existing challenges, and potential research directions in human parsing",
+            "evidence": "Although deep learning-based human parsing solutions have made remarkable achievements, many important concepts, existing challenges, and potential research directions are still confusing."
+          },
+          {
+            "text": "Lack of understanding in single human parsing, multiple human parsing, and video human parsing",
+            "evidence": "In this survey, we comprehensively review three core sub-tasks: single human parsing, multiple human parsing, and video human parsing,"
+          }
+        ],
+        "method": [
+          {
+            "text": "Comprehensive review of three core sub-tasks of human parsing",
+            "evidence": "In this survey, we comprehensively review three core sub-tasks: single human parsing, multiple human parsing, and video human parsing,"
+          },
+          {
+            "text": "Quantitative performance comparisons of reviewed methods on benchmark datasets",
+            "evidence": "We also present quantitative performance comparisons of the reviewed methods on benchmark datasets."
+          }
+        ],
+        "results": [
+          {
+            "text": "Introduction of respective task settings, background concepts, relevant problems and applications, representative literature, and datasets for each sub-task",
+            "evidence": "We comprehensively review three core sub-tasks: single human parsing, multiple human parsing, and video human parsing, by introducing their respective task settings, background concepts, relevant problems and applications, representative literature, and datasets."
+          },
+          {
+            "text": "Quantitative performance comparisons of the reviewed methods on benchmark datasets",
+            "evidence": "We also present quantitative performance comparisons of the reviewed methods on benchmark datasets."
+          },
+          {
+            "text": "Provision of a regularly updated project page",
+            "evidence": "We also provide a regularly updated project page, to continuously track recent developments in this fast-advancing field: https://github.com/soeaver/awesome-human-parsing."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 150.2319172999123,
+      "prompt_tokens": 456,
+      "completion_tokens": 606,
+      "error": null
+    },
+    {
+      "id": "2301.02182",
+      "text": "Problem: Learning process models from observed behaviors (event logs) in information systems Addressing performance and compliance problems using discovered models Comparing the algorithm applying synthesis rules from the free-choice net theory with Inductive Miner Investigating the effect of different ordering strategies on the discovered models, quality, and computation time\nMethod: Applying synthesis rules from the free-choice net theory to discover process models\nResults: Proposed ordering strategy improves the quality of the resulting process models and requires less time",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Learning process models from observed behaviors (event logs) in information systems",
+            "evidence": "Process discovery aims to learn process models from observed behaviors, i.e., event logs, in the information systems."
+          },
+          {
+            "text": "Addressing performance and compliance problems using discovered models",
+            "evidence": "The discovered models serve as the starting point for process mining techniques that are used to address performance and compliance problems."
+          },
+          {
+            "text": "Comparing the algorithm applying synthesis rules from the free-choice net theory with Inductive Miner",
+            "evidence": "Compared to the state-of-the-art Inductive Miner, the algorithm applying synthesis rules from the free-choice net theory discovers process models with more flexible (non-block) structures while ensuring the same desirable soundness and free-choiceness properties."
+          },
+          {
+            "text": "Investigating the effect of different ordering strategies on the discovered models, quality, and computation time",
+            "evidence": "In this paper, we investigate the effect of different ordering strategies on the discovered models (w.r.t. fitness and precision) and the computation time using real-life event data."
+          }
+        ],
+        "method": [
+          {
+            "text": "Applying synthesis rules from the free-choice net theory to discover process models",
+            "evidence": "Following the synthesis rules, the algorithm incrementally modifies an existing process model by adding the activities in the event log one at a time."
+          }
+        ],
+        "results": [
+          {
+            "text": "Proposed ordering strategy improves the quality of the resulting process models and requires less time",
+            "evidence": "The results show that the proposed ordering strategy can improve the quality of the resulting process models while requiring less time compared to the ordering strategy solely based on the frequency of activities."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 121.6709348000586,
+      "prompt_tokens": 431,
+      "completion_tokens": 466,
+      "error": null
+    },
+    {
+      "id": "2301.01737",
+      "text": "Problem: Recommender systems have a problem with highly sparse historical interaction data and the discovery of novel or cold-start items.\nMethod: We build upon the classical Two-Tower model and introduce the novel Multi-Source Augmentations using a Contrastive Learning framework (MSACL) to enhance episode embedding learning.\nResults: Extensive experiments on a real-world podcast recommendation dataset from a large audio streaming platform demonstrate the effectiveness of the proposed framework for user podcast exploration and cold-start episode recommendation.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Recommender systems have a problem with highly sparse historical interaction data and the discovery of novel or cold-start items.",
+            "evidence": "Recommender systems (RS) commonly retrieve potential candidate items for users from a massive number of items by modeling user interests based on historical interactions. However, historical interaction data is highly sparse, and most items are long-tail items,"
+          }
+        ],
+        "method": [
+          {
+            "text": "We build upon the classical Two-Tower model and introduce the novel Multi-Source Augmentations using a Contrastive Learning framework (MSACL) to enhance episode embedding learning.",
+            "evidence": "Accordingly, we build upon the classical Two-Tower model and introduce the novel Multi-Source Augmentations using a Contrastive Learning framework (MSACL) to enhance episode embedding learning by incorporating positive episodes from numerous correlated semantics."
+          }
+        ],
+        "results": [
+          {
+            "text": "Extensive experiments on a real-world podcast recommendation dataset from a large audio streaming platform demonstrate the effectiveness of the proposed framework for user podcast exploration and cold-start episode recommendation.",
+            "evidence": "Extensive experiments on a real-world podcast recommendation dataset from a large audio streaming platform demonstrate the effectiveness of the proposed framework for user podcast exploration and cold-start episode recommendation."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 102.68135389999952,
+      "prompt_tokens": 401,
+      "completion_tokens": 399,
+      "error": null
+    },
+    {
+      "id": "2301.00523",
+      "text": "Problem: Realizing highly efficient information-theoretic robot exploration in complex scenes\nMethod: Building a continuous lightweight inference model to predict the mutual information and prediction confidence of the robot's candidate actions Developing an objective function to balance the local optimal action with the highest MI value and the global choice with high prediction variance\nResults: Desired efficiency of the proposed method without losing exploration performance in different environments",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Realizing highly efficient information-theoretic robot exploration in complex scenes",
+            "evidence": "This paper concerns realizing highly efficient information-theoretic robot exploration with desired performance in complex scenes."
+          }
+        ],
+        "method": [
+          {
+            "text": "Building a continuous lightweight inference model to predict the mutual information and prediction confidence of the robot's candidate actions",
+            "evidence": "We build a continuous lightweight inference model to predict the mutual information (MI) and the associated prediction confidence of the robot's candidate actions"
+          },
+          {
+            "text": "Developing an objective function to balance the local optimal action with the highest MI value and the global choice with high prediction variance",
+            "evidence": "We also develop an objective function to balance the local optimal action with the highest MI value and the global choice with high prediction variance."
+          }
+        ],
+        "results": [
+          {
+            "text": "Desired efficiency of the proposed method without losing exploration performance in different environments",
+            "evidence": "Extensive numerical and dataset simulations show the desired efficiency of our proposed method without losing exploration performance in different environments."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 86.32829859992489,
+      "prompt_tokens": 347,
+      "completion_tokens": 297,
+      "error": null
+    },
+    {
+      "id": "2301.00399",
+      "text": "Problem: The paper addresses semantic parsing challenges\nMethod: QDMR formalism in semantic parsing is implemented using sequence to sequence model with attention",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The paper addresses semantic parsing challenges",
+            "evidence": "In the present paper, semantic parsing challenges are briefly introduced"
+          }
+        ],
+        "method": [
+          {
+            "text": "QDMR formalism in semantic parsing is implemented using sequence to sequence model with attention",
+            "evidence": "QDMR formalism in semantic parsing is implemented using sequence to sequence model with attention"
+          }
+        ],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "results",
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 45.414620400057174,
+      "prompt_tokens": 281,
+      "completion_tokens": 191,
+      "error": null
+    },
+    {
+      "id": "2301.00888",
+      "text": "Problem: Edge computing models offload computing which is prone to security risks and privacy violation. Current real-time monitoring systems are costly and require continuous network connectivity.\nMethod: This research introduces a decentralized-control edge model where most computation and decisions are moved to the IoT level. The model aims at decreasing communication to the edge which in return enhances efficiency and decreases latency. The model also avoids data transfer which raises security and privacy risks. The system uses optimized deep learning that run locally on IoTs to detect violations in ridesharing and record violation incidences.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "Edge computing models offload computing which is prone to security risks and privacy violation.",
+            "evidence": "Edge computing is changing the face of many industries and services. Common edge computing models offload computing which is prone to security risks and privacy violation."
+          },
+          {
+            "text": "Current real-time monitoring systems are costly and require continuous network connectivity.",
+            "evidence": "Current real-time monitoring systems are costly and require continuous network connectivity."
+          }
+        ],
+        "method": [
+          {
+            "text": "This research introduces a decentralized-control edge model where most computation and decisions are moved to the IoT level.",
+            "evidence": "This research introduces a decentralized-control edge model where most computation and decisions are moved to the IoT level."
+          },
+          {
+            "text": "The model aims at decreasing communication to the edge which in return enhances efficiency and decreases latency.",
+            "evidence": "The model aims at decreasing communication to the edge which in return enhances efficiency and decreases latency."
+          },
+          {
+            "text": "The model also avoids data transfer which raises security and privacy risks.",
+            "evidence": "The model also avoids data transfer which raises security and privacy risks."
+          },
+          {
+            "text": "The system uses optimized deep learning that run locally on IoTs to detect violations in ridesharing and record violation incidences.",
+            "evidence": "The system uses optimized deep learning that run locally on IoTs to detect violations in ridesharing and record violation incidences."
+          }
+        ],
+        "results": [],
+        "limitations": [],
+        "not_stated": [
+          "results",
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 225.6940991000738,
+      "prompt_tokens": 1237,
+      "completion_tokens": 831,
+      "error": null
+    },
+    {
+      "id": "2301.00406",
+      "text": "Problem: The reconstruction problem from under-sampled scanning data in NLOS imaging becomes ill-posed and degraded due to noises and distortions.\nMethod: Proposal of novel NLOS reconstruction models based on curvature regularization, specifically the object-domain curvature regularization model and the dual (signal and object)-domain curvature regularization model. Development of efficient optimization algorithms relying on the alternating direction method of multipliers (ADMM) with the backtracking stepsize rule.\nResults: Achievement of state-of-the-art performance, especially in the compressed sensing setting.",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The reconstruction problem from under-sampled scanning data in NLOS imaging becomes ill-posed and degraded due to noises and distortions.",
+            "evidence": "The under-sampled scanning data can facilitate fast imaging. However, the resulting reconstruction problem becomes a serious ill-posed inverse problem, the solution of which is highly possibility to be degraded due to noises and distortions."
+          }
+        ],
+        "method": [
+          {
+            "text": "Proposal of novel NLOS reconstruction models based on curvature regularization, specifically the object-domain curvature regularization model and the dual (signal and object)-domain curvature regularization model.",
+            "evidence": "In this paper, we propose novel NLOS reconstruction models based on curvature regularization, i.e., the object-domain curvature regularization model and the dual (signal and object)-domain curvature regularization model."
+          },
+          {
+            "text": "Development of efficient optimization algorithms relying on the alternating direction method of multipliers (ADMM) with the backtracking stepsize rule.",
+            "evidence": "We develop efficient optimization algorithms relying on the alternating direction method of multipliers (ADMM) with the backtracking stepsize rule, for which all solvers can be implemented on GPUs."
+          }
+        ],
+        "results": [
+          {
+            "text": "Achievement of state-of-the-art performance, especially in the compressed sensing setting.",
+            "evidence": "Based on GPU computing, our algorithm is the most effective among iterative methods, balancing reconstruction quality and computational time. All our codes and data are available at https://github.com/Duanlab123/CurvNLOS."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 0
+      },
+      "latency_s": 115.88345840002876,
+      "prompt_tokens": 462,
+      "completion_tokens": 435,
+      "error": null
+    },
+    {
+      "id": "2301.02185",
+      "text": "Problem: The problem is to discover process models that can explain the behaviors of event logs extracted from information systems The challenge is to discover models that allow for non-block structures while maintaining soundness and free-choice\nMethod: The proposed approach incrementally adds activities to an existing process model with predefined patterns The resulting models are always sound and free-choice The approach has been implemented in Python and tested using various real-life event logs\nResults: The experiments show that the approach can discover models with competitive quality and more flexible structures compared to the existing approach",
+      "structured": {
+        "overview": "",
+        "problem": [
+          {
+            "text": "The problem is to discover process models that can explain the behaviors of event logs extracted from information systems",
+            "evidence": "Process discovery aims to discover models that can explain the behaviors of event logs extracted from information systems."
+          },
+          {
+            "text": "The challenge is to discover models that allow for non-block structures while maintaining soundness and free-choice",
+            "evidence": "To support a more flexible structural representation, we aim to discover process models that provide the same guarantees but also allow for non-block structures."
+          }
+        ],
+        "method": [
+          {
+            "text": "The proposed approach incrementally adds activities to an existing process model with predefined patterns",
+            "evidence": "inspired by existing works that utilize synthesis rules from the free-choice nets theory, we propose an automatic approach that incrementally adds activities to an existing process model with predefined patterns."
+          },
+          {
+            "text": "The resulting models are always sound and free-choice",
+            "evidence": "Playing by the rules ensures that the resulting models are always sound and free-choice."
+          },
+          {
+            "text": "The approach has been implemented in Python and tested using various real-life event logs",
+            "evidence": "The approach has been implemented in Python and tested using various real-life event logs."
+          }
+        ],
+        "results": [
+          {
+            "text": "The experiments show that the approach can discover models with competitive quality and more flexible structures compared to the existing approach",
+            "evidence": "The experiments show that our approach can indeed discover models with competitive quality and more flexible structures compared to the existing approach."
+          }
+        ],
+        "limitations": [],
+        "not_stated": [
+          "limitations"
+        ],
+        "unverified_claims": 1
+      },
+      "latency_s": 116.5085649000248,
+      "prompt_tokens": 429,
+      "completion_tokens": 463,
+      "error": null
+    }
+  ]
+}

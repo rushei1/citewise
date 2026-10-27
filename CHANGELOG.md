@@ -16,6 +16,7 @@ Entries follow the commit history of this repository. Dates are omitted because 
 - Architecture doc, research write-up draft, Hugging Face Spaces deployment files (not deployed), contributing guide and issue templates.
 
 ### Changed
+- The project is now called **Citewise** (previously "Lazy Researcher Toolkit"); the repository URL is unchanged until the GitHub repository is renamed.
 - Papers are embedded from `title + abstract` instead of the generated summary.
 - The review cache key includes the summarizer, cluster method and cluster count.
 

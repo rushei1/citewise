@@ -19,3 +19,7 @@ jobs:
       - run: ruff check .
       - run: ruff format --check .
       - run: pytest --cov=app --cov-report=term-missing
+      # Model-free smoke test of the evaluation code path (not real results).
+      - run: python -m eval.run_clustering --quick
+      - run: python -m eval.run_summarization --quick
+      - run: python -m eval.report --quick

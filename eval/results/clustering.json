@@ -1,0 +1,1258 @@
+{
+  "meta": {
+    "date": "2026-10-27 07:55 UTC",
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.0.2",
+      "scikit-learn": "1.6.1",
+      "scipy": "1.17.1",
+      "sentence-transformers": "5.0.0",
+      "transformers": "4.53.2",
+      "torch": "2.7.1+cpu",
+      "arxiv": "2.2.0"
+    },
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "quick": false,
+    "embedding_models": [
+      "all-MiniLM-L6-v2",
+      "all-mpnet-base-v2",
+      "allenai-specter",
+      "BAAI/bge-small-en-v1.5"
+    ],
+    "note": null
+  },
+  "part_a": {
+    "description": "Proxy benchmark: ground truth = arXiv primary category.",
+    "n_papers": 180,
+    "n_classes": 6,
+    "results": [
+      {
+        "embedding": "all-MiniLM-L6-v2",
+        "method": "kmeans",
+        "k_mode": "k=true",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.5992102247719376,
+          "std": 0.05479691161727603
+        },
+        "nmi": {
+          "mean": 0.66957779111364,
+          "std": 0.038971404933984745
+        },
+        "homogeneity": {
+          "mean": 0.661957199117218,
+          "std": 0.04129807721532732
+        },
+        "completeness": {
+          "mean": 0.6774229450203788,
+          "std": 0.036724438913389314
+        },
+        "silhouette": {
+          "mean": 0.07008422779445837,
+          "std": 0.003929292519652938
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.19426942002028227,
+          "std": 0.3783210678131359
+        }
+      },
+      {
+        "embedding": "all-MiniLM-L6-v2",
+        "method": "kmeans",
+        "k_mode": "auto",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.6101012222332822,
+          "std": 0.06815262891157446
+        },
+        "nmi": {
+          "mean": 0.6817960256779421,
+          "std": 0.05208997681868969
+        },
+        "homogeneity": {
+          "mean": 0.6960640674334236,
+          "std": 0.06352846115461121
+        },
+        "completeness": {
+          "mean": 0.6691040431925226,
+          "std": 0.04580103608531496
+        },
+        "silhouette": {
+          "mean": 0.07230016807637143,
+          "std": 0.0018412122939031395
+        },
+        "n_clusters": {
+          "mean": 6.8,
+          "std": 0.7483314773547882
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.04781248001381755,
+          "std": 0.0013659477033706338
+        }
+      },
+      {
+        "embedding": "all-MiniLM-L6-v2",
+        "method": "agglomerative",
+        "k_mode": "k=true",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.7016848611423998,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.7508094195670083,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.7437209183190675,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.7580343439447966,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.0648813421053097,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.1176891999784857,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-MiniLM-L6-v2",
+        "method": "agglomerative",
+        "k_mode": "auto",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.613304547149266,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.713827720709736,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.7548923405382688,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.6770002721998254,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.06949794422685665,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 8.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.03504029999021441,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-MiniLM-L6-v2",
+        "method": "hdbscan",
+        "k_mode": "n/a",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": null,
+          "std": null
+        },
+        "n_clusters": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.029164299950934947,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-MiniLM-L6-v2",
+        "method": "hdbscan",
+        "k_mode": "mcs=5",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.05136902386862227,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.1272712069990944,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.09397514886691409,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.19710794079789043,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.02020141991551527,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 2.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.5111111111111111,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.026898100040853024,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-MiniLM-L6-v2",
+        "method": "hdbscan",
+        "k_mode": "mcs=10",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": null,
+          "std": null
+        },
+        "n_clusters": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.025484699988737702,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-MiniLM-L6-v2",
+        "method": "bertopic",
+        "k_mode": "n/a",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.2336189446726932,
+          "std": 0.16208283477071253
+        },
+        "nmi": {
+          "mean": 0.3871691807501676,
+          "std": 0.16907597721285078
+        },
+        "homogeneity": {
+          "mean": 0.3083683081389051,
+          "std": 0.16244964281360433
+        },
+        "completeness": {
+          "mean": 0.5911266547865198,
+          "std": 0.07513199458135221
+        },
+        "silhouette": {
+          "mean": 0.019880314554849992,
+          "std": 0.020212225088890565
+        },
+        "n_clusters": {
+          "mean": 2.6,
+          "std": 0.4898979485566356
+        },
+        "noise_fraction": {
+          "mean": 0.08333333333333334,
+          "std": 0.07260581890090906
+        },
+        "runtime_s": {
+          "mean": 2.683304960024543,
+          "std": 4.680508161221181
+        }
+      },
+      {
+        "embedding": "all-mpnet-base-v2",
+        "method": "kmeans",
+        "k_mode": "k=true",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.5554016253291072,
+          "std": 0.09579574392333977
+        },
+        "nmi": {
+          "mean": 0.6562987905305622,
+          "std": 0.07052865117316878
+        },
+        "homogeneity": {
+          "mean": 0.6430894937545695,
+          "std": 0.07384870602463053
+        },
+        "completeness": {
+          "mean": 0.670216136665884,
+          "std": 0.06729955978235982
+        },
+        "silhouette": {
+          "mean": 0.06838504687864638,
+          "std": 0.01110415658550568
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.007454500021412969,
+          "std": 0.00039694169444327176
+        }
+      },
+      {
+        "embedding": "all-mpnet-base-v2",
+        "method": "kmeans",
+        "k_mode": "auto",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.5531767716732028,
+          "std": 0.142024945372342
+        },
+        "nmi": {
+          "mean": 0.6644562345666254,
+          "std": 0.09357560546327799
+        },
+        "homogeneity": {
+          "mean": 0.6202394440418142,
+          "std": 0.14780640863487093
+        },
+        "completeness": {
+          "mean": 0.7419867436957392,
+          "std": 0.04555873591085227
+        },
+        "silhouette": {
+          "mean": 0.07747309835119506,
+          "std": 0.003365855580561665
+        },
+        "n_clusters": {
+          "mean": 5.0,
+          "std": 1.6733200530681511
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.0685563599690795,
+          "std": 0.005212060611509355
+        }
+      },
+      {
+        "embedding": "all-mpnet-base-v2",
+        "method": "agglomerative",
+        "k_mode": "k=true",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.6969389742642101,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.7536570226780224,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.7476151176513787,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.7597973795250109,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.0721618371986157,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.01002589997369796,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-mpnet-base-v2",
+        "method": "agglomerative",
+        "k_mode": "auto",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.6046497273390872,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.718749743673175,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.7590935881352365,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.6824778270934269,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.07682393927267574,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 8.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.08268330001737922,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-mpnet-base-v2",
+        "method": "hdbscan",
+        "k_mode": "n/a",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": null,
+          "std": null
+        },
+        "n_clusters": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.052811200032010674,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-mpnet-base-v2",
+        "method": "hdbscan",
+        "k_mode": "mcs=5",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.08714757717098955,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.22026315516053707,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.1723021311290266,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.3052233644147932,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.02623122886639345,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 3.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.4722222222222222,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.05120420001912862,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-mpnet-base-v2",
+        "method": "hdbscan",
+        "k_mode": "mcs=10",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": null,
+          "std": null
+        },
+        "n_clusters": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.05194969999138266,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "all-mpnet-base-v2",
+        "method": "bertopic",
+        "k_mode": "n/a",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.5036832853397962,
+          "std": 0.010567855322838817
+        },
+        "nmi": {
+          "mean": 0.6894502102614866,
+          "std": 0.006073791344171402
+        },
+        "homogeneity": {
+          "mean": 0.5939082702324593,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.8218328515574755,
+          "std": 0.017064392440923608
+        },
+        "silhouette": {
+          "mean": 0.03953073575036869,
+          "std": 0.012060975349070203
+        },
+        "n_clusters": {
+          "mean": 4.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0077777777777777776,
+          "std": 0.01030402055055078
+        },
+        "runtime_s": {
+          "mean": 0.3955125199863687,
+          "std": 0.03880082855966742
+        }
+      },
+      {
+        "embedding": "allenai-specter",
+        "method": "kmeans",
+        "k_mode": "k=true",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.5146750401637584,
+          "std": 0.0503130230485458
+        },
+        "nmi": {
+          "mean": 0.6266036921801058,
+          "std": 0.024234947919400594
+        },
+        "homogeneity": {
+          "mean": 0.6119072125044516,
+          "std": 0.0339253233821278
+        },
+        "completeness": {
+          "mean": 0.6424278818331256,
+          "std": 0.013585389396605618
+        },
+        "silhouette": {
+          "mean": 0.08870622216125368,
+          "std": 0.0067295888059083035
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.008383919997140766,
+          "std": 0.0012134212406375046
+        }
+      },
+      {
+        "embedding": "allenai-specter",
+        "method": "kmeans",
+        "k_mode": "auto",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.5408994749904219,
+          "std": 0.04232576101700666
+        },
+        "nmi": {
+          "mean": 0.6500465981851976,
+          "std": 0.024411602931568115
+        },
+        "homogeneity": {
+          "mean": 0.6077826503967162,
+          "std": 0.06425410823022115
+        },
+        "completeness": {
+          "mean": 0.7062675063878063,
+          "std": 0.030970249673432346
+        },
+        "silhouette": {
+          "mean": 0.10052704674808902,
+          "std": 0.0046144255542196625
+        },
+        "n_clusters": {
+          "mean": 5.2,
+          "std": 1.4696938456699071
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.08637549998238683,
+          "std": 0.013113028357410888
+        }
+      },
+      {
+        "embedding": "allenai-specter",
+        "method": "agglomerative",
+        "k_mode": "k=true",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.5623408251045011,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.6617427153206156,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.648929074872515,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.6750725808833661,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.08982188311285001,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.006107500055804849,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "allenai-specter",
+        "method": "agglomerative",
+        "k_mode": "auto",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.5261966496065655,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.6364020954356309,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.5943008272501493,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.6849232049763941,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.09446396324932728,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 5.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.08502899995073676,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "allenai-specter",
+        "method": "hdbscan",
+        "k_mode": "n/a",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": null,
+          "std": null
+        },
+        "n_clusters": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.0584432000759989,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "allenai-specter",
+        "method": "hdbscan",
+        "k_mode": "mcs=5",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.06585566715004386,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.3371180551372689,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.28582544273212035,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.4108461797363982,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": -0.0452749793465984,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.6555555555555556,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.06041130004450679,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "allenai-specter",
+        "method": "hdbscan",
+        "k_mode": "mcs=10",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.02405811045667503,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.14210228395293234,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.09336585386962518,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.29728147828242557,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": -0.019844379273618915,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 2.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.8333333333333334,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.05143319990020245,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "allenai-specter",
+        "method": "bertopic",
+        "k_mode": "n/a",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.5308491486008944,
+          "std": 0.03238805644285392
+        },
+        "nmi": {
+          "mean": 0.645420771254692,
+          "std": 0.022750884099392053
+        },
+        "homogeneity": {
+          "mean": 0.6078196923675752,
+          "std": 0.03797803527824021
+        },
+        "completeness": {
+          "mean": 0.6911385701389224,
+          "std": 0.034873314735141596
+        },
+        "silhouette": {
+          "mean": 0.08127609770848013,
+          "std": 0.01262120411194712
+        },
+        "n_clusters": {
+          "mean": 4.6,
+          "std": 0.4898979485566356
+        },
+        "noise_fraction": {
+          "mean": 0.052222222222222225,
+          "std": 0.03212629398844658
+        },
+        "runtime_s": {
+          "mean": 0.34674175998661666,
+          "std": 0.007319841531432086
+        }
+      },
+      {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "method": "kmeans",
+        "k_mode": "k=true",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.5477402844926814,
+          "std": 0.10858532400310449
+        },
+        "nmi": {
+          "mean": 0.6355257063976798,
+          "std": 0.06909124869244201
+        },
+        "homogeneity": {
+          "mean": 0.6241230722117461,
+          "std": 0.07602063553341501
+        },
+        "completeness": {
+          "mean": 0.647700855363228,
+          "std": 0.06152888719611084
+        },
+        "silhouette": {
+          "mean": 0.05920339950256607,
+          "std": 0.009580114735656495
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.005936880013905466,
+          "std": 0.0009809617182494866
+        }
+      },
+      {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "method": "kmeans",
+        "k_mode": "auto",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.2517254977810567,
+          "std": 0.07653706775790421
+        },
+        "nmi": {
+          "mean": 0.4006432617520856,
+          "std": 0.062060815393275154
+        },
+        "homogeneity": {
+          "mean": 0.2992162360202745,
+          "std": 0.06945703976495049
+        },
+        "completeness": {
+          "mean": 0.6429027135133627,
+          "std": 0.06203178213881872
+        },
+        "silhouette": {
+          "mean": 0.07455960175305991,
+          "std": 0.0019806605887177477
+        },
+        "n_clusters": {
+          "mean": 2.6,
+          "std": 0.4898979485566356
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.05755858002230525,
+          "std": 0.0016256236421930614
+        }
+      },
+      {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "method": "agglomerative",
+        "k_mode": "k=true",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.6743166410044119,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.7174783195042271,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.7113937226279874,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.7236678982041654,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.05931025826554394,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 6.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.006632999982684851,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "method": "agglomerative",
+        "k_mode": "auto",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.13689113277944992,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.35265886637167426,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.22480721450134333,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.817696842417774,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": 0.07319384356283315,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 2.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.05317770002875477,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "method": "hdbscan",
+        "k_mode": "n/a",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": null,
+          "std": null
+        },
+        "n_clusters": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.028008900000713766,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "method": "hdbscan",
+        "k_mode": "mcs=5",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.031116683989825814,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.17128855650311067,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.1259863246394055,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 0.2674630766018269,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": -0.023566519900125486,
+          "std": 0.0
+        },
+        "n_clusters": {
+          "mean": 3.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 0.7166666666666667,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.027600500034168363,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "method": "hdbscan",
+        "k_mode": "mcs=10",
+        "n_runs": 1,
+        "ari": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "nmi": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "homogeneity": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "completeness": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "silhouette": {
+          "mean": null,
+          "std": null
+        },
+        "n_clusters": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "noise_fraction": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "runtime_s": {
+          "mean": 0.029663600027561188,
+          "std": 0.0
+        }
+      },
+      {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "method": "bertopic",
+        "k_mode": "n/a",
+        "n_runs": 5,
+        "ari": {
+          "mean": 0.2136536482672648,
+          "std": 0.20713074847862883
+        },
+        "nmi": {
+          "mean": 0.37737033250142477,
+          "std": 0.20782449290545882
+        },
+        "homogeneity": {
+          "mean": 0.30726891281345725,
+          "std": 0.21837667391811552
+        },
+        "completeness": {
+          "mean": 0.6015195639101331,
+          "std": 0.08305230608119354
+        },
+        "silhouette": {
+          "mean": 0.008064380393198478,
+          "std": 0.031817676358168755
+        },
+        "n_clusters": {
+          "mean": 2.8,
+          "std": 0.9797958971132712
+        },
+        "noise_fraction": {
+          "mean": 0.05111111111111111,
+          "std": 0.03807075933113736
+        },
+        "runtime_s": {
+          "mean": 0.3512228599982336,
+          "std": 0.015064855709556298
+        }
+      }
+    ],
+    "skipped": []
+  },
+  "part_b": {
+    "status": "not run (awaiting hand labels)"
+  }
+}

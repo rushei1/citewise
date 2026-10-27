@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "date": "2026-10-27 05:17 UTC",
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.0.2",
+      "scikit-learn": "1.6.1",
+      "scipy": "1.17.1",
+      "sentence-transformers": "5.0.0",
+      "transformers": "4.53.2",
+      "torch": "2.7.1+cpu",
+      "arxiv": "2.2.0"
+    },
+    "seeds": [
+      0
+    ],
+    "quick": false,
+    "sample_size": 40,
+    "caveat": "ROUGE against the abstract is a weak proxy for summary quality. NLI uses a small general-purpose model and is itself imperfect.",
+    "decoding": "HF: greedy (do_sample=False). LLM: temperature 0, so runs are near- but not guaranteed bit-identical; the on-disk cache is what makes reruns identical.",
+    "arm_dates": {
+      "hf": "2026-10-27 05:17 UTC",
+      "llm": "2026-10-27 07:24 UTC",
+      "nli": "2026-10-27 07:52 UTC"
+    },
+    "hf_arm": "hf:facebook/bart-large-cnn",
+    "llm_model": "mistral:latest"
+  },
+  "sample": {
+    "n": 40,
+    "ids": [
+      "2301.00320",
+      "2301.00442",
+      "2301.00330",
+      "2301.00847",
+      "2301.00844",
+      "2301.00337",
+      "2301.00321",
+      "2301.00443",
+      "2301.00345",
+      "2301.00929",
+      "2301.00910",
+      "2301.00362",
+      "2301.00355",
+      "2301.00444",
+      "2301.00363",
+      "2301.01189",
+      "2301.00979",
+      "2301.00379",
+      "2301.00374",
+      "2301.00479",
+      "2301.00366",
+      "2301.01227",
+      "2301.00993",
+      "2301.00452",
+      "2301.00395",
+      "2301.00710",
+      "2301.00371",
+      "2301.01228",
+      "2301.01037",
+      "2301.00521",
+      "2301.00397",
+      "2301.00823",
+      "2301.00394",
+      "2301.02182",
+      "2301.01737",
+      "2301.00523",
+      "2301.00399",
+      "2301.00888",
+      "2301.00406",
+      "2301.02185"
+    ]
+  },
+  "arms": {
+    "hf": {
+      "n": 40,
+      "n_failed": 0,
+      "rouge1": 0.3947848066051298,
+      "rouge2": 0.36860770107753965,
+      "rougeL": 0.3808601057024958,
+      "compression_ratio": 0.2607571565493033,
+      "latency_mean_s": 7.2933943174954035,
+      "latency_median_s": 6.418203599983826,
+      "id": "hf:facebook/bart-large-cnn"
+    },
+    "llm": {
+      "status": "run",
+      "id": "llm:mistral:latest:summ-v1",
+      "n": 40,
+      "n_failed": 1,
+      "rouge1": 0.49260238699067155,
+      "rouge2": 0.3815824752313123,
+      "rougeL": 0.42326957326637143,
+      "compression_ratio": 0.4174377970267488,
+      "latency_mean_s": 124.24483175897517,
+      "latency_median_s": 116.5085649000248,
+      "claims_total": 217,
+      "claims_verified": 192,
+      "claims_dropped": 25,
+      "verification_rate": 0.8847926267281107,
+      "dropped_rate": 0.1152073732718894,
+      "papers_with_any_dropped_claim": 22,
+      "not_stated_rate": {
+        "problem": 0.0,
+        "method": 0.05128205128205128,
+        "results": 0.20512820512820512,
+        "limitations": 1.0
+      },
+      "prompt_tokens": 24019,
+      "completion_tokens": 19871,
+      "cost": "not computed (no price table)",
+      "latency_note": "wall time of the original call, including retries, even when this run read it from the cache"
+    }
+  },
+  "nli": {
+    "hf": {
+      "status": "run",
+      "unit": "sentences",
+      "n": 97,
+      "entailment_rate": 0.08247422680412371,
+      "contradiction_rate": 0.030927835051546393,
+      "neutral_rate": 0.8865979381443299
+    },
+    "llm": {
+      "status": "run",
+      "unit": "claims",
+      "n": 192,
+      "entailment_rate": 0.21354166666666666,
+      "contradiction_rate": 0.015625,
+      "neutral_rate": 0.7708333333333334
+    },
+    "model": "cross-encoder/nli-deberta-v3-small"
+  }
+}

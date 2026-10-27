@@ -212,6 +212,37 @@ def test_nli_helpers():
     assert "reason string" in reason
 
 
+def test_arms_can_run_in_separate_processes_and_merge(tmp_path, bench):
+    kw = dict(limit=6, benchmark=bench, cache_dir=tmp_path / "c")
+    nli = lambda pairs: ["entailment"] * len(pairs)  # noqa: E731
+    out = tmp_path / "s.json"
+    first = rs.run(out=out, hf_summarizer=FakeHF(), arms=("hf",), **kw)
+    assert first["arms"]["llm"] == {"status": "not run"} and first["nli"] == {"status": "not run"}
+    rs.run(out=out, llm_client=FakeLLM(), arms=("llm",), **kw)
+    merged = rs.run(out=out, nli=nli, arms=("nli",), **kw)
+
+    together = rs.run(
+        out=tmp_path / "t.json", hf_summarizer=FakeHF(), llm_client=FakeLLM(), nli=nli, **kw
+    )
+    for arm in ("hf", "llm"):
+        for k in ("n", "n_failed", "rouge1", "rougeL", "id"):
+            assert merged["arms"][arm][k] == together["arms"][arm][k]
+    assert merged["nli"] == together["nli"]
+    assert merged["arms"]["llm"]["verification_rate"] == 0.5
+    assert set(merged["meta"]["arm_dates"]) == {"hf", "llm", "nli"}
+    assert set(json.loads((tmp_path / "summaries.json").read_text())) == {"hf", "llm"}
+
+
+def test_nli_arm_without_summaries_says_so_and_a_changed_sample_is_refused(tmp_path, bench):
+    kw = dict(benchmark=bench, cache_dir=tmp_path / "c")
+    out = tmp_path / "s.json"
+    r = rs.run(out=out, limit=6, nli=lambda p: [], arms=("nli",), **kw)
+    assert "run the hf arm first" in r["nli"]["status"]
+    rs.run(out=out, limit=6, hf_summarizer=FakeHF(), arms=("hf",), **kw)
+    with pytest.raises(ValueError, match="rerun all arms"):
+        rs.run(out=out, limit=4, hf_summarizer=FakeHF(), arms=("hf",), **kw)
+
+
 def test_cached_store_if_refuses_failures(tmp_path):
     calls = []
     for _ in range(2):

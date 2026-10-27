@@ -235,6 +235,9 @@ def nli_metrics(rows, abstracts, nli, kind: str) -> dict:
     }
 
 
+ALL_ARMS = ("hf", "llm", "nli")
+
+
 def run(
     out: Path = RESULTS_DIR / "summarization.json",
     limit: int = DEFAULT_LIMIT,
@@ -244,76 +247,102 @@ def run(
     llm_client="auto",
     nli="auto",
     cache_dir: Path = CACHE_DIR,
+    arms: tuple[str, ...] = ALL_ARMS,
 ) -> dict:
+    """Run the chosen arms and merge them into the existing result files.
+
+    Arms can run as separate processes (`--arm hf`, then `--arm llm`, then `--arm nli`) to keep
+    memory use down: each merges into summarization.json / summaries.json. NLI reads the saved
+    summaries, so it must come after the arms it should check."""
     set_seeds()
     papers = sample_papers(load_json(benchmark)["part_a"], limit)
     abstracts = {p["id"]: p["abstract"] for p in papers}
+    ids = [p["id"] for p in papers]
+    sums_path = out.with_name("summaries.json")
 
-    if quick:
-        hf_summarizer, llm_client, nli = FirstSentence(), None, "not run (quick mode)"
-    elif hf_summarizer is None:
-        from app.services.summarize import HFSummarizer
-
-        hf_summarizer = HFSummarizer()
-    if llm_client == "auto":
-        from app.config import Settings
-        from app.services.llm import make_llm_client
-
-        llm_client = make_llm_client(Settings())
-    if nli == "auto":
-        nli = load_nli()
-
-    meta = environment(
-        quick=quick,
-        sample_size=len(papers),
-        caveat=CAVEAT,
-        hf_arm=hf_summarizer.id,
-        decoding="HF: greedy (do_sample=False). LLM: temperature 0, so runs are near- but not "
-        "guaranteed bit-identical; the on-disk cache is what makes reruns identical.",
-    )
+    prev = load_json(out) if out.exists() else None
+    if prev and prev["sample"]["ids"] != ids:
+        if set(arms) != set(ALL_ARMS):
+            raise ValueError("the sample differs from the saved results; rerun all arms")
+        prev = None  # a full rerun with a different sample replaces everything
+    summaries = load_json(sums_path) if prev and sums_path.exists() else {}
+    result = prev or {
+        "meta": environment(
+            quick=quick,
+            sample_size=len(papers),
+            caveat=CAVEAT,
+            decoding="HF: greedy (do_sample=False). LLM: temperature 0, so runs are near- but not "
+            "guaranteed bit-identical; the on-disk cache is what makes reruns identical.",
+        ),
+        "sample": {"n": len(papers), "ids": ids},
+        "arms": {"hf": {"status": "not run"}, "llm": {"status": "not run"}},
+        "nli": {"status": "not run"},
+    }
+    meta = result["meta"]
+    meta["quick"] = quick
+    meta.setdefault("arm_dates", {})
+    now = environment()["date"]
     if quick:
         meta["note"] = "Quick mode: a first-sentence stub replaces BART. Smoke test only."
 
-    hf_rows = run_hf_arm(papers, hf_summarizer)
-    arms: dict = {"hf": {**text_metrics(hf_rows, abstracts), "id": hf_summarizer.id}}
-    summaries = {"hf": hf_rows}
-    nli_out: dict = {}
+    if "hf" in arms:
+        if quick:
+            hf_summarizer = FirstSentence()
+        elif hf_summarizer is None:
+            from app.services.summarize import HFSummarizer
 
-    if llm_client is None:
-        arms["llm"] = {
-            "status": "not run (quick mode)" if quick else "not run (no credentials configured)"
-        }
-    else:
-        from app.services.summarize import LLMSummarizer
+            hf_summarizer = HFSummarizer()
+        rows = run_hf_arm(papers, hf_summarizer)
+        summaries["hf"] = rows
+        result["arms"]["hf"] = {**text_metrics(rows, abstracts), "id": hf_summarizer.id}
+        meta["hf_arm"] = hf_summarizer.id
+        meta["arm_dates"]["hf"] = now
 
-        summarizer = LLMSummarizer(llm_client, workers=1)
-        llm_rows = run_llm_arm(papers, summarizer, llm_client, cache_dir)
-        arms["llm"] = {
-            "status": "run",
-            "id": summarizer.id,
-            **text_metrics(llm_rows, abstracts),
-            **grounding_metrics(llm_rows),
-        }
-        summaries["llm"] = llm_rows
-        meta["llm_model"] = llm_client.model
+    if "llm" in arms:
+        if llm_client == "auto":
+            from app.config import Settings
+            from app.services.llm import make_llm_client
 
-    if isinstance(nli, str):
-        nli_out = {"status": nli}
-    else:
-        nli_out = {"hf": nli_metrics(hf_rows, abstracts, nli, "sentences")}
-        if "llm" in summaries:
-            nli_out["llm"] = nli_metrics(summaries["llm"], abstracts, nli, "claims")
-        nli_out["model"] = NLI_MODEL
+            llm_client = None if quick else make_llm_client(Settings())
+        if llm_client is None:
+            result["arms"]["llm"] = {
+                "status": "not run (quick mode)" if quick else "not run (no credentials configured)"
+            }
+            summaries.pop("llm", None)
+        else:
+            from app.services.summarize import LLMSummarizer
 
-    result = {
-        "meta": meta,
-        "sample": {"n": len(papers), "ids": [p["id"] for p in papers]},
-        "arms": arms,
-        "nli": nli_out,
-    }
+            summarizer = LLMSummarizer(llm_client, workers=1)
+            rows = run_llm_arm(papers, summarizer, llm_client, cache_dir)
+            summaries["llm"] = rows
+            result["arms"]["llm"] = {
+                "status": "run",
+                "id": summarizer.id,
+                **text_metrics(rows, abstracts),
+                **grounding_metrics(rows),
+            }
+            meta["llm_model"] = llm_client.model
+            meta["arm_dates"]["llm"] = now
+
+    if "nli" in arms:
+        if quick:
+            nli = "not run (quick mode)"
+        elif nli == "auto":
+            nli = load_nli()
+        if isinstance(nli, str):
+            result["nli"] = {"status": nli}
+        elif "hf" not in summaries:
+            result["nli"] = {"status": "not run (no summaries to check; run the hf arm first)"}
+        else:
+            result["nli"] = {"hf": nli_metrics(summaries["hf"], abstracts, nli, "sentences")}
+            if "llm" in summaries:
+                result["nli"]["llm"] = nli_metrics(summaries["llm"], abstracts, nli, "claims")
+            result["nli"]["model"] = NLI_MODEL
+            meta["arm_dates"]["nli"] = now
+
     save_json(out, result)
-    save_json(out.with_name("summaries.json"), summaries)
-    log.info("wrote %s", out)
+    save_json(sums_path, summaries)
+    log.info("wrote %s (arms: %s)", out, ", ".join(arms))
     return result
 
 
@@ -322,11 +351,19 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--limit", type=int, default=DEFAULT_LIMIT)
     ap.add_argument("--quick", action="store_true", help="tiny stub-based smoke test")
+    ap.add_argument(
+        "--arm",
+        action="append",
+        choices=ALL_ARMS,
+        help="run only this arm (repeatable); results merge into the existing files. "
+        "Default: all, in one process",
+    )
     ap.add_argument("--out", type=Path, default=None)
     args = ap.parse_args()
     out = args.out or (RESULTS_DIR.with_name("results_quick") if args.quick else RESULTS_DIR)
     limit = min(args.limit, 6) if args.quick else args.limit
-    run(out=out / "summarization.json", limit=limit, quick=args.quick)
+    arms = tuple(args.arm) if args.arm else ALL_ARMS
+    run(out=out / "summarization.json", limit=limit, quick=args.quick, arms=arms)
 
 
 if __name__ == "__main__":

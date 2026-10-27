@@ -164,11 +164,14 @@ def build_report(results_dir: Path = RESULTS_DIR, quick: bool = False) -> tuple[
             "",
             *summarization_table(hf, llm),
         ]
-        compact.append(
-            f"| Summarization ROUGE-1/2/L vs abstract ({sm['sample']['n']} papers, weak proxy) | "
-            f"{hf['id']} | {num(hf.get('rouge1'))} / {num(hf.get('rouge2'))} / "
-            f"{num(hf.get('rougeL'))} |"
-        )
+        if hf.get("status", "run") == "run":
+            compact.append(
+                f"| Summarization ROUGE-1/2/L vs abstract ({sm['sample']['n']} papers, weak "
+                f"proxy) | {hf['id']} | {num(hf.get('rouge1'))} / {num(hf.get('rouge2'))} / "
+                f"{num(hf.get('rougeL'))} |"
+            )
+        else:
+            not_run.append(f"Summarization BART arm: {hf['status']}")
         if llm.get("status") == "run":
             out += ["", "### LLM grounding (before unverified claims are dropped)", ""]
             out += table(

@@ -30,7 +30,9 @@ docker-up:
 eval:
 	python -m eval.build_benchmark
 	python -m eval.run_clustering
-	python -m eval.run_summarization
+	python -m eval.run_summarization --arm hf
+	python -m eval.run_summarization --arm llm
+	python -m eval.run_summarization --arm nli
 	python -m eval.failure_cases
 	python -m eval.report
 

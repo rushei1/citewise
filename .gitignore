@@ -38,6 +38,9 @@ data/
 .pytest_cache/
 .ruff_cache/
 .eval_cache/
+# eval: smoke-test output from `make eval-quick` (not real results)
+eval/results_quick/
+eval/results_quick.md
 # eval: private answer key for the blinded human evaluation (until ratings are done)
 eval/human/key.json
 htmlcov/

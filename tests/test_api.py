@@ -23,7 +23,7 @@ def test_review_happy_path(client):
     assert n_papers(body) == 6
     assert len(body["clusters"]) == 3  # default_num_clusters
     paper = next(iter(body["clusters"].values()))[0]
-    assert set(paper) == {"title", "summary", "link"}  # v1-compatible shape
+    assert {"title", "summary", "link"} <= set(paper)  # v1 fields kept; new ones are additive
 
 
 def test_review_params(client):
@@ -86,7 +86,7 @@ def test_health_loads_no_models(monkeypatch):
     def boom(self):
         raise AssertionError("model loaded")
 
-    monkeypatch.setattr(summarize.Summarizer, "_load", boom)
+    monkeypatch.setattr(summarize.HFSummarizer, "_load", boom)
     r = TestClient(app).get("/health")
     assert r.json() == {"status": "ok"}
     assert not {"torch", "transformers", "sentence_transformers"} & set(sys.modules)
@@ -143,3 +143,118 @@ def test_sql_injection_topic_is_just_data(client):
     topic = "x'; DROP TABLE reviews; --"
     client.get("/review", params={"topic": topic})
     assert [x["topic"] for x in client.get("/reviews").json()] == [topic]
+
+
+# ---- Phase 2: sources, filters, warnings -----------------------------------------------------
+
+
+@pytest.fixture
+def two_sources(client, db, summarizer):
+    from app.main import get_sources
+    from tests.conftest import FakeFetcher
+
+    arxiv, s2 = FakeFetcher("arxiv"), FakeFetcher("semantic_scholar")
+    app.dependency_overrides[get_sources] = lambda: {"arxiv": arxiv, "semantic_scholar": s2}
+    return arxiv, s2
+
+
+def test_unknown_source_is_422(client):
+    r = client.get("/review", params={"topic": "t", "sources": "arxiv,pubmed"})
+    assert r.status_code == 422
+    assert "pubmed" in r.json()["detail"]
+
+
+def test_sources_param_selects_sources(two_sources, client):
+    arxiv, s2 = two_sources
+    client.get("/review", params={"topic": "t", "sources": "semantic_scholar"})
+    assert (arxiv.calls, s2.calls) == (0, 1)
+    client.get("/review", params={"topic": "u", "sources": " ArXiv , semantic_scholar "})
+    assert (arxiv.calls, s2.calls) == (1, 2)
+
+
+def test_partial_failure_gives_warning_and_is_not_cached(two_sources, client):
+    arxiv, s2 = two_sources
+    s2.error = FetchError("rate limited")
+    params = {"topic": "t", "sources": "arxiv,semantic_scholar"}
+    body = client.get("/review", params=params).json()
+    assert body["warnings"] == ["semantic_scholar: rate limited"]
+    assert n_papers(body) == 6
+    # degraded result is stored as history but never served as a cache hit
+    s2.error = None
+    again = client.get("/review", params=params).json()
+    assert again["cached"] is False
+    assert again["warnings"] == []
+    assert client.get("/review", params=params).json()["cached"] is True
+    assert client.get(f"/reviews/{body['review_id']}").json()["warnings"] == body["warnings"]
+
+
+def test_all_sources_failing_is_502(two_sources, client):
+    arxiv, s2 = two_sources
+    arxiv.error = s2.error = FetchError("down")
+    r = client.get("/review", params={"topic": "t", "sources": "arxiv,semantic_scholar"})
+    assert r.status_code == 502
+
+
+def test_dedup_across_sources_via_api(two_sources, client):
+    arxiv, s2 = two_sources
+    arxiv.papers = make_papers(3)
+    s2.papers = make_papers(3)  # identical titles
+    body = client.get("/review", params={"topic": "t", "sources": "arxiv,semantic_scholar"}).json()
+    assert n_papers(body) == 3
+
+
+def test_filters_applied(client, fetcher):
+    fetcher.papers = [
+        p.model_copy(update={"year": 2010 + i * 5, "citation_count": i * 10})
+        for i, p in enumerate(make_papers(4))
+    ]
+    body = client.get("/review", params={"topic": "t", "year_from": 2015}).json()
+    assert n_papers(body) == 3
+    body = client.get("/review", params={"topic": "t2", "min_citations": 20}).json()
+    assert n_papers(body) == 2
+
+
+def test_filters_are_part_of_cache_key(client, fetcher):
+    client.get("/review", params={"topic": "t"})
+    assert client.get("/review", params={"topic": "t", "year_from": 2000}).json()["cached"] is False
+    assert client.get("/review", params={"topic": "t", "sources": "arxiv"}).json()["cached"] is True
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {"year_from": 2024, "year_to": 2020},
+        {"year_from": 1500},
+        {"year_to": 3000},
+        {"min_citations": -1},
+        {"venue_contains": "x" * 101},
+    ],
+)
+def test_filter_validation(client, params):
+    assert client.get("/review", params={"topic": "t", **params}).status_code == 422
+
+
+def test_new_metadata_is_returned(client, fetcher):
+    fetcher.papers = [
+        make_papers(1)[0].model_copy(
+            update={"authors": ["Ann Lee"], "year": 2021, "venue": "ICML", "doi": "10/x"}
+        )
+    ]
+    paper = next(iter(client.get("/review", params={"topic": "t"}).json()["clusters"].values()))[0]
+    assert (paper["authors"], paper["year"], paper["venue"], paper["doi"]) == (
+        ["Ann Lee"],
+        2021,
+        "ICML",
+        "10/x",
+    )
+
+
+def test_unknown_summarizer_is_422(client):
+    r = client.get("/review", params={"topic": "t", "summarizer": "nope"})
+    assert r.status_code == 422
+
+
+def test_unconfigured_llm_summarizer_is_503(client):
+    r = client.get("/review", params={"topic": "t", "summarizer": "llm"})
+    assert r.status_code == 503
+    assert "not configured" in r.json()["detail"]

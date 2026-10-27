@@ -4,9 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.db import ReviewDB
-from app.main import app, get_clusterer, get_db, get_fetcher, get_summarizer
-from app.schemas import PaperIn
-from app.services.cluster import Clusterer
+from app.main import app, get_db, get_embedder, get_sources, get_summarizers
+from app.schemas import PaperIn, PaperSummary
 
 MARKERS = ("slow", "llm", "network")
 
@@ -26,12 +25,14 @@ def pytest_collection_modifyitems(config, items):
 
 
 class FakeSummarizer:
+    id = "fake"
+
     def __init__(self):
         self.calls = 0
 
-    def summarize(self, title: str, abstract: str) -> str:
+    def summarize(self, paper: PaperIn) -> PaperSummary:
         self.calls += 1
-        return f"Summary of {title}"
+        return PaperSummary(overview=f"Summary of {paper.title}")
 
 
 class FakeEmbedder:
@@ -39,6 +40,21 @@ class FakeEmbedder:
 
     def encode(self, texts):
         return [[b / 255 for b in hashlib.md5(t.encode()).digest()[:8]] for t in texts]
+
+
+class ScriptedLLM:
+    """Stands in for an LLMClient: returns the scripted replies in order (the last one repeats)
+    and records every message list it was sent."""
+
+    model = "fake-llm"
+
+    def __init__(self, *replies: str):
+        self.replies = list(replies)
+        self.calls: list[list[dict]] = []
+
+    def complete(self, messages):
+        self.calls.append([dict(m) for m in messages])
+        return self.replies.pop(0) if len(self.replies) > 1 else self.replies[0]
 
 
 def make_papers(n: int, title: str = "Paper") -> list[PaperIn]:
@@ -49,14 +65,15 @@ def make_papers(n: int, title: str = "Paper") -> list[PaperIn]:
 
 
 class FakeFetcher:
-    """Stands in for fetch_papers; set .papers or .error to script behaviour."""
+    """Stands in for a PaperSource; set .papers or .error to script behaviour."""
 
-    def __init__(self):
+    def __init__(self, name: str = "arxiv"):
+        self.name = name
         self.papers = make_papers(6)
         self.error: Exception | None = None
         self.calls = 0
 
-    def __call__(self, topic, max_results, timeout):
+    def search(self, query, max_results, filters):
         self.calls += 1
         if self.error:
             raise self.error
@@ -80,9 +97,9 @@ def db(tmp_path):
 
 @pytest.fixture
 def client(summarizer, fetcher, db):
-    app.dependency_overrides[get_summarizer] = lambda: summarizer
-    app.dependency_overrides[get_clusterer] = lambda: Clusterer(FakeEmbedder())
-    app.dependency_overrides[get_fetcher] = lambda: fetcher
+    app.dependency_overrides[get_summarizers] = lambda: {"hf": summarizer}
+    app.dependency_overrides[get_embedder] = lambda: FakeEmbedder()
+    app.dependency_overrides[get_sources] = lambda: {fetcher.name: fetcher}
     app.dependency_overrides[get_db] = lambda: db
     yield TestClient(app)
     app.dependency_overrides.clear()

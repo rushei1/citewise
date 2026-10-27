@@ -6,6 +6,14 @@ services:
     environment:
       HF_HOME: /home/app/.cache/huggingface
       DB_PATH: /app/data/reviews.db
+      LLM_CACHE_PATH: /app/data/llm_cache.db
+      # Optional LLM backend: set these in your shell or a .env next to this file
+      SUMMARIZER_BACKEND: ${SUMMARIZER_BACKEND:-hf}
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     ports:
       - "8000:8000"
     volumes:

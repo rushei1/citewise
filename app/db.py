@@ -24,12 +24,23 @@ def normalize_topic(topic: str) -> str:
     return " ".join(topic.lower().split())
 
 
-def cache_params(max_results: int, num_clusters: int, summarizer: str, embedder: str) -> str:
+def cache_params(
+    max_results: int,
+    num_clusters: int | str | None,
+    cluster_method: str,
+    summarizer: str,
+    embedder: str,
+    sources: list[str],
+    filters: dict,
+) -> str:
     """Canonical JSON of everything besides the topic that affects a result."""
     return json.dumps(
         {
+            "sources": sorted(sources),
+            "filters": filters,
             "max_results": max_results,
             "num_clusters": num_clusters,
+            "cluster_method": cluster_method,
             "summarizer_model": summarizer,
             "embedding_model": embedder,
         },
@@ -66,7 +77,9 @@ class ReviewDB:
             created_at=row["created_at"],
             cached=cached,
             clusters=result["clusters"],
+            cluster_info=result.get("cluster_info", {}),
             message=result.get("message"),
+            warnings=result.get("warnings", []),
         )
 
     def find_cached(self, topic: str, params: str) -> ReviewResponse | None:
@@ -76,12 +89,19 @@ class ReviewDB:
                 "ORDER BY id DESC LIMIT 1",
                 (normalize_topic(topic), params),
             ).fetchone()
-        return self._to_response(row, cached=True) if row else None
+        if row is None or json.loads(row["result_json"]).get("warnings"):
+            return None  # degraded (partial-source) results are history, not cache
+        return self._to_response(row, cached=True)
 
     def save(self, topic: str, params: str, review: ReviewResponse) -> ReviewResponse:
         """Store a freshly generated review and return it with its real id."""
         created_at = datetime.now(UTC)
-        result = {"clusters": review.model_dump()["clusters"], "message": review.message}
+        result = {
+            "clusters": review.model_dump()["clusters"],
+            "cluster_info": review.model_dump()["cluster_info"],
+            "message": review.message,
+            "warnings": review.warnings,
+        }
         with self._connect() as conn:
             cur = conn.execute(
                 "INSERT INTO reviews (topic_normalized, topic_display, params_json, result_json, "

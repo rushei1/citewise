@@ -7,35 +7,48 @@ import pytest
 
 from app import main
 from app.config import Settings, get_settings
-from app.schemas import Paper, ReviewResponse
+from app.schemas import Paper, PaperIn, ReviewResponse, SearchFilters
 from app.services import fetch
 from app.services.cluster import Embedder
 from app.services.export import build_pdf
-from app.services.summarize import Summarizer
+from app.services.http import RateLimiter
+from app.services.summarize import HFSummarizer
 
 
-def test_fetch_papers_success(monkeypatch):
-    monkeypatch.setattr(fetch, "_search", lambda topic, n: ["ok", topic, n])
-    assert fetch.fetch_papers("t", 3) == ["ok", "t", 3]
+def test_arxiv_source_success(monkeypatch):
+    monkeypatch.setattr(fetch, "_arxiv_search", lambda q, n: ["ok", q, n])
+    assert fetch.ArxivSource(limiter=RateLimiter(0)).search("t", 3, SearchFilters()) == [
+        "ok",
+        "t",
+        3,
+    ]
 
 
-def test_fetch_papers_wraps_errors(monkeypatch):
-    def fail(topic, n):
+def test_arxiv_source_wraps_errors(monkeypatch):
+    def fail(q, n):
         raise RuntimeError("network down")
 
-    monkeypatch.setattr(fetch, "_search", fail)
+    monkeypatch.setattr(fetch, "_arxiv_search", fail)
     with pytest.raises(fetch.FetchError, match="network down"):
-        fetch.fetch_papers("t", 3)
+        fetch.ArxivSource(limiter=RateLimiter(0)).search("t", 3, SearchFilters())
 
 
-def test_fetch_papers_timeout(monkeypatch):
-    monkeypatch.setattr(fetch, "_search", lambda topic, n: time.sleep(1))
+def test_arxiv_source_timeout(monkeypatch):
+    monkeypatch.setattr(fetch, "_arxiv_search", lambda q, n: time.sleep(1))
     with pytest.raises(fetch.FetchError, match="did not respond"):
-        fetch.fetch_papers("t", 3, timeout=0.05)
+        fetch.ArxivSource(timeout=0.05, limiter=RateLimiter(0)).search("t", 3, SearchFilters())
 
 
-def test_search_maps_arxiv_results(monkeypatch):
-    result = types.SimpleNamespace(title=" T ", summary=" S ", entry_id="http://arxiv.org/abs/1")
+def test_arxiv_search_maps_results(monkeypatch):
+    result = types.SimpleNamespace(
+        title=" T ",
+        summary=" S ",
+        entry_id="http://arxiv.org/abs/2303.15105v2",
+        authors=[types.SimpleNamespace(name="Ann Lee")],
+        published=datetime(2023, 3, 27, tzinfo=UTC),
+        journal_ref="CVPR 2023",
+        doi="10.1/x",
+    )
 
     class FakeClient:
         def __init__(self, **kw):
@@ -45,8 +58,16 @@ def test_search_maps_arxiv_results(monkeypatch):
             return [result]
 
     monkeypatch.setattr(fetch.arxiv, "Client", FakeClient)
-    [paper] = fetch._search("topic", 1)
-    assert (paper.title, paper.abstract, paper.link) == ("T", "S", "http://arxiv.org/abs/1")
+    [paper] = fetch._arxiv_search("topic", 1)
+    assert (paper.title, paper.abstract, paper.link) == ("T", "S", result.entry_id)
+    assert paper.arxiv_id == "2303.15105"
+    assert (paper.authors, paper.year, paper.venue, paper.doi) == (
+        ["Ann Lee"],
+        2023,
+        "CVPR 2023",
+        "10.1/x",
+    )
+    assert paper.source == "arxiv"
 
 
 def test_summarizer_loads_lazily_once(monkeypatch):
@@ -57,10 +78,11 @@ def test_summarizer_loads_lazily_once(monkeypatch):
         return lambda text, **kw: [{"summary_text": text[:10]}]
 
     monkeypatch.setitem(sys.modules, "transformers", types.SimpleNamespace(pipeline=pipeline))
-    s = Summarizer("my-model", max_input_chars=20)
+    s = HFSummarizer("my-model", max_input_chars=20)
     assert loads == []  # nothing at construction
-    assert s.summarize("Title", "x" * 100) == "Title. xxx"
-    s.summarize("a", "b")
+    paper = PaperIn(title="Title", abstract="x" * 100, link="l")
+    assert s.summarize(paper).overview == "Title. xxx"
+    s.summarize(PaperIn(title="a", abstract="b", link="l"))
     assert loads == ["my-model"]
 
 
@@ -85,11 +107,11 @@ def test_embedder_loads_lazily_once(monkeypatch):
 
 
 def test_default_factories_use_settings():
-    main.get_summarizer.cache_clear()
-    main.get_clusterer.cache_clear()
-    assert main.get_summarizer().model_name == get_settings().summarizer_model
-    assert main.get_clusterer().embedder.model_name == get_settings().embedding_model
-    assert main.get_fetcher() is fetch.fetch_papers
+    main.get_summarizers.cache_clear()
+    main.get_embedder.cache_clear()
+    assert main.get_summarizers()["hf"].model_name == get_settings().summarizer_model
+    assert main.get_embedder().model_name == get_settings().embedding_model
+    assert set(main.get_sources()) == {"arxiv", "semantic_scholar"}
 
 
 def test_settings_env_override(monkeypatch):
@@ -113,3 +135,13 @@ def test_pdf_many_pages():
         clusters={"0": [paper] * 10, "1": [paper]},
     )
     assert build_pdf(review).startswith(b"%PDF")
+
+
+def test_paper_summary_text_and_structure():
+    from app.schemas import Claim, PaperSummary
+
+    assert not PaperSummary(overview="x").is_structured
+    s = PaperSummary(problem=[Claim(text="p", evidence="e")], not_stated=["limitations"])
+    assert s.is_structured
+    assert s.text() == "Problem: p"
+    assert PaperSummary().text() == "No summary available."

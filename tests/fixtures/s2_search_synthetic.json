@@ -1,0 +1,50 @@
+{
+  "_comment": "SYNTHETIC fixture in the documented Semantic Scholar /graph/v1/paper/search shape. Titles/ids/citation counts follow real papers; abstracts are invented placeholders. Not a recorded response.",
+  "total": 4,
+  "offset": 0,
+  "data": [
+    {
+      "paperId": "aaa111",
+      "url": "https://www.semanticscholar.org/paper/aaa111",
+      "title": "Emerging Properties in Self-Supervised Vision Transformers",
+      "abstract": "Placeholder abstract about self-supervised learning with vision transformers and emergent segmentation properties.",
+      "year": 2021,
+      "citationCount": 10729,
+      "venue": "IEEE International Conference on Computer Vision",
+      "externalIds": {"ArXiv": "2104.14294", "DOI": "10.1109/ICCV48922.2021.00951"},
+      "authors": [{"authorId": "1", "name": "Mathilde Caron"}, {"authorId": "2", "name": "Hugo Touvron"}]
+    },
+    {
+      "paperId": "bbb222",
+      "url": "https://www.semanticscholar.org/paper/bbb222",
+      "title": "A Paper Without An Abstract",
+      "abstract": null,
+      "year": 2020,
+      "citationCount": 5,
+      "venue": "Somewhere",
+      "externalIds": {},
+      "authors": []
+    },
+    {
+      "paperId": "ccc333",
+      "title": "Vision Transformers for Dense Prediction",
+      "abstract": "Placeholder abstract about dense prediction with transformer backbones.",
+      "year": 2021,
+      "citationCount": 3210,
+      "venue": "",
+      "externalIds": {"ArXiv": "2103.13413"},
+      "authors": [{"authorId": null, "name": null}, {"authorId": "3", "name": "Rene Ranftl"}]
+    },
+    {
+      "paperId": "ddd444",
+      "url": "https://www.semanticscholar.org/paper/ddd444",
+      "title": "Untitled Venue Paper",
+      "abstract": "Placeholder abstract with no external ids at all.",
+      "year": null,
+      "citationCount": null,
+      "venue": null,
+      "externalIds": null,
+      "authors": null
+    }
+  ]
+}

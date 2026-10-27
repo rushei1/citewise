@@ -200,6 +200,19 @@ def test_quick_mode_uses_the_stub_and_says_so(tmp_path, bench):
     assert out["arms"]["llm"]["status"] == "not run (quick mode)"
 
 
+def test_quick_mode_works_without_benchmark_file(tmp_path):
+    out = rs.run(
+        out=tmp_path / "o.json",
+        limit=3,
+        quick=True,
+        benchmark=tmp_path / "missing.json",
+        cache_dir=tmp_path / "c",
+    )
+    assert out["sample"]["n"] == 3
+    assert out["arms"]["hf"]["id"] == "stub:first-sentence"
+    assert out["arms"]["llm"]["status"] == "not run (quick mode)"
+
+
 def test_nli_helpers():
     assert rs.sentences("Short. This one has enough words. And so does this one.") == [
         "This one has enough words.",

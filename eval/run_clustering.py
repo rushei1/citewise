@@ -25,6 +25,7 @@ from eval.common import (
     key_hash,
     load_json,
     paper_text,
+    quick_benchmark_fallback,
     save_json,
     set_seeds,
 )
@@ -247,7 +248,13 @@ def run(
     seeds: list[int] = SEEDS,
 ) -> dict:
     set_seeds()
-    data = load_json(benchmark)
+    if benchmark.exists():
+        data = load_json(benchmark)
+    elif quick:
+        log.warning("benchmark not found at %s; using built-in quick fallback", benchmark)
+        data = quick_benchmark_fallback()
+    else:
+        data = load_json(benchmark)
     papers = data["part_a"]
     if quick:  # smoke test: tiny subset, no models
         cats = data["meta"]["categories"][:3]

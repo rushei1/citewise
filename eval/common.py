@@ -87,6 +87,29 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def quick_benchmark_fallback() -> dict:
+    """Tiny deterministic benchmark used only for quick-mode smoke tests in CI."""
+    vocab = {
+        "cs.CL": "language grammar syntax parsing corpus semantics transformer",
+        "cs.CV": "image vision object segmentation detection pixel convolution",
+        "cs.DB": "database query index transaction schema join relational",
+    }
+    papers = []
+    for cat, words in vocab.items():
+        ws = words.split()
+        for i in range(4):
+            papers.append(
+                {
+                    "id": f"{cat}.{i}",
+                    "title": f"{ws[i]} {ws[(i + 1) % len(ws)]} study",
+                    "abstract": " ".join(ws[(i + j) % len(ws)] for j in range(6)) + f" in {cat}.",
+                    "category": cat,
+                    "published": "2023-01-01",
+                }
+            )
+    return {"meta": {"categories": list(vocab)}, "part_a": papers}
+
+
 def paper_text(p: dict) -> str:
     """The text that is embedded for a benchmark paper (same shape the app embeds)."""
     return f"{p['title']}. {p['abstract']}"

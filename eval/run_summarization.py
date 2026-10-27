@@ -33,6 +33,7 @@ from eval.common import (
     environment,
     key_hash,
     load_json,
+    quick_benchmark_fallback,
     save_json,
     set_seeds,
 )
@@ -255,7 +256,14 @@ def run(
     memory use down: each merges into summarization.json / summaries.json. NLI reads the saved
     summaries, so it must come after the arms it should check."""
     set_seeds()
-    papers = sample_papers(load_json(benchmark)["part_a"], limit)
+    if benchmark.exists():
+        benchmark_data = load_json(benchmark)
+    elif quick:
+        log.warning("benchmark not found at %s; using built-in quick fallback", benchmark)
+        benchmark_data = quick_benchmark_fallback()
+    else:
+        benchmark_data = load_json(benchmark)
+    papers = sample_papers(benchmark_data["part_a"], limit)
     abstracts = {p["id"]: p["abstract"] for p in papers}
     ids = [p["id"] for p in papers]
     sums_path = out.with_name("summaries.json")

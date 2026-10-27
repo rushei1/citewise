@@ -166,6 +166,17 @@ def test_quick_mode_is_model_free_and_labelled_as_a_smoke_test(tmp_path, monkeyp
     assert out["part_b"]["status"] == "not run (quick mode)"
 
 
+def test_quick_mode_works_without_benchmark_file(tmp_path):
+    out = rc.run(
+        out=tmp_path / "q.json",
+        quick=True,
+        benchmark=tmp_path / "missing.json",
+        cache_dir=tmp_path / "c",
+    )
+    assert out["part_a"]["n_papers"] == 12
+    assert out["part_a"]["n_classes"] == 3
+
+
 def test_embeddings_are_cached_and_specter_gets_sep_format(tmp_path):
     calls = []
 

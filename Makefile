@@ -1,6 +1,6 @@
 PIP_EXTRA = --extra-index-url https://download.pytorch.org/whl/cpu
 
-.PHONY: install lint format test run-api run-ui docker-up eval eval-quick
+.PHONY: install lint format test run-api run-ui docker-up eval eval-quick report report-pdf
 
 install:
 	pip install -r requirements.txt -r requirements-frontend.txt -r requirements-dev.txt $(PIP_EXTRA)
@@ -35,6 +35,14 @@ eval:
 	python -m eval.run_summarization --arm nli
 	python -m eval.failure_cases
 	python -m eval.report
+
+# Rebuild docs/report.md from docs/report_template.md and the results in eval/.
+report:
+	python -m eval.write_report
+
+# Same, plus a PDF if pandoc is installed (skipped with a message otherwise).
+report-pdf:
+	python -m eval.write_report --pdf
 
 # Tiny model-free smoke test for CI; writes to eval/results_quick/, not real results.
 eval-quick:

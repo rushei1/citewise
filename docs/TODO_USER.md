@@ -48,6 +48,8 @@ Not deployed by me; the deployment files are `Dockerfile.space`, `start_space.sh
 
 ## 6. GitHub settings
 
+**Rename the repository to `citewise`** (Settings -> General -> Repository name). The project was renamed from "Lazy Researcher Toolkit" in the code and docs, but the repository URL, the CI badge in `README.md`, the link in `space_README.md` and your local `origin` remote still use `lazy-researcher-toolkit`. GitHub redirects the old URL, so nothing breaks in the meantime. After renaming: update those URLs, run `git remote set-url origin https://github.com/rushei1/citewise.git`, and retake `demo_screenshot.png` (it still shows the old title).
+
 Repository **About** (gear icon next to it on the repo page):
 
 - Description (suggestion): `Literature-review toolkit: arXiv + Semantic Scholar retrieval, clustering, and LLM summaries whose claims are checked against the abstract.`

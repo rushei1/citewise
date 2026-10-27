@@ -342,7 +342,7 @@ def build_pdf(review: ReviewResponse) -> bytes:
     cluster) and each paper's structured claims with their evidence quotes."""
     styles = getSampleStyleSheet()
     story = [
-        Paragraph(f"Lazy Researcher Review: {_pdf(review.topic)}", styles["Title"]),
+        Paragraph(f"Citewise Review:{_pdf(review.topic)}", styles["Title"]),
         Paragraph(f"Generated {review.created_at:%Y-%m-%d %H:%M} UTC", styles["Normal"]),
         Spacer(1, 0.5 * cm),
     ]

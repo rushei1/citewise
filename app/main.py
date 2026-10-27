@@ -152,7 +152,7 @@ def create_app() -> FastAPI:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
     )
-    app = FastAPI(title="Lazy Researcher Toolkit")
+    app = FastAPI(title="Citewise")
 
     @app.get("/health")
     def health() -> dict[str, str]:

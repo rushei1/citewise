@@ -33,6 +33,8 @@ build/
 
 .venv/
 data/
+# the evaluation benchmark and hand-label template are committed inputs, not runtime data
+!eval/data/
 *.db
 .coverage
 .pytest_cache/

@@ -66,6 +66,8 @@ class FakeApi:
                     self.review_status, {"detail": "Summarizer 'llm' is not configured."}
                 )
             return FakeResponse(body=REVIEW)
+        if path == "/reviews/3":
+            return FakeResponse(body=REVIEW)
         if path.startswith("/reviews/3/"):
             return FakeResponse(content=b"export-bytes")
         return FakeResponse(404, {"detail": "nope"})
@@ -120,6 +122,15 @@ def test_generate_sends_all_options_and_renders_grounded_review(api):
         "📄 [1] Odd One",
     ]  # unclustered group is last, numbering restarts per cluster
     assert any("From cache" in i.value for i in at.info)
+
+
+def test_selecting_a_previous_review_loads_and_renders_it(api):
+    at = AppTest.from_file(APP, default_timeout=30).run()
+    assert not at.markdown or not any("sparse, attention" in m.value for m in at.markdown)
+    at.selectbox[0].select(3).run()  # the history entry with id 3
+    assert not at.exception
+    assert ("/reviews/3", {}) in api.calls
+    assert any("### 🔗 sparse, attention" in m.value for m in at.markdown)
 
 
 def test_unclustered_group_is_listed_after_numbered_clusters(api):

@@ -50,6 +50,22 @@ def test_pdf_is_valid_for_markup_and_non_latin_text():
     assert "?" in flat and "“quoted”" in flat  # non-cp1252 -> '?', curly quotes kept
 
 
+def test_pdf_title_has_a_space_after_the_colon():
+    text = pdf_text(build_pdf(review({"0": [paper()]}, topic="vision transformers")))
+    assert "Citewise Review: vision transformers" in text
+
+
+def test_short_clusters_share_a_page_instead_of_forcing_page_breaks():
+    pdf = build_pdf(review({"0": [paper(title="A")], "1": [paper(title="B")]}))
+    assert len(re.findall(rb"/Type\s*/Page\b", pdf)) == 1
+
+
+def test_a_new_cluster_still_starts_a_new_page_when_little_room_is_left():
+    many = [paper(title=f"Paper number {i}") for i in range(14)]
+    pdf = build_pdf(review({"0": many, "1": [paper(title="Last")]}))
+    assert len(re.findall(rb"/Type\s*/Page\b", pdf)) >= 2
+
+
 def test_pdf_of_plain_summary_paper_and_empty_review():
     assert build_pdf(review({"0": [paper()]})).startswith(b"%PDF")
     assert build_pdf(review({}, message="No papers found.")).startswith(b"%PDF")

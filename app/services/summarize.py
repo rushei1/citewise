@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from typing import Literal, Protocol
@@ -28,6 +29,14 @@ class Summarizer(Protocol):
     def summarize(self, paper: PaperIn) -> PaperSummary: ...
 
 
+_SPACE_BEFORE_PUNCT = re.compile(r"\s+([.,;:!?)])")
+
+
+def tidy_punctuation(text: str) -> str:
+    """BART's decoder leaves a space before punctuation ('models . We'); remove it."""
+    return _SPACE_BEFORE_PUNCT.sub(r"\1", text).strip()
+
+
 class HFSummarizer:
     """BART summarizer; the model loads on first use."""
 
@@ -49,7 +58,7 @@ class HFSummarizer:
     def summarize(self, paper: PaperIn) -> PaperSummary:
         text = f"{paper.title}. {paper.abstract}"[: self.max_input_chars]
         result = self._load()(text, max_length=130, min_length=30, do_sample=False)
-        return PaperSummary(overview=result[0]["summary_text"])
+        return PaperSummary(overview=tidy_punctuation(result[0]["summary_text"]))
 
 
 SYSTEM_PROMPT = f"""You extract structured facts from the abstract of a research paper.

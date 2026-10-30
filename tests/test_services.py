@@ -86,6 +86,23 @@ def test_summarizer_loads_lazily_once(monkeypatch):
     assert loads == ["my-model"]
 
 
+def test_tidy_punctuation_removes_bart_spacing_only():
+    from app.services.summarize import tidy_punctuation
+
+    assert tidy_punctuation("models . We use a, b ; c ( d ) !") == "models. We use a, b; c ( d)!"
+    assert tidy_punctuation("  no change here  ") == "no change here"
+    assert tidy_punctuation("3.5 and e.g. x") == "3.5 and e.g. x"
+
+
+def test_hf_summarizer_tidies_the_generated_text(monkeypatch):
+    pipe = lambda text, **kw: [{"summary_text": "It works . Really ."}]  # noqa: E731
+    monkeypatch.setitem(
+        sys.modules, "transformers", types.SimpleNamespace(pipeline=lambda task, model: pipe)
+    )
+    s = HFSummarizer("m").summarize(PaperIn(title="T", abstract="A", link="l"))
+    assert s.overview == "It works. Really."
+
+
 def test_embedder_loads_lazily_once(monkeypatch):
     loads = []
 

@@ -6,7 +6,7 @@ from xml.sax.saxutils import escape
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
-from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer
+from reportlab.platypus import CondPageBreak, Paragraph, SimpleDocTemplate, Spacer
 
 from app.schemas import CLAIM_FIELDS, Paper, ReviewResponse, sorted_cluster_ids
 
@@ -342,7 +342,7 @@ def build_pdf(review: ReviewResponse) -> bytes:
     cluster) and each paper's structured claims with their evidence quotes."""
     styles = getSampleStyleSheet()
     story = [
-        Paragraph(f"Citewise Review:{_pdf(review.topic)}", styles["Title"]),
+        Paragraph(f"Citewise Review: {_pdf(review.topic)}", styles["Title"]),
         Paragraph(f"Generated {review.created_at:%Y-%m-%d %H:%M} UTC", styles["Normal"]),
         Spacer(1, 0.5 * cm),
     ]
@@ -353,7 +353,7 @@ def build_pdf(review: ReviewResponse) -> bytes:
 
     for i, cluster_id in enumerate(sorted_cluster_ids(review.clusters)):
         if i:
-            story.append(PageBreak())
+            story.append(CondPageBreak(8 * cm))  # new page only if little room is left
         story.append(Paragraph(_pdf(cluster_heading(review, cluster_id)), styles["Heading2"]))
         info = review.cluster_info.get(cluster_id)
         if info and info.theme_summary:

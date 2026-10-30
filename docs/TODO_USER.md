@@ -32,7 +32,7 @@ Caveats to keep in mind when you write about it: 20 items is small; the two outp
 1. Run the app (`docker compose up --build`, or `make run-api` and `make run-ui`).
 2. Record 60-90 seconds with a screen recorder (e.g. ScreenToGif on Windows, Peek or Kooha on Linux): enter a topic, generate a review, open a cluster, expand a paper to show a claim with its evidence quote, then download one export. Keep the browser window small (about 1000 px wide) to keep the file under ~10 MB.
 3. Save it as `docs/demo.gif`.
-4. In `README.md`, under the `## 📸 Demo` heading, add the line `![Demo](docs/demo.gif)` (keep or replace the existing screenshot).
+4. In `README.md`, under the `## 📸 Screenshots` heading, add the line `![Demo](docs/demo.gif)`. (The still screenshots in `docs/screenshots/` were captured from the real app with the Citewise title.)
 5. Commit: `docs: add demo gif`.
 
 ## 5. Deploy the hosted demo (Hugging Face Spaces)
@@ -48,7 +48,7 @@ Not deployed by me; the deployment files are `Dockerfile.space`, `start_space.sh
 
 ## 6. GitHub settings
 
-The repository has been renamed to `citewise` (done; the old URL redirects). Still to do: retake `demo_screenshot.png`, which shows the old title.
+The repository has been renamed to `citewise` (done; the old URL redirects). The old `demo_screenshot.png` (which showed the old title) has been replaced by new screenshots in `docs/screenshots/`.
 
 Repository **About** (gear icon next to it on the repo page):
 

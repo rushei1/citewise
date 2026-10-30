@@ -8,11 +8,59 @@ _Formerly "Lazy Researcher Toolkit"._
 ![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-Searches arXiv and Semantic Scholar for a topic, deduplicates and ranks the papers, clusters them by meaning, and summarizes each one either with BART or with an LLM that must back every claim with a quote from the abstract (checked in code). Exports the review as PDF, Markdown, LaTeX or BibTeX. FastAPI backend, Streamlit frontend, SQLite history.
+Give Citewise a research topic and it builds a literature review: it searches arXiv and Semantic Scholar, removes duplicates, ranks the papers by relevance, groups them into themes, and summarizes each paper. Summaries come from BART, or from an LLM that must support every claim with a quote from the abstract, which the code then checks. The review exports as PDF, Markdown, LaTeX or BibTeX.
 
-## 📸 Demo
+![Citewise: a generated review with a theme summary and export buttons](docs/screenshots/review-grounded.jpg)
 
-![UI Screenshot](demo_screenshot.png)
+## ✨ Features
+
+**Find papers**
+- Searches **arXiv** and **Semantic Scholar** in parallel (Semantic Scholar works without a key but is heavily rate limited; an optional key raises the limits).
+- Retries with backoff, honours `Retry-After`, and rate-limits each source. If one source fails you still get the others' results plus a `warnings` list.
+- Merges duplicates across sources (by DOI, arXiv id, then near-identical title) and ranks candidates by embedding similarity to your query.
+- Filters by year range, minimum citations, venue and source.
+
+**Summarize, with checkable claims**
+- **`hf` summarizer:** a BART summary per paper. No API key needed.
+- **`llm` summarizer:** structured `problem` / `method` / `results` / `limitations` claims, each with a quote copied from the abstract. A claim is kept only if its quote is really in the abstract; the rest are dropped and counted. Fields the abstract does not cover must say "not stated".
+- Works with any OpenAI-compatible server (OpenAI, Ollama, vLLM) or Anthropic. The evaluation in this repository used a local model through Ollama. LLM replies are cached on disk, so repeating a review is free.
+
+**Organize**
+- Clusters papers with **KMeans**, **agglomerative** clustering or **HDBSCAN**, with the number of clusters fixed or chosen automatically.
+- Each cluster gets a keyword label. With the LLM summarizer it also gets a short theme summary written only from the cluster's verified claims, with `[n]` citations that are checked against the cluster's papers.
+
+**Keep and share**
+- Exports a review as **PDF**, **Markdown**, **LaTeX** (with a bibliography) or **BibTeX** (stable keys like `smith2023vision`).
+- Stores every review in SQLite; identical requests are served from the cache.
+- Streamlit UI and a documented REST API (FastAPI, `/docs`).
+
+**Engineering**
+- Docker and docker-compose, GitHub Actions CI, a test suite that needs no network, key or model download, and a reproducible evaluation harness (`make eval`) with measured results below.
+
+## 📸 Screenshots
+
+All screenshots are from real runs of the app on the topic "retrieval-augmented generation for question answering" (arXiv results; the `llm` summaries come from a local `mistral:latest` model through Ollama). The text in them is model output.
+
+The first image above shows the `llm` summarizer: each cluster has a keyword label and a short theme summary, `[n]` points to the n-th paper listed under it, and the four buttons export the review.
+
+**Claims backed by quotes.** Every claim is marked ✅ and shows the quote from the abstract that supports it. A field the abstract does not cover says "not stated".
+
+![Problem, method and results claims with evidence quotes](docs/screenshots/claims.jpg)
+
+**PDF export.** The same theme and claims, each with its verified quote.
+
+<img src="docs/screenshots/pdf-export.png" alt="First page of the PDF export" width="520">
+
+**`hf` summarizer (default, no API key).** A BART summary per paper, with the same labels and exports.
+
+![BART summary of a paper](docs/screenshots/review-bart.jpg)
+
+**Starting a review.**
+
+| | |
+|---|---|
+| ![Home page](docs/screenshots/home.jpg) | ![Options: sources, summarizer, cluster method and filters](docs/screenshots/options.jpg) |
+| Enter a topic and pick the options. | Sources, summarizer (`hf` or `llm`), cluster method, cluster count and filters. |
 
 ## 🧭 How it works
 

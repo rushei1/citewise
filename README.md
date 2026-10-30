@@ -2,7 +2,7 @@
 
 _Formerly "Lazy Researcher Toolkit"._
 
-[![CI](https://github.com/rushei1/lazy-researcher-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/rushei1/lazy-researcher-toolkit/actions/workflows/ci.yml)
+[![CI](https://github.com/rushei1/citewise/actions/workflows/ci.yml/badge.svg)](https://github.com/rushei1/citewise/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-success)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)

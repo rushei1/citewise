@@ -12,7 +12,7 @@ short_description: Literature review from arXiv and Semantic Scholar
 
 # Citewise (Space)
 
-Searches arXiv and Semantic Scholar for a topic, clusters the papers and summarizes each one. Source code and full documentation: https://github.com/rushei1/lazy-researcher-toolkit
+Searches arXiv and Semantic Scholar for a topic, clusters the papers and summarizes each one. Source code and full documentation: https://github.com/rushei1/citewise
 
 ## Notes for this Space
 

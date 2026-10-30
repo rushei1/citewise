@@ -56,7 +56,7 @@ not run (awaiting hand labels)
 
 | Arm | Papers | Failed | ROUGE-1 | ROUGE-2 | ROUGE-L | Compression | Latency (s) |
 |---|---|---|---|---|---|---|---|
-| BART (hf) | 40 | 0 | 0.395 | 0.369 | 0.381 | 0.26 | 7.3 |
+| BART (hf) | 40 | 0 | 0.395 | 0.369 | 0.381 | 0.26 | 6.4 |
 | LLM | 40 | 1 | 0.493 | 0.382 | 0.423 | 0.42 | 124.2 |
 
 ### LLM grounding (before unverified claims are dropped)

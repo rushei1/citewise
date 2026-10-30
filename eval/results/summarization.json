@@ -20,9 +20,9 @@
     "caveat": "ROUGE against the abstract is a weak proxy for summary quality. NLI uses a small general-purpose model and is itself imperfect.",
     "decoding": "HF: greedy (do_sample=False). LLM: temperature 0, so runs are near- but not guaranteed bit-identical; the on-disk cache is what makes reruns identical.",
     "arm_dates": {
-      "hf": "2026-10-27 05:17 UTC",
+      "hf": "2026-10-30 21:48 UTC",
       "llm": "2026-10-27 07:24 UTC",
-      "nli": "2026-10-27 07:52 UTC"
+      "nli": "2026-10-30 21:52 UTC"
     },
     "hf_arm": "hf:facebook/bart-large-cnn",
     "llm_model": "mistral:latest"
@@ -80,8 +80,8 @@
       "rouge2": 0.36860770107753965,
       "rougeL": 0.3808601057024958,
       "compression_ratio": 0.2607571565493033,
-      "latency_mean_s": 7.2933943174954035,
-      "latency_median_s": 6.418203599983826,
+      "latency_mean_s": 6.385587434991612,
+      "latency_median_s": 5.907426999998279,
       "id": "hf:facebook/bart-large-cnn"
     },
     "llm": {

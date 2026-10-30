@@ -3,241 +3,241 @@
     {
       "id": "2301.00320",
       "text": "Social media has been widely explored as a potential source of communication and information in disasters and emergency situations. In this paper, we explore one such challenge and propose a text classification framework to deal with Twitter noisy data.",
-      "latency_s": 21.30273830005899,
+      "latency_s": 17.478398800012656,
       "error": null
     },
     {
       "id": "2301.00442",
       "text": "Identity and access management (I&AM) is the umbrella term for managing users and their permissions. It is required for users to access different services. These services can either be provided from their home organization, like a company or university, or from external service providers.",
-      "latency_s": 6.420419599977322,
+      "latency_s": 6.373649600078352,
       "error": null
     },
     {
       "id": "2301.00330",
       "text": "On-device training remains an open problem for EdgeAI. We propose a new gradient filtering approach which enables on-device CNN model training. Our approach creates a special structure with fewer unique elements in the gradient map.",
-      "latency_s": 5.561222999938764,
+      "latency_s": 5.084943199995905,
       "error": null
     },
     {
       "id": "2301.00847",
-      "text": " Database management systems are considered to be a crucial element from both business and technological standpoint. This paper divides different types of database management systems into two main categories (relational and non-relational) and several sub categories. Ranking of various sub categories for the month of July, 2021 are presented in the form of popularity score calculated and managed by DB-Engines.",
-      "latency_s": 8.605314700049348,
+      "text": "Database management systems are considered to be a crucial element from both business and technological standpoint. This paper divides different types of database management systems into two main categories (relational and non-relational) and several sub categories. Ranking of various sub categories for the month of July, 2021 are presented in the form of popularity score calculated and managed by DB-Engines.",
+      "latency_s": 8.120584599906579,
       "error": null
     },
     {
       "id": "2301.00844",
       "text": "The blowout preventer (BOP) system is one of the most important well safety barriers during the drilling phase because it can prevent the development of blowout events. This paper investigates BOP system's main failures using an LSA-based methodology.",
-      "latency_s": 5.954921999946237,
+      "latency_s": 5.775539300055243,
       "error": null
     },
     {
       "id": "2301.00337",
       "text": "Tendon-driven devices are preferred in medicine for their improved outcomes via minimally invasive procedures. TDRMs come with unique challenges such as sterilization and reuse, simultaneous control of tendons, hysteresis in the tendon-sheath mechanism and unmodeled effects of the proximal section shape.",
-      "latency_s": 7.439034900045954,
+      "latency_s": 7.0283124999841675,
       "error": null
     },
     {
       "id": "2301.00321",
       "text": "This paper presents our solutions for the MediaEval 2022 task on DisasterMM. The task is composed of two subtasks, namely (i) Relevance Classification of Twitter Posts (RCTP), and (ii) Location Extraction from Twitter Texts (LETT) The RCTP subtask aims at differentiating flood-related and non-relevant social posts. LETT is a Named Entity Recognition (NER) task and aims at the extraction of location information from the text.",
-      "latency_s": 12.044407499954104,
+      "latency_s": 11.252238999935798,
       "error": null
     },
     {
       "id": "2301.00443",
       "text": "TaxIdMA: Towards a Taxonomy for Attacks related to Identities. Identity management refers to the technology and policies for the identification, authentication, and authorization of users in computer networks.",
-      "latency_s": 4.664811599999666,
+      "latency_s": 4.193584399996325,
       "error": null
     },
     {
       "id": "2301.00345",
       "text": "MTNeuro: A Benchmark for Evaluating Representations of Brain Structure Across Multiple Levels of Abstraction. There are multiple scales of abstraction from which we can describe the same image. Our benchmark is built on volumetric, micrometer-resolution X-ray microtomography images.",
-      "latency_s": 7.643845199956559,
+      "latency_s": 7.085425999946892,
       "error": null
     },
     {
       "id": "2301.00929",
       "text": "EQUI-VOCAL is a new system that automatically synthesizes queries over videos from limited user interactions. The user only provides a handful of positive and negative examples of what they are looking for.",
-      "latency_s": 5.64025049994234,
+      "latency_s": 4.717822900041938,
       "error": null
     },
     {
       "id": "2301.00910",
       "text": "In the era of information overload, recommender systems (RSs) have become an indispensable part of online service platforms. Traditional RSs estimate user interests and predict their future behaviors by utilizing correlations in the observational historical activities, their profiles, and the content of interacted items. Since the inherent causal reasons that lead to the observed users' behaviors are not considered, multiple types of biases could exist.",
-      "latency_s": 9.342867500032298,
+      "latency_s": 8.524756799917668,
       "error": null
     },
     {
       "id": "2301.00362",
       "text": "Goal-Guided Transformer-Enabled Reinforcement Learning for Efficient Autonomous Navigation. We propose a novel variant of the Vision Transformer as the backbone of the perception system. We pre-train it with expert p",
-      "latency_s": 5.568706599995494,
+      "latency_s": 5.288917000056244,
       "error": null
     },
     {
       "id": "2301.00355",
       "text": "Second Thought is a new learning paradigm that enables language models to re-align with human values. The generated editing steps offer better interpretability and ease for interactive error correction. Extensive human evaluations further confirm its effectiveness.",
-      "latency_s": 6.4006658999715,
+      "latency_s": 4.608829699922353,
       "error": null
     },
     {
       "id": "2301.00444",
       "text": "This paper presents a comprehensive classification of identity management approaches. It makes use of three axes: topology, type of user, and type of environment. The analysis of existing approaches using the resulting identity management cube (IMC) highlights the trade-off between user control and trust in attributes.",
-      "latency_s": 6.892249200027436,
+      "latency_s": 6.300680699991062,
       "error": null
     },
     {
       "id": "2301.00363",
       "text": "Mapping smallholder cashew plantations to inform sustainable tree crop expansion in Benin. Cashews are grown by over 3 million smallholders in more than 40 countries worldwide as a principal source of income.",
-      "latency_s": 5.037032800028101,
+      "latency_s": 5.003406899981201,
       "error": null
     },
     {
       "id": "2301.01189",
       "text": "FAIR (Findable Accessible Interoperable Reusable) data sharing aims to achieve at scale. We argue that it is not sustainable to keep accumulating and maintaining all datasets for rapid access. We address the issue of cold data storage: when to dispose of data for offline storage.",
-      "latency_s": 6.2829490000149235,
+      "latency_s": 5.841789599973708,
       "error": null
     },
     {
       "id": "2301.00979",
       "text": "There has been a growing interest in benchmarking sequential recommendation models. Petrov and Macdonald developed a more efficient and effective implementation of BERT4Rec. The results demonstrate that our improved loss function significantly enhances the performance of GRU4Rec, they say.",
-      "latency_s": 6.063455199939199,
+      "latency_s": 5.827557699987665,
       "error": null
     },
     {
       "id": "2301.00379",
       "text": "A review of Implementation and Challenges of Unmanned Aerial Vehicles for Spraying Applications and Crop Monitoring in Indonesia. UAVs have been used in various sectors, including livestock, forestry, and agriculture. This study examines the urgency of UAV implementation in the agriculture sector.",
-      "latency_s": 6.451597600011155,
+      "latency_s": 6.569948600023054,
       "error": null
     },
     {
       "id": "2301.00374",
       "text": "ORUGA is a method that tries to automatically optimize the readability of any text in English. The core idea behind the method is that certain factors affect the readable of a text.",
-      "latency_s": 4.749286400037818,
+      "latency_s": 4.9749826999614015,
       "error": null
     },
     {
       "id": "2301.00479",
       "text": "Blockchain, also coined as decentralized AI, has the potential to empower AI to be more trustworthy by creating a decentralized trust of privacy, security, and audibility. Studies on the design principle of blockchain as a trust engine for an integrated society of cyber-physical-social-system (CPSS) are still absent.",
-      "latency_s": 9.462510199984536,
+      "latency_s": 7.181967100012116,
       "error": null
     },
     {
       "id": "2301.00366",
       "text": "This paper proposes a novel self-supervised based Cut-and-Paste GAN to perform foreground object segmentation. The proposed method empowers the generator to create meaningful masks by forcing it to learn informative per-pixel as well as global image feedback from the discriminator.",
-      "latency_s": 9.663210299913771,
+      "latency_s": 6.217357499990612,
       "error": null
     },
     {
       "id": "2301.01227",
       "text": "Semantic units structure a knowledge graph into identifiable and semantically meaningful subgraphs. Each unit is represented by its own resource, instantiates a corresponding semantic unit class, and can be implemented as a FAIR Digital Object and a nanopublication in RDF/OWL.",
-      "latency_s": 7.175962700042874,
+      "latency_s": 6.2537485000211746,
       "error": null
     },
     {
       "id": "2301.00993",
       "text": "Most of the existing offline evaluation practices for reinforcement learning-based recommendation are based on a next-item prediction protocol. We detail three shortcomings of such an evaluation protocol. Our suggestions for alternative ways to evaluate RL-based recommender systems aim to shed light on the existing possibilities and inspire future research.",
-      "latency_s": 7.315530599909835,
+      "latency_s": 6.342427099938504,
       "error": null
     },
     {
       "id": "2301.00452",
       "text": "Human-in-the-loop Embodied Intelligence with Interactive Simulation Environment for Surgical Robot Learning. Surgical robot automation has attracted increasing research interest over the past decade.",
-      "latency_s": 4.812825400033034,
+      "latency_s": 3.8860850000055507,
       "error": null
     },
     {
       "id": "2301.00395",
-      "text": " CORGI-PM is the first sentence-level Chinese corpus for gender bias probing and mitigation. It contains 32.9k sentences with high-quality labels derived by following an annotation scheme specifically developed forgender bias in the Chinese context.",
-      "latency_s": 6.603370000026189,
+      "text": "CORGI-PM is the first sentence-level Chinese corpus for gender bias probing and mitigation. It contains 32.9k sentences with high-quality labels derived by following an annotation scheme specifically developed forgender bias in the Chinese context.",
+      "latency_s": 5.314473500009626,
       "error": null
     },
     {
       "id": "2301.00710",
       "text": "Internet services face more attacks than ever. A honeypot helps to collect information about an attacker by pretending to be a vulnerable target. This thesis will present a honeypot solution to investigate malicious activities in heiCLOUD.",
-      "latency_s": 5.91761169990059,
+      "latency_s": 5.063531099935062,
       "error": null
     },
     {
       "id": "2301.00371",
-      "text": " Domain adaptive detection aims to improve the generalization of detectors on target domain. The key is to encode the dependencies across different granularities including pixel-, instance-, and category-levels simultaneously to align two domains.",
-      "latency_s": 6.2251291000284255,
+      "text": "Domain adaptive detection aims to improve the generalization of detectors on target domain. The key is to encode the dependencies across different granularities including pixel-, instance-, and category-levels simultaneously to align two domains.",
+      "latency_s": 4.825125699979253,
       "error": null
     },
     {
       "id": "2301.01228",
       "text": "The ability to build a dataset has become more critical than ever, especially in the industry. This paper presents the concept of DMOps which is derived from real-world experiences with NLP data management.",
-      "latency_s": 5.535444000037387,
+      "latency_s": 4.4389756000600755,
       "error": null
     },
     {
       "id": "2301.01037",
       "text": "Uptrendz is a multi-domain recommendation platform that can be customized to provide real-time recommendations in an API-centric way. We believe that our demonstration shows a convenient way to adapt, deploy and evaluate a recommender system. The source-code and documentation are available on GitHub.",
-      "latency_s": 8.747408699942753,
+      "latency_s": 7.436447499901988,
       "error": null
     },
     {
       "id": "2301.00521",
       "text": "In current model-free reinforcement learning (RL) algorithms, stability criteria based on sampling methods are commonly utilized to guide policy optimization. These criteria only guarantee the infinite-time convergence of the system's state to an equilibrium point, which leads to sub-optimality of the policy. In this paper, we propose a policy optimization technique incorporating sampling-based Lyapunov stability.",
-      "latency_s": 12.35426870000083,
+      "latency_s": 10.852790900040418,
       "error": null
     },
     {
       "id": "2301.00397",
       "text": "Current models (both RNN-based and pre-training based) have more than 23\\% inflected forms. As a result, the encoder will generate separate embeddings for the inflection forms.",
-      "latency_s": 9.15865080000367,
+      "latency_s": 5.1064193999627605,
       "error": null
     },
     {
       "id": "2301.00823",
       "text": "Digital identity management for individuals is either inconvenient and error-prone or creates undesirable lock-in effects. Decentralized or self-sovereign identity (SSI) aims to offer a solution to this dilemma.",
-      "latency_s": 7.026610599947162,
+      "latency_s": 5.1816177000291646,
       "error": null
     },
     {
       "id": "2301.00394",
       "text": "Deep Learning Technique for Human Parsing: A Survey and Outlook. Human parsing aims to partition humans in image or video into multiple pixel-level semantic parts. In the last decade, it has gained significantly increased interest in the computer vision community.",
-      "latency_s": 6.415987599990331,
+      "latency_s": 6.274749499978498,
       "error": null
     },
     {
       "id": "2301.02182",
       "text": "The discovered models serve as the starting point for process mining techniques that are used to address performance and compliance problems. The algorithm applying synthesis rules from the free-choice net theory discovers process models with more flexible (non-block) structures.",
-      "latency_s": 6.345006800023839,
+      "latency_s": 5.550679999985732,
       "error": null
     },
     {
       "id": "2301.01737",
-      "text": " Recommender systems (RS) commonly retrieve potential candidate items for users from a massive number of items. We build upon the classical Two-Tower model and introduce the novel Multi-Source Augmentations using a Contrastive Learning framework.",
-      "latency_s": 6.560319799929857,
+      "text": "Recommender systems (RS) commonly retrieve potential candidate items for users from a massive number of items. We build upon the classical Two-Tower model and introduce the novel Multi-Source Augmentations using a Contrastive Learning framework.",
+      "latency_s": 6.124844799982384,
       "error": null
     },
     {
       "id": "2301.00523",
       "text": "This paper concerns realizing highly efficient information-theoretic robot exploration with desired performance in complex scenes. We build a continuous lightweight inference model to predict the mutual information (MI) and the associated prediction confidence of the robot's candidate actions.",
-      "latency_s": 7.195082199992612,
+      "latency_s": 5.973064400022849,
       "error": null
     },
     {
       "id": "2301.00399",
       "text": "QDMR formalism in semantic parsing is implemented using sequence to sequence model with attention. It is shown how semantic operator prediction could be augmented with other models like the CopyNet model or the recursive neural net model.",
-      "latency_s": 5.52372080006171,
+      "latency_s": 5.3160381000489,
       "error": null
     },
     {
       "id": "2301.00888",
       "text": "Advances in deep learning enabled Internet of Things (IoTs) to take decisions and run cognitive tasks locally. This research introduces a decentralized-control edge model where most computation and decisions are moved to the IoT level.",
-      "latency_s": 5.843289300100878,
+      "latency_s": 6.003982799942605,
       "error": null
     },
     {
       "id": "2301.00406",
       "text": "Non-line-of-sight (NLOS) imaging aims to reconstruct the three-dimensional hidden scenes from the data measured in the line- of-sight. We propose novel NLOS reconstruction models based on curvature regularization.",
-      "latency_s": 5.945902100065723,
+      "latency_s": 6.235578399966471,
       "error": null
     },
     {
       "id": "2301.02185",
       "text": "Process discovery aims to discover models that can explain the behaviors of event logs extracted from information systems. State-of-the-art approaches that exploit the representational bias of process trees to provide guarantees are constrained to be block-structured.",
-      "latency_s": 5.842153799952939,
+      "latency_s": 5.792222800082527,
       "error": null
     }
   ],

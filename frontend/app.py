@@ -18,8 +18,8 @@ EXPORTS = {
     "LaTeX": ("latex", "application/x-tex", "tex"),
 }
 
-st.set_page_config(page_title="Lazy Researcher Toolkit", layout="wide")
-st.title("🧠 Lazy Researcher Toolkit")
+st.set_page_config(page_title="Citewise", layout="wide")
+st.title("🧠 Citewise")
 st.subheader("Enter a research topic to get auto-generated literature summaries")
 
 

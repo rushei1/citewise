@@ -1,0 +1,32 @@
+# syntax=docker/dockerfile:1
+# Hugging Face Spaces (Docker SDK): the API runs in the background, Streamlit serves on 7860.
+# Spaces run as uid 1000 and expose only app_port (see space_README.md).
+FROM python:3.11-slim AS builder
+ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_DEFAULT_TIMEOUT=120 PIP_RETRIES=10
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+COPY requirements.txt requirements-frontend.txt ./
+# CPU-only torch: Spaces' free tier has no GPU.
+RUN pip install -r requirements.txt -r requirements-frontend.txt \
+    --extra-index-url https://download.pytorch.org/whl/cpu
+
+FROM python:3.11-slim
+ENV PYTHONUNBUFFERED=1 \
+    PATH="/opt/venv/bin:$PATH" \
+    HF_HOME=/home/user/.cache/huggingface \
+    DB_PATH=/home/user/data/reviews.db \
+    LLM_CACHE_PATH=/home/user/data/llm_cache.db \
+    API_URL=http://127.0.0.1:8000 \
+    # A distilled BART: smaller and faster on CPU than bart-large-cnn, at some quality cost.
+    SUMMARIZER_MODEL=sshleifer/distilbart-cnn-12-6
+RUN useradd --create-home --uid 1000 user \
+    && mkdir -p /home/user/data /home/user/.cache/huggingface \
+    && chown -R user:user /home/user
+COPY --from=builder /opt/venv /opt/venv
+WORKDIR /home/user/app
+COPY --chown=user:user app/ app/
+COPY --chown=user:user frontend/ frontend/
+COPY --chown=user:user start_space.sh .
+USER user
+EXPOSE 7860
+CMD ["sh", "start_space.sh"]

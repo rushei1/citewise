@@ -1,6 +1,8 @@
-# 🧠 Lazy Researcher Toolkit
+# 🧠 Citewise
 
-[![CI](https://github.com/rushei1/lazy-researcher-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/rushei1/lazy-researcher-toolkit/actions/workflows/ci.yml)
+_Formerly "Lazy Researcher Toolkit"._
+
+[![CI](https://github.com/rushei1/citewise/actions/workflows/ci.yml/badge.svg)](https://github.com/rushei1/citewise/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-success)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)
@@ -156,24 +158,63 @@ make test        # or: pytest --cov=app
 
 The suite uses a fake embedder, fake summarizers, a scripted fake LLM client and mocked HTTP, injected through FastAPI dependency overrides, so it needs no network, no key and no model weights. Opt-in markers: `--run-slow` loads the real models on three abstracts, `--run-llm` calls a real LLM endpoint configured through the environment (billable), `--run-network` is reserved for live API checks. The frontend smoke tests use Streamlit's `AppTest` and are skipped where Streamlit is not installed (CI installs only the dev requirements). The LaTeX compile test runs only if `pdflatex` is installed.
 
-## ⚠️ Limitations (v2.0 candidate)
+```bash
+make eval         # full evaluation: needs the models, network on the first run;
+                  # the LLM arm runs only if LLM_MODEL (+ key or base URL) is set
+make eval-quick   # model-free smoke test of the eval code (also run in CI)
+```
 
-- Grounding covers the abstract only. A verified quote shows the claim has textual support, not that the claim is a faithful summary; theme summaries are checked for valid citations, not for factual accuracy.
-- The LLM path is covered by tests with a scripted fake client. It has not been run against a live model as part of the test suite, and there is no evaluation yet, so nothing here claims measured summary, grounding or clustering quality. An evaluation harness is the next planned step.
-- The BART summarizer still truncates title + abstract to 1024 characters and produces generic text, not structured or fact-checked output.
-- Clustering quality is unmeasured. The HDBSCAN `min_cluster_size` (10% of the papers, at least 2) is a guess, and on small result sets it may label many papers as unclustered.
-- Semantic Scholar is optional and, without an API key, often rate limited (you then get a `warnings` entry and arXiv-only results). arXiv records have no citation counts or venues, so `min_citations` / `venue_contains` drop arXiv-only papers.
-- Filters are applied after retrieval, so a strict filter can return fewer than `max_results` papers.
+## 📊 Evaluation
+
+Everything below comes from real runs of the scripts in `eval/` (`make eval`); the full tables, seeds, package versions and a "Not run" list are in [eval/results.md](eval/results.md), and concrete failures are in [eval/results/failure_cases.md](eval/results/failure_cases.md). Arxiv and LLM calls are cached, so a rerun is free and gives the same numbers.
+
+<!-- RESULTS:START -->
+| Experiment | Setting | Result |
+|---|---|---|
+| Clustering (180 papers, proxy labels) | best `agglomerative` (k=true), all-MiniLM-L6-v2 | ARI 0.70, NMI 0.75 |
+| Clustering (180 papers, proxy labels) | best `agglomerative` (auto), all-MiniLM-L6-v2 | ARI 0.61, NMI 0.71 |
+| Clustering (180 papers, proxy labels) | best `kmeans` (auto), all-MiniLM-L6-v2 | ARI 0.61 ± 0.07, NMI 0.68 ± 0.05 |
+| Summarization ROUGE-1/2/L vs abstract (40 papers, weak proxy) | hf:facebook/bart-large-cnn | 0.395 / 0.369 / 0.381 |
+| LLM claims whose quote is in the abstract (40 papers) | llm:mistral:latest:summ-v1 | 88.5% of 217 claims |
+
+Full tables, seeds and environment: [eval/results.md](eval/results.md).
+<!-- RESULTS:END -->
+
+### What the numbers support
+
+- **Clustering, proxy benchmark** (180 arXiv papers, 6 categories, label = primary category; a proxy for topics, so overlap between categories such as cs.IR and cs.CL puts a ceiling on every score). Agglomerative clustering given the true number of clusters did best with MiniLM (ARI 0.70) and mpnet (0.70), then bge-small (0.67) and SPECTER (0.56). A scientific-text embedding did not help on this proxy.
+- **Choosing k automatically is fragile.** Silhouette-based auto-k dropped agglomerative ARI to 0.61 (MiniLM), 0.61 (mpnet), 0.53 (SPECTER) and 0.14 (bge-small, which collapsed to 2 clusters). KMeans results also vary between seeds (std 0.05-0.11 in ARI), so a single-seed comparison would be noisy.
+- **HDBSCAN was not usable here.** With the app's own `min_cluster_size` rule it labelled every paper as noise (ARI 0.00 for all four embeddings); fixed sizes of 5 and 10 gave ARI 0.00-0.09 with 47-100% of papers unclustered. KMeans stays the default. BERTopic was competitive for some embeddings (ARI 0.50-0.53 with mpnet and SPECTER) but unstable for others (0.21-0.23, std up to 0.21).
+- **LLM grounding** (local `mistral:latest` through Ollama, temperature 0, 40 papers, one paper failed to yield valid JSON after retries): of 217 claims, 192 (88.5%) had their quote verbatim in the abstract and 25 (11.5%) did not and were dropped; 22 of the 39 usable papers had at least one dropped claim. The verifier is doing real work with this model. Every usable paper had `limitations` reported as "not stated". This describes one 7B model on 40 papers, not LLM summarizers in general.
+- **ROUGE against the abstract is a weak proxy** and was reported only because it is cheap: LLM claims scored higher (ROUGE-1 0.49 vs 0.39 for BART) but BART's ROUGE-2 (0.37) is almost its ROUGE-1, which indicates it largely copies abstract sentences, so a high score there is not a virtue.
+- **NLI did not settle faithfulness.** A small NLI model judged 21% of the LLM's claims and 8% of BART's sentences as entailed by the abstract, and nearly everything else as neutral. It looks conservative for paraphrases, so I draw no conclusion from it.
+
+Not measured: summary quality as judged by people (the blinded rating kit is in `eval/`, but no ratings have been collected), clustering against hand-made topic labels (Part B, awaiting labels), any model other than the ones above.
+
+## ⚠️ Limitations and design decisions
+
+Design decisions:
+
+- **Abstract-only grounding.** Full texts are out of scope, so every quote is checked against the abstract. A verified quote shows textual support, not that the claim is a fair reading of it; theme summaries are checked for valid `[n]` citations, not for factual accuracy.
+- **Literal verification.** Quotes must match the abstract after whitespace and case normalization (and be at least 12 characters); there is no fuzzy matching, so a model that tidies punctuation loses that claim rather than getting a pass.
+- **Optional LLM, no default model.** The default backend (BART) needs no key. The LLM backend is off until `LLM_MODEL` and credentials are configured, and a review is never silently degraded to a different backend.
+- **Everything cacheable is cached** (reviews, LLM replies, eval calls) so repeated work is free and results are reproducible.
+- **Cost is not estimated.** Token counts are logged and reported by the eval, but there is no price table, so no dollar figures appear anywhere.
+
+Limitations:
+
+- The BART summarizer truncates title + abstract to 1024 characters and produces generic text, not structured or fact-checked output.
+- The evaluation is small: 40 papers for summarization, one local LLM, no human ratings yet, and a proxy benchmark whose sample covers only the first 25 days of 2023. LLM latency in the eval (about 2 minutes per paper) is from a laptop with a 4 GB GPU and is not representative.
+- The HDBSCAN `min_cluster_size` rule (10% of the papers, at least 2) is an untuned guess and, per the numbers above, a poor one on this benchmark.
+- A model can emit JSON that the schema rejects or that contains invalid escapes; after two retries that paper gets a placeholder and a warning. One of 40 papers failed this way in the evaluation.
+- Semantic Scholar is optional and, without an API key, often rate limited (you then get a `warnings` entry and arXiv-only results). arXiv records have no citation counts or venues, so `min_citations` / `venue_contains` drop arXiv-only papers. Filters run after retrieval, so a strict filter can return fewer than `max_results` papers.
 - Title-based deduplication is conservative; some cross-source duplicates will survive.
-- PDF export uses the built-in Helvetica font, and the LaTeX export targets pdflatex with Latin-1 text: characters outside those ranges (Greek, CJK) are printed as `?`. The generated `.tex` has been checked structurally in tests but not compiled in this repository's environment, because no LaTeX installation was available.
-- One LLM call per paper plus one per cluster: a 30-paper review makes dozens of calls (cached afterwards). Papers are summarized on a few threads; there is no background job queue.
+- PDF export uses the built-in Helvetica font, and the LaTeX export targets pdflatex with Latin-1 text: other characters (Greek, CJK) are printed as `?`. The generated `.tex` has been checked structurally in tests but never compiled here, because no LaTeX installation was available.
+- One LLM call per paper plus one per cluster: a 30-paper review makes dozens of calls (cached afterwards). There is no background job queue.
 
 ## 🗺️ Roadmap
 
-Planned, not done:
-
-- Evaluation: a clustering benchmark and a grounding/faithfulness evaluation with reproducible results.
-- A hosted demo configuration.
+Planned, not done: hand-labelled clustering evaluation and human ratings of summaries (kits are in `eval/`; they need a person), a more forgiving JSON parser for model replies, and a hosted demo (deployment files for Hugging Face Spaces are in the repository and have not been deployed).
 
 ## 📄 License
 

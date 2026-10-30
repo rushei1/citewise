@@ -39,7 +39,15 @@ Branch: `upgrade-v2` (renamed from `v1.1-infra`; no history was rewritten). Tag 
 - Findings worth acting on: `mistral` produced one reply with an invalid JSON escape (`Invalid \escape`), which exhausted the schema retries; a more lenient JSON parse could recover such replies. This was not changed, so the results stay tied to the committed code.
 - Not run: Part B (needs your labels), human evaluation (needs your ratings; the blinded `eval/human/ratings.csv` is generated and `key.json` is gitignored). The GitHub Actions run of `eval-quick` has not happened (nothing pushed to Actions yet).
 
+## Phase 5 (done, 2026-10-27; branch `upgrade-v2-phase5`)
+- 5.1 README: results table injected from `eval/results.md` (between the RESULTS markers), a findings section limited to what the numbers support, rewritten limitations and design decisions. 5.2 Spaces files (`Dockerfile.space`, `start_space.sh`, `space_README.md`). 5.3 `docs/report.md` built by `python -m eval.write_report` from `docs/report_template.md` (numbers copied from the results files; a test fails if the committed report is stale; `make report-pdf` skips cleanly without pandoc, which is not installed here). 5.4 post draft. 5.5 changelog, contributing guide, issue templates. 5.6 `docs/TODO_USER.md`.
+- Renamed to **Citewise** (display names only). The GitHub repo URL and CI badge keep the old name until the repository is renamed (TODO_USER step 6).
+- Space image **not verified**: `docker build -f Dockerfile.space` failed three times because pip inside Docker timed out reaching PyPI (a bare `python:3.11-slim` container fails the same way, while the host reaches PyPI fine), so the image was never built or run. Verified instead: `sh -n start_space.sh` passes, the default model `sshleifer/distilbart-cnn-12-6` loads and summarizes through `HFSummarizer` on CPU (about 4.2 s per paper over 3 papers after a 133 s first load, versus 7.3 s mean for `bart-large-cnn` over 40 papers in the eval; a small, unequal comparison), and `docker compose config` is valid. The pip timeouts were raised in `Dockerfile.space`.
+- The `TODO(rusheil)` blocks in the report are intentional: motivation, interpretation of ablations, qualitative failure notes and the human-evaluation paragraph need you. No causes are asserted in the draft.
+- Final gate: `ruff check`, `ruff format --check` clean; `pytest --cov=app` 315 passed, 3 skipped, 99% of `app/`; the quick eval path runs (`eval.run_clustering --quick`, `eval.run_summarization --quick`, `eval.report --quick`); `docker compose config` valid.
+
 ## Not verified
+- The Space image (see Phase 5). GitHub Actions has never run on this repository; the workflow, including the `eval-quick` steps, is untested there.
 - No live LLM was used anywhere: the LLM path is tested with a scripted fake client and the end-to-end check above used a fake server. The `llm`-marked test (`pytest --run-llm`, needs `LLM_MODEL` plus a key or base URL) has not been run. Real model behaviour (JSON compliance, how often quotes verify) is exactly what Phase 4 should measure.
 - The generated `.tex` has not been compiled: no LaTeX installation here. It is checked structurally in tests, and a compile test runs automatically where `pdflatex` exists.
 - `slow` pytest (real models) was not run via pytest, but the same models ran for real inside Docker (see below).
@@ -47,7 +55,7 @@ Branch: `upgrade-v2` (renamed from `v1.1-infra`; no history was rewritten). Tag 
 - GitHub Actions workflow has not run yet (nothing pushed). Frontend tests need streamlit, which CI does not install, so they are skipped there.
 
 ## Next
-- Phase 4 (evaluation). Merge Phase 3 first: from the main checkout on `upgrade-v2`, `git merge --ff-only upgrade-v2-phase3`.
+- All five phases are done. What remains needs you: see `docs/TODO_USER.md` (hand labels, ratings, report text, demo GIF, Spaces deploy, repo rename, PR/merge, tags, post).
 
 ## Decisions / deviations
 - Work started from the narrower v1.1 brief, then the all-phases brief arrived mid-run. Phase 0 items
